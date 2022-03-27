@@ -3,6 +3,7 @@
   <select
     class="field"
     :value="modelValue"
+    :disabled="disabled"
     v-bind="{
       ...$attrs,
       onChange: ($event) => {
@@ -36,6 +37,10 @@ export default {
     options: {
       type: Array,
       required: true,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
   },
 };

@@ -5,6 +5,7 @@ import NetworkError from "@/views/errors/NetworkError";
 import NProgress from "nprogress";
 import NotAuthorized from "@/views/errors/NotAuthorized";
 import LoginPage from "../components/LoginPage.vue";
+import QueueForm from "@/views/forms/student/QueueForm";
 
 const routes = [
   {
@@ -20,6 +21,18 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+  },
+  {
+    path: "/courses/:id",
+    name: "NotFound",
+    component: NotFound,
+    children: [
+      {
+        path: "register",
+        name: "QueueForm",
+        component: QueueForm,
+      },
+    ],
   },
   {
     path: "/:catchAll(.*)",
@@ -46,6 +59,11 @@ const routes = [
     path: "/login",
     name: "login",
     component: LoginPage,
+  },
+  {
+    path: "/temp",
+    name: "Temp",
+    component: QueueForm,
   },
 ];
 
