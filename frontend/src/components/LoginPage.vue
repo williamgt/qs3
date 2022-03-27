@@ -3,18 +3,14 @@
     <div class="title">
       <h1>QS</h1>
     </div>
-    <div class="login-input">
-
-    </div>
+    <div class="login-input"></div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Login"
-}
+  name: "LoginPage",
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

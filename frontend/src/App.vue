@@ -1,4 +1,5 @@
 <template>
+  <NavigationBar></NavigationBar>
   <nav>
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>
@@ -28,3 +29,9 @@ nav a.router-link-exact-active {
   color: #42b983;
 }
 </style>
+<script>
+import NavigationBar from "@/components/global/NavigationBar";
+export default {
+  components: { NavigationBar },
+};
+</script>
