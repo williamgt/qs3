@@ -1,15 +1,16 @@
 <template>
   <input
-    type="checkbox"
-    :checked="modelValue"
-    @change="$emit('update:modelValue', $event.target.checked)"
-    class="field"
+      type="checkbox"
+      :checked="modelValue"
+      @change="$emit('update:modelValue', $event.target.checked)"
+      class="field"
   />
   <label v-if="label">{{ label }}</label>
 </template>
 
 <script>
 export default {
+  name: "BaseCheckbox",
   props: {
     label: {
       type: String,
@@ -22,3 +23,7 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+
+</style>

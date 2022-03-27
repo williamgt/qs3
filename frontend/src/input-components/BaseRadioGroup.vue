@@ -1,24 +1,25 @@
 <template>
   <component
-    v-for="option in options"
-    :key="option.value"
-    :is="vertical ? 'div' : 'span'"
-    :class="{
+      v-for="option in options"
+      :key="option.value"
+      :is="vertical ? 'div' : 'span'"
+      :class="{
       'horizontal': !vertical
     }"
   >
     <BaseRadio
-      :label="option.label"
-      :value="option.value"
-      :modelValue="modelValue"
-      :name="name"
-      @update:modelValue="$emit('update:modelValue', $event)"
+        :label="option.label"
+        :value="option.value"
+        :modelValue="modelValue"
+        :name="name"
+        @update:modelValue="$emit('update:modelValue', $event)"
     />
   </component>
 </template>
 
 <script>
 export default {
+  name: "BaseRadioGroup",
   props: {
     options: {
       type: Array,
