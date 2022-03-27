@@ -2,7 +2,8 @@ import { createRouter, createWebHashHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import NotFound from "@/views/errors/NotFound";
 import NetworkError from "@/views/errors/NetworkError";
-
+import NProgress from "nprogress";
+import NotAuthorized from "@/views/errors/NotAuthorized";
 const routes = [
   {
     path: "/",
@@ -34,11 +35,32 @@ const routes = [
     name: "NetworkError",
     component: NetworkError,
   },
+  {
+    path: "/401",
+    name: "NotAuthorized",
+    component: NotAuthorized,
+  },
 ];
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
+});
+
+router.beforeEach((to, from) => {
+  NProgress.start();
+  const notAuthorized = false;
+  if (notAuthorized) {
+    if (from.href) {
+      return { path: "/401" };
+    } else {
+      return { path: "/" };
+    }
+  }
+});
+
+router.afterEach(() => {
+  NProgress.done();
 });
 
 export default router;
