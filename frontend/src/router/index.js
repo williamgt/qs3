@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import NotFound from "@/views/errors/NotFound";
 import NetworkError from "@/views/errors/NetworkError";
@@ -50,7 +50,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes,
 });
 

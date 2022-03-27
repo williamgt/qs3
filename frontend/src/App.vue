@@ -1,13 +1,13 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link> |
-    <router-link to="/login">Login</router-link>
-  </nav>
+  <NavigationBar :navbar-elements="this.navbarElements"></NavigationBar>
   <router-view />
 </template>
 
 <style>
+* {
+  margin: 0;
+  padding: 0;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -15,17 +15,16 @@
   text-align: center;
   color: #2c3e50;
 }
-
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>
+<script>
+import NavigationBar from "@/components/global/NavigationBar";
+
+export default {
+  components: { NavigationBar },
+  data() {
+    return {
+      navbarElements: this.$store.state.navbar.student.navbarElements,
+    };
+  },
+};
+</script>
