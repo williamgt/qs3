@@ -3,9 +3,11 @@
     <div class="title">
       <h1>QS</h1>
     </div>
+
     <div class="error" v-if="this.error">
       <p>{{ this.error }}</p>
     </div>
+
     <div class="login-form">
       <form @submit.prevent="login">
         <fieldset>
