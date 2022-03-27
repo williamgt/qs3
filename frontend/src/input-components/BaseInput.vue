@@ -35,13 +35,13 @@ export default {
       default: "text",
     },
   },
-/*  setup () {
+  /*  setup () {
     const uuid = UniqueID().getID()
     return {
       uuid
     }
   }*/
-}
+};
 </script>
 
 <style scoped></style>
