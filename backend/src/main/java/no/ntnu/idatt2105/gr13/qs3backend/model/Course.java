@@ -12,4 +12,5 @@ public class Course {
     ArrayList<Teacher> teachers;
     ArrayList<TeacherAssistant> tas;
     ArrayList<Student> students;
+    boolean active;
 }
