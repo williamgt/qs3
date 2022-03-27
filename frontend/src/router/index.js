@@ -4,6 +4,8 @@ import NotFound from "@/views/errors/NotFound";
 import NetworkError from "@/views/errors/NetworkError";
 import NProgress from "nprogress";
 import NotAuthorized from "@/views/errors/NotAuthorized";
+import LoginPage from "../components/LoginPage.vue";
+
 const routes = [
   {
     path: "/",
@@ -39,6 +41,11 @@ const routes = [
     path: "/401",
     name: "NotAuthorized",
     component: NotAuthorized,
+  },
+  {
+    path: "/login",
+    name: "login",
+    component: LoginPage,
   },
 ];
 
