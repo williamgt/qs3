@@ -3,8 +3,10 @@
     <div class="title">
       <h1>QS</h1>
     </div>
-
-    <div class="login-input">
+    <div class="error" v-if="this.error">
+      <p>{{ this.error }}</p>
+    </div>
+    <div class="login-form">
       <form @submit.prevent="login">
         <fieldset>
           <legend>Login</legend>
@@ -45,11 +47,22 @@ export default {
         email: "",
         password: "",
       },
+      error: "",
     };
   },
   methods: {
     login() {
-      doLogin();
+      if (!this.validateEmail()) {
+        this.error = "The email is not valid.";
+      } else {
+        this.error = "";
+        doLogin();
+      }
+    },
+    validateEmail() {
+      return this.userLogin.email.match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
     },
   },
 };
