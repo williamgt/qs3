@@ -4,7 +4,9 @@
     <ul>
       <li v-for="course in courses" :key="course.code" class="element">
         <h4>{{ course.title }} - {{ course.code }}</h4>
-        <button @click="activateOrDeactivate(course, active)">Activate/Deactivate</button>
+        <button @click="activateOrDeactivate(course, active)">
+          Activate/Deactivate
+        </button>
       </li>
     </ul>
   </div>
@@ -16,7 +18,7 @@ export default {
   data() {
     return {
       active: false,
-    }
+    };
   },
   props: {
     title: {
@@ -29,19 +31,17 @@ export default {
     },
   },
   methods: {
-    activateOrDeactivate(course, active){
-      if(this.active === false){
+    activateOrDeactivate(course, active) {
+      if (this.active === false) {
         this.active = true;
       }
-      if(this.active === true){
+      if (this.active === true) {
         this.active = false;
       }
-      this.$emit("changed-active-status", {course: course, active: active});
-    }
-  }
-}
+      this.$emit("changed-active-status", { course: course, active: active });
+    },
+  },
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -4,7 +4,12 @@
       <TACourses :courses="activeCourses" title="Active"></TACourses>
     </div>
     <div class="inactive-container">
-      <TACourses :courses="inactiveCourses" title="Inactive" @changed-active-status=""></TACourses>
+      <TACourses
+        :courses="inactiveCourses"
+        title="Inactive"
+        @changed-active-status="a"
+      >
+      </TACourses>
     </div>
   </div>
 </template>
@@ -24,10 +29,10 @@ export default {
         {
           title: "Fulllstack",
           code: "IDATT2105",
-        }
+        },
       ],
-    }
-  }
+    };
+  },
 };
 </script>
 
