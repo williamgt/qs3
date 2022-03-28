@@ -6,16 +6,18 @@ import NProgress from "nprogress";
 import NotAuthorized from "@/views/errors/NotAuthorized";
 import LoginPage from "../components/LoginPage.vue";
 import QueueForm from "@/views/forms/student/QueueForm";
+import StudentCoursesView from "../components/student/StudentCoursesView";
+import StudentCourseInfo from "../components/student/StudentCourseInfo";
 
 const routes = [
   {
     path: "/",
-    name: "home",
+    name: "Home",
     component: HomeView,
   },
   {
     path: "/about",
-    name: "about",
+    name: "About",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
@@ -57,13 +59,23 @@ const routes = [
   },
   {
     path: "/login",
-    name: "login",
+    name: "Login",
     component: LoginPage,
   },
   {
     path: "/temp",
     name: "Temp",
     component: QueueForm,
+  },
+  {
+    path: "/courses",
+    name: "Courses",
+    component: StudentCoursesView,
+  },
+  {
+    path: "/course-info",
+    name: "CourseInfo",
+    component: StudentCourseInfo,
   },
 ];
 
