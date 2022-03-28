@@ -59,4 +59,12 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.list {
+  list-style-type: none;
+}
+.element {
+  list-style-position: inside;
+  border: 1px solid black;
+}
+</style>
