@@ -20,11 +20,16 @@
       {{ option }}
     </option>
   </select>
+  <BaseErrorMessage v-if="error" :id="`${label}-error`">
+    {{ error }}
+  </BaseErrorMessage>
 </template>
 
 <script>
+import BaseErrorMessage from "@/input-components/BaseErrorMessage";
 export default {
   name: "BaseSelect",
+  components: { BaseErrorMessage },
   props: {
     label: {
       type: String,
@@ -42,8 +47,31 @@ export default {
       type: Boolean,
       default: false,
     },
+    error: {
+      type: String,
+      default: "",
+    },
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+select {
+  width: 100%;
+  height: 40px;
+  padding: 0 24px 0 10px;
+  vertical-align: middle;
+  background: #fff;
+  background-size: 8px 10px;
+  border: solid 1px rgba(0, 0, 0, 0.4);
+  border-radius: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  font-size: 15px;
+}
+select:focus {
+  border-color: #39b982;
+  outline: 0;
+}
+</style>

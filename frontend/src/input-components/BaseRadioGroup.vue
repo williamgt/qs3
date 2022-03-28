@@ -7,7 +7,7 @@
       horizontal: !vertical,
     }"
   >
-    <BaseRadio
+    <base-radio
       :label="option.label"
       :value="option.value"
       :modelValue="modelValue"
@@ -18,8 +18,10 @@
 </template>
 
 <script>
+import BaseRadio from "@/input-components/BaseRadio";
 export default {
   name: "BaseRadioGroup",
+  components: { BaseRadio },
   props: {
     options: {
       type: Array,

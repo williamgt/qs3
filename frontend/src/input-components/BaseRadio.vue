@@ -7,11 +7,18 @@
     @change="$emit('update:modelValue', value)"
   />
   <label v-if="label">{{ label }}</label>
+  <base-error-message v-if="error" :id="`${uuid}-error`">
+    {{ error }}
+  </base-error-message>
 </template>
 
 <script>
+import UniqueID from "@/features/UniqueID";
+import SetupFormComponent from "@/features/SetupFormComponent";
+import BaseErrorMessage from "@/input-components/BaseErrorMessage";
 export default {
   name: "BaseRadio",
+  components: { BaseErrorMessage },
   props: {
     label: {
       type: String,
@@ -19,12 +26,23 @@ export default {
     },
     modelValue: {
       type: [String, Number],
-      default: "",
     },
     value: {
       type: [String, Number],
-      required: true,
     },
+    error: {
+      type: String,
+      default: "",
+    },
+  },
+  setup(props, context) {
+    const uuid = UniqueID().getID();
+    const { updateValue } = SetupFormComponent(props, context);
+
+    return {
+      updateValue,
+      uuid,
+    };
   },
 };
 </script>

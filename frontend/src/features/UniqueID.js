@@ -6,5 +6,7 @@ export default function UniqueID() {
     return UUID;
   };
 
-  return getID;
+  return {
+    getID,
+  };
 }
