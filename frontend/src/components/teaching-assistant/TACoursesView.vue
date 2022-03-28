@@ -48,7 +48,7 @@ export default {
           this.inactiveCourses.splice(index, 1);
           this.activeCourses.push(payload.course);
           this.activeCourses.sort((a, b) => a.code.localeCompare(b.code));
-          console.log("TA activating course queue...");
+          console.log("TA activating course queue..."); //TODO remove
         } else {
           alert("No such course in the inactive courses");
         }
@@ -66,7 +66,7 @@ export default {
           this.activeCourses.splice(index, 1);
           this.inactiveCourses.push(payload.course);
           this.inactiveCourses.sort((a, b) => a.code.localeCompare(b.code));
-          console.log("TA disabling course queue...");
+          console.log("TA disabling course queue..."); //TODO remove
         } else {
           alert("No such course in the active courses");
         }
