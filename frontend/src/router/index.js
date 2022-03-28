@@ -7,6 +7,7 @@ import NotAuthorized from "@/views/errors/NotAuthorized";
 import LoginPage from "../components/LoginPage.vue";
 import StudentCoursesView from "../components/student/StudentCoursesView";
 import StudentCourseInfo from "../components/student/StudentCourseInfo";
+import TACoursesView from "../components/teaching-assistant/TACoursesView";
 
 const routes = [
   {
@@ -58,6 +59,11 @@ const routes = [
     path: "/course-info",
     name: "CourseInfo",
     component: StudentCourseInfo,
+  },
+  {
+    path: "/ta-courses",
+    name: "TACoursesView",
+    component: TACoursesView,
   },
 ];
 
