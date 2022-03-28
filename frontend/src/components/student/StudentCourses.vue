@@ -37,6 +37,7 @@ export default {
       required: true,
     },
     courses: {
+      //TODO change to Array?
       type: Object,
       required: true,
     },
