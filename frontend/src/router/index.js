@@ -6,6 +6,7 @@ import NProgress from "nprogress";
 import NotAuthorized from "@/views/errors/NotAuthorized";
 import LoginPage from "../components/LoginPage.vue";
 import StudentCoursesView from "../components/student/StudentCoursesView";
+import StudentCourseInfo from "../components/student/StudentCourseInfo";
 
 const routes = [
   {
@@ -52,6 +53,11 @@ const routes = [
     path: "/courses",
     name: "Courses",
     component: StudentCoursesView,
+  },
+  {
+    path: "/course-info",
+    name: "CourseInfo",
+    component: StudentCourseInfo,
   },
 ];
 
