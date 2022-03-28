@@ -19,7 +19,16 @@
           <li v-for="task in tasks" :key="task.taskNr" class="element">
             <p class="element-task-nr">Task {{ task.taskNr }}</p>
             |
-            <p class="element-task-status">{{ task.status }}</p>
+            <p class="element-task-status" v-if="task.status === 'Validated'">
+              &#x2714; {{ task.status }}
+            </p>
+            <p
+              class="element-task-status"
+              v-if="task.status === 'Not validated'"
+            >
+              &#215; {{ task.status }}
+            </p>
+
             |
             <p class="element-task-comment">{{ task.comment }}</p>
           </li>
@@ -49,6 +58,12 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    getTasks() {
+      //Do an api call to get the logged on students current progress, maybe look at beforeEnter in router
+      return 0;
+    },
   },
 };
 </script>
