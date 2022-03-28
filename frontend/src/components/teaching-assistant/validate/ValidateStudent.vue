@@ -1,16 +1,24 @@
 <template>
+  <task-bar-header :header="getHeader(student)"></task-bar-header>
   <form @submit.prevent="onSubmit"></form>
-  <!--  <student-location-->
-  <!--    :home="false"-->
-  <!--    campus="Gløs"-->
-  <!--    building="Real"-->
-  <!--    room="A4"-->
-  <!--    table="1"-->
-  <!--  ></student-location>-->
-
-  <!--  <base-button>Confirm</base-button>-->
-  <!--  <base-button>Cancel</base-button>-->
-  <student-tasks></student-tasks>
+  <student-queue-info
+    :group="info.group.toString()"
+    :message="info.message"
+    :validate="info.validate"
+  ></student-queue-info>
+  <div class="student-location-container">
+    <student-location
+      :home="location.home"
+      :location="location"
+    ></student-location>
+  </div>
+  <div>
+    <student-tasks header="Tasks" :tasks="tasks"></student-tasks>
+  </div>
+  <div>
+    <base-button @click="test" class="btn-outline-success">Confirm</base-button>
+    <base-button class="btn-close">Cancel</base-button>
+  </div>
 </template>
 
 <script>
@@ -19,35 +27,59 @@ import BaseDisplay from "@/input-components/BaseDisplay";
 import StudentLocation from "@/components/teaching-assistant/validate/StudentLocation";
 import BaseButton from "@/input-components/BaseButton";
 import StudentTasks from "@/components/teaching-assistant/validate/StudentTasks";
+import TaskBarHeader from "@/components/teaching-assistant/validate/BarHeader";
+import StudentQueueInfo from "@/components/teaching-assistant/validate/StudentQueueInfo";
 
 export default {
   name: "ValidateStudent",
   // eslint-disable-next-line vue/no-unused-components
-  components: { StudentTasks, BaseButton, StudentLocation, BaseDisplay },
+  components: {
+    StudentQueueInfo,
+    TaskBarHeader,
+    // eslint-disable-next-line vue/no-unused-components
+    StudentTasks,
+    // eslint-disable-next-line vue/no-unused-components
+    BaseButton,
+    // eslint-disable-next-line vue/no-unused-components
+    StudentLocation,
+    // eslint-disable-next-line vue/no-unused-components
+    BaseDisplay,
+  },
+  props: {
+    location: {
+      type: Object,
+      required: true,
+    },
+    student: {
+      type: Object,
+      required: true,
+    },
+    tasks: {
+      type: Array,
+    },
+    info: {
+      type: Object,
+      required: true,
+    },
+  },
+  methods: {
+    getName(student) {
+      return student.lastName + ", " + student.firstName;
+    },
+    getHeader(student) {
+      return "Student: " + student.lastName + ", " + student.firstName;
+    },
+    test() {
+      console.log(this.tasks[0]);
+    },
+  },
   setup() {
     function onSubmit() {
       //console.log(home.value);
     }
 
     const validations = {
-      home: (value) => {
-        if (
-          value === undefined &&
-          (table.value === undefined || table.value === null)
-        )
-          return "It is required to tell your location";
-        return true;
-      },
-      vali: () => {
-        return vali.value;
-      },
-      room: () => {
-        return true;
-      },
-      table: () => {
-        return true;
-      },
-      task: () => {
+      tasks: () => {
         return true;
       },
       group: () => {
@@ -95,4 +127,7 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.student-location-container {
+}
+</style>

@@ -1,9 +1,13 @@
 <template>
   <div class="container">
     <div class="item-container">
-      <div class="item">{{ task }}</div>
+      <div class="item">{{ task.name }}</div>
       <div class="item">
-        <input type="checkbox" />
+        <input
+          type="checkbox"
+          :checked="task.done"
+          @input="(event) => $emit('update:checked', event.target.checked)"
+        />
       </div>
     </div>
   </div>
@@ -15,7 +19,7 @@ export default {
   components: {},
   props: {
     task: {
-      type: String,
+      type: Object,
       required: true,
     },
   },

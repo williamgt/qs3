@@ -8,7 +8,7 @@ import LoginPage from "../components/LoginPage.vue";
 import QueueForm from "@/views/forms/student/QueueForm";
 import StudentCoursesView from "../components/student/StudentCoursesView";
 import StudentCourseInfo from "../components/student/StudentCourseInfo";
-import ValidateStudent from "@/views/forms/teaching-assistant/ValidateStudent";
+import validateStudentView from "@/views/forms/teaching-assistant/ValidateStudentView";
 
 const routes = [
   {
@@ -66,7 +66,7 @@ const routes = [
   {
     path: "/temp",
     name: "Temp",
-    component: ValidateStudent,
+    component: validateStudentView,
   },
   {
     path: "/courses",

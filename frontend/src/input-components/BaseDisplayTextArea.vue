@@ -1,13 +1,17 @@
 <template>
   <div class="display-container">
     <span class="label-display">{{ label }}</span>
-    <span class="message-display">{{ message }}</span>
+    <span class="message-display">
+      <div>
+        <textarea readonly v-text="message"></textarea>
+      </div>
+    </span>
   </div>
 </template>
 
 <script>
 export default {
-  name: "BaseDisplay",
+  name: "BaseDisplayTextArea",
   props: {
     label: {
       type: String,
@@ -47,5 +51,11 @@ export default {
   text-align: left;
   border-bottom-color: black;
   border-bottom: solid;
+}
+textarea {
+  resize: vertical;
+  font-size: 16px;
+  width: 100%;
+  height: 100px;
 }
 </style>

@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  name: "BaseDisplay",
+  name: "BaseDisplayNoBorder",
   props: {
     label: {
       type: String,
@@ -28,15 +28,15 @@ export default {
 <style scoped>
 .message-display {
   padding: 20px;
-  font-size: 20px;
+  font-size: 16px;
   text-align: left;
   border-bottom-color: black;
   border-bottom: solid;
+  width: 80%;
 }
 .display-container {
   clear: both;
   font-size: 24px;
-  font-weight: bold;
   display: grid;
   grid-template-columns: auto auto;
   padding: 10px;
@@ -45,6 +45,7 @@ export default {
   padding: 20px;
   font-size: 24px;
   text-align: left;
+  font-weight: bold;
   border-bottom-color: black;
   border-bottom: solid;
 }

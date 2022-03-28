@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    {{ task }}
+  <div class="item-container">
+    <div class="item">{{ header }}</div>
   </div>
 </template>
 
@@ -8,7 +8,7 @@
 export default {
   name: "TaskBarHeader",
   props: {
-    task: {
+    header: {
       type: String,
       required: true,
     },
@@ -19,13 +19,14 @@ export default {
 <style scoped>
 .item-container {
   display: grid;
-  grid-template-columns: auto auto;
-  background-color: #2196f3;
+  grid-template-columns: auto;
+  background-color: dimgrey;
   border: 1px solid rgba(0, 0, 0, 0.8);
 }
 .item {
   background-color: rgba(255, 255, 255, 0.8);
   padding: 20px;
   font-size: 30px;
+  font-weight: bold;
 }
 </style>

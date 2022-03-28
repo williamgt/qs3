@@ -2,10 +2,10 @@
   <h2>Location</h2>
   <h3 v-if="home">Hjemme</h3>
   <div v-if="!home">
-    <base-display label="Campus" :message="campus"> </base-display>
-    <base-display label="Building" :message="building"> </base-display>
-    <base-display label="Room" :message="room"> </base-display>
-    <base-display label="Table" :message="table"> </base-display>
+    <base-display label="Campus" :message="location.campus"> </base-display>
+    <base-display label="Building" :message="location.building"> </base-display>
+    <base-display label="Room" :message="location.room"> </base-display>
+    <base-display label="Table" :message="location.table"> </base-display>
   </div>
 </template>
 
@@ -15,21 +15,8 @@ export default {
   name: "StudentLocation",
   components: { BaseDisplay },
   props: {
-    campus: {
-      type: String,
-      default: "",
-    },
-    building: {
-      type: String,
-      default: "",
-    },
-    room: {
-      type: String,
-      default: "",
-    },
-    table: {
-      type: Number,
-      default: 0,
+    location: {
+      type: Object,
     },
     home: {
       type: Boolean,
