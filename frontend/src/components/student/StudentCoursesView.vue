@@ -3,15 +3,11 @@
     <h2>Courses</h2>
   </div>
   <div class="courses">
-    <StudentCourses
-      :courses="activeCourses"
-      activeOrInactive="Active"
-      @course-clicked="ActiveClicked"
-    />
+    <StudentCourses :courses="activeCourses" :active="true" v-on="handlers" />
     <StudentCourses
       :courses="inactiveCourses"
-      activeOrInactive="Inactive"
-      @course-clicked="InactiveClicked"
+      :active="false"
+      v-on="handlers"
     />
   </div>
 </template>
@@ -38,14 +34,32 @@ export default {
           code: "5012TTADI",
         },
       ],
+      handlers: {
+        "course-clicked": this.courseClicked,
+        "course-tasks-clicked": this.courseTasksClicked,
+        "course-queue-clicked": this.courseQueueClicked,
+      },
     };
   },
   methods: {
-    ActiveClicked(course) {
-      console.log("Active course clicked: " + course.code);
+    courseClicked(payload) {
+      console.log("Course clicked: " + payload.course.code);
     },
-    InactiveClicked(course) {
-      console.log("Inactive course clicked: " + course.code);
+    courseTasksClicked(payload) {
+      console.log("Course tasks clicked: " + payload.course.code);
+    },
+    courseQueueClicked(payload) {
+      if (payload.active) {
+        console.log(
+          "Clicked on active course, you can queue up " + payload.course.code
+        );
+      }
+      if (!payload.active) {
+        console.log(
+          "Clicked on inactive course, you can't queue up " +
+            payload.course.code
+        );
+      }
     },
   },
 };

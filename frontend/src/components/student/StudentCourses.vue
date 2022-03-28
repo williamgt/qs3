@@ -1,13 +1,17 @@
 <template>
   <div class="subtitle">
-    <h3>{{ activeOrInactive }}</h3>
+    <h3>{{ active ? "Active" : "Inactive" }}</h3>
   </div>
   <div class="courses">
     <ul class="list">
       <li v-for="course in courses" :key="course.code" class="element">
-        <button @click="courseClicked(course)">
-          {{ course.title }} - {{ course.code }}
-        </button>
+        <div class="course-info-container">
+          <h4 @click="courseClicked(course, active)">
+            {{ course.title }} - {{ course.code }}
+          </h4>
+          <button @click="courseTasksClicked(course, active)">Tasks</button>
+          <button @click="courseQueueClicked(course, active)">Queue</button>
+        </div>
       </li>
     </ul>
   </div>
@@ -16,6 +20,7 @@
 <script>
 export default {
   name: "StudentCourses",
+  emits: ["course-clicked", "course-tasks-clicked", "course-queue-clicked"],
   /*data() {
     return {
       courses: [
@@ -27,8 +32,8 @@ export default {
     };
   },*/
   props: {
-    activeOrInactive: {
-      type: String,
+    active: {
+      type: Boolean,
       required: true,
     },
     courses: {
@@ -38,8 +43,17 @@ export default {
   },
   methods: {
     //Emits which course was clicked to the parent component
-    courseClicked(course) {
-      this.$emit("course-clicked", course);
+    courseClicked(course, active) {
+      this.$emit("course-clicked", { course: course, active: active });
+    },
+    courseTasksClicked(course, active) {
+      this.$emit("course-tasks-clicked", {
+        course: course,
+        active: active,
+      });
+    },
+    courseQueueClicked(course, active) {
+      this.$emit("course-queue-clicked", { course: course, active: active });
     },
   },
 };
