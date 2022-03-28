@@ -33,6 +33,10 @@ export default {
           title: "Fulllstack",
           code: "IDATT2105",
         },
+        {
+          title: "Fysikk",
+          code: "IFYT1001",
+        },
       ],
     };
   },
@@ -43,6 +47,7 @@ export default {
         if (index > -1) {
           this.inactiveCourses.splice(index, 1);
           this.activeCourses.push(payload.course);
+          this.activeCourses.sort((a, b) => a.code.localeCompare(b.code));
           console.log("TA activating course queue...");
         } else {
           alert("No such course in the inactive courses");
@@ -60,6 +65,7 @@ export default {
         if (index > -1) {
           this.activeCourses.splice(index, 1);
           this.inactiveCourses.push(payload.course);
+          this.inactiveCourses.sort((a, b) => a.code.localeCompare(b.code));
           console.log("TA disabling course queue...");
         } else {
           alert("No such course in the active courses");
