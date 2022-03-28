@@ -1,57 +1,49 @@
 <template>
   <div class="base-checkbox-container">
-    <component
-      v-for="(opts, i) in options"
-      :key="i"
-      :is="vertical ? 'div' : 'span'"
+    <check-box
       class="base-checkbox-item"
-    >
-      <BaseCheckbox
-        :name="name"
-        :label="opts.label"
-        :checked="modelValue.includes(opts.label)"
-        :value="opts.value"
-        @update:modelValue="check(opts.label, $event)"
-      />
-    </component>
+      v-for="option in options"
+      :checked="value.includes(option.id)"
+      @update:checked="check(option.id, $event)"
+      :fieldId="option.name"
+      :label="option.name"
+      :key="option"
+    />
   </div>
 </template>
 
 <script>
-import BaseCheckbox from "@/input-components/BaseCheckbox";
+import Checkbox from "./checkbox2FML.vue";
+
 export default {
-  name: "BaseCheckboxGroup",
   emits: ["update:value"],
-  components: { BaseCheckbox },
   props: {
-    vertical: {
-      type: Boolean,
-      default: false,
-    },
-    modelValue: {
+    value: {
       type: Array,
       required: true,
     },
     options: {
       type: Array,
       required: true,
-    },
-    name: {
-      type: String,
-      required: true,
+      validator: (value) => {
+        const hasNameKey = value.every((option) =>
+          Object.keys(option).includes("name")
+        );
+        const hasIdKey = value.every((option) =>
+          Object.keys(option).includes("id")
+        );
+        return hasNameKey && hasIdKey;
+      },
     },
   },
   setup(props, context) {
     const check = (optionId, checked) => {
-      console.log(this.modelValue);
-      let updatedValue = [...props.modelValue];
-      console.log(updatedValue);
+      let updatedValue = [...props.value];
       if (checked) {
         updatedValue.push(optionId);
       } else {
         updatedValue.splice(updatedValue.indexOf(optionId), 1);
       }
-      console.log(updatedValue);
       context.emit("update:value", updatedValue);
     };
 
@@ -59,10 +51,12 @@ export default {
       check,
     };
   },
+  components: {
+    "check-box": Checkbox,
+  },
 };
 </script>
-
-<style scoped>
+<style>
 .base-checkbox-container {
   display: inline-grid;
   grid-template-columns: auto auto;
