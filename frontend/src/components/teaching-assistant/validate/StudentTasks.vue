@@ -1,6 +1,12 @@
 <template>
-  <task-bar-header :header="header"></task-bar-header>
-  <task-bar v-for="opt in tasks" :key="opt.id" :task="opt"></task-bar>
+  <task-bar-header :header="header" v-model="dropdown"></task-bar-header>
+  <task-bar
+    :dropdown="dropdown"
+    v-for="opt in tasks"
+    :key="opt.id"
+    :task="opt"
+    :enabled="checkbox"
+  ></task-bar>
 </template>
 
 <script>
@@ -17,6 +23,15 @@ export default {
     tasks: {
       type: Array,
     },
+    checkbox: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  data() {
+    return {
+      dropdown: true,
+    };
   },
 };
 </script>

@@ -9,7 +9,7 @@ import QueueForm from "@/views/forms/student/QueueForm";
 import StudentCoursesView from "../components/student/StudentCoursesView";
 import StudentCourseInfo from "../components/student/StudentCourseInfo";
 import TACoursesView from "../components/teaching-assistant/TACoursesView";
-import validateStudentView from "@/views/forms/teaching-assistant/ValidateStudentView";
+import studentProgressAdminView from "@/views/admin/StudentProgressAdminView";
 
 const routes = [
   {
@@ -67,7 +67,7 @@ const routes = [
   {
     path: "/temp",
     name: "Temp",
-    component: validateStudentView,
+    component: studentProgressAdminView,
   },
   {
     path: "/courses",

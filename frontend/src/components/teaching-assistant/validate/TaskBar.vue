@@ -1,13 +1,15 @@
 <template>
-  <div class="container">
+  <div class="container" v-if="dropdown">
     <div class="item-container">
       <div class="item">{{ task.name }}</div>
       <div class="item">
         <input
+          v-if="enabled"
           type="checkbox"
           :checked="task.done"
           @change="(event) => $emit('update:task.done', event.target.checked)"
         />
+        <div v-if="!enabled" v-text="task.done ? 'Done' : 'Not done'"></div>
       </div>
     </div>
   </div>
@@ -21,6 +23,14 @@ export default {
     task: {
       type: Object,
       required: true,
+    },
+    enabled: {
+      type: Boolean,
+      default: true,
+    },
+    dropdown: {
+      type: Boolean,
+      default: true,
     },
   },
 };
@@ -39,9 +49,10 @@ export default {
   background-color: rgba(255, 255, 255, 0.8);
   padding: 20px;
   font-size: 30px;
+  text-align: left;
 }
 .item div {
-  text-align: center;
+  text-align: left;
   align-self: center;
 }
 input[type="checkbox"] {

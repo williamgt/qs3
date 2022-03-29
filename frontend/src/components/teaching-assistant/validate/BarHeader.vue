@@ -1,6 +1,8 @@
 <template>
   <div class="item-container">
-    <div class="item">{{ header }}</div>
+    <div class="item" @click="updateDropdown">
+      {{ header }}
+    </div>
   </div>
 </template>
 
@@ -12,6 +14,18 @@ export default {
       type: String,
       required: true,
     },
+    modelValue: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  emits: ["update:modelValue"],
+  setup(props, { emit }) {
+    const updateDropdown = () => {
+      if (props.modelValue === true) emit("update:modelValue", false);
+      else emit("update:modelValue", true);
+    };
+    return { updateDropdown };
   },
 };
 </script>
