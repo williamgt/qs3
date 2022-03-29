@@ -1,6 +1,6 @@
 package no.ntnu.idatt2105.gr13.qs3backend.security;
 
-import edu.ntnu.oflarsen.backendjpa.controller.TokenController;
+import no.ntnu.idatt2105.gr13.qs3backend.controller.security.TokenController;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
