@@ -10,6 +10,7 @@ import StudentCoursesView from "../components/student/StudentCoursesView";
 import StudentCourseInfo from "../components/student/StudentCourseInfo";
 import TACoursesView from "../components/teaching-assistant/TACoursesView";
 import homeAdminView from "@/views/admin/HomeAdminView";
+import CourseRegistration from "../components/admin/CourseRegistration";
 
 const routes = [
   {
@@ -83,6 +84,11 @@ const routes = [
     path: "/ta-courses",
     name: "TACoursesView",
     component: TACoursesView,
+  },
+  {
+    path: "/course-registration",
+    name: "CourseRegistration",
+    component: CourseRegistration,
   },
 ];
 
