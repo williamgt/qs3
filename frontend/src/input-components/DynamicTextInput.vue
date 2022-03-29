@@ -1,17 +1,12 @@
 <template>
+  <label v-if="label">{{ label }}</label>
   <div class="form-group" v-for="(input, index) in inputs" :key="index">
-    <input type="text" class="form-control" v-model="input.name" />
+    <input type="text" class="form-control" />
     <span>
-      <button
-        class="bi bi-person-dash"
-        @click="remove(index)"
-        v-show="index || (!index && inputs.length > 1)"
-      ></button>
-      <i
-        class="bi bi-person-plus"
-        @click="add(index)"
-        v-show="index === inputs.length - 1"
-      ></i>
+      <i @click="remove(index)" v-show="index || (!index && input.length > 1)"
+        >-</i
+      >
+      <i @click="add(input)" v-show="index === input.length - 1">+</i>
     </span>
   </div>
 </template>
@@ -19,7 +14,7 @@
 <script>
 export default {
   name: "DynamicTextInput",
-  data: function () {
+  data() {
     return {
       inputs: [
         {
@@ -27,6 +22,15 @@ export default {
         },
       ],
     };
+  },
+  props: {
+    label: {
+      type: String,
+      default: "",
+    },
+    modelValue: {
+      type: Array,
+    },
   },
   methods: {
     add() {

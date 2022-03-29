@@ -20,7 +20,7 @@
       {{ option }}
     </option>
   </select>
-  <BaseErrorMessage v-if="error" :id="`${label}-error`">
+  <BaseErrorMessage v-if="error" :id="`${label}-error`" class="error">
     {{ error }}
   </BaseErrorMessage>
 </template>
@@ -73,5 +73,8 @@ select {
 select:focus {
   border-color: #39b982;
   outline: 0;
+}
+.error {
+  color: red;
 }
 </style>
