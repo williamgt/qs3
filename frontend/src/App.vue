@@ -2,9 +2,8 @@
   <NavigationBar :navbar-elements="this.navbarElements"></NavigationBar>
   <router-view />
 </template>
-
 <style src="@vueform/multiselect/themes/default.css">
-* {
+body {
   margin: 0;
   padding: 0;
 }
@@ -113,6 +112,9 @@ export default {
     return {
       navbarElements: this.$store.state.navbar.student.navbarElements,
     };
+  },
+  beforeCreate() {
+    document.querySelector("body").setAttribute("style", "margin:0px");
   },
 };
 </script>
