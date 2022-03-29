@@ -53,4 +53,25 @@ public class TokenController {
                 .compact();
     }
 
+    public String generateAdminToken(String adminId) throws Exception{
+        Key key = Keys.hmacShaKeyFor(keyStr.getBytes("UTF-8"));
+        List<GrantedAuthority> grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN");
+
+        Claims claims = Jwts.claims().setSubject(adminId);
+        claims.put("adminId", adminId);
+        claims.put("authorities", grantedAuthorities
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList()));
+
+        return Jwts.builder()
+                .setId(UUID.randomUUID().toString())
+                .setSubject(adminId)
+                .setClaims(claims)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 600000000))
+                .signWith(key)
+                .compact();
+    }
+
 }
