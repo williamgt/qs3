@@ -7,7 +7,7 @@
           v-if="enabled"
           type="checkbox"
           :checked="task.done"
-          @change="(event) => $emit('update:task.done', event.target.checked)"
+          @change="(event) => $emit('update:modelValue', event.target.checked)"
         />
         <div v-if="!enabled" v-text="task.done ? 'Done' : 'Not done'"></div>
       </div>
@@ -31,6 +31,9 @@ export default {
     dropdown: {
       type: Boolean,
       default: true,
+    },
+    modelValue: {
+      type: Boolean,
     },
   },
 };

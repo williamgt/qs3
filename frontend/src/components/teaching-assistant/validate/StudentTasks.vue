@@ -6,6 +6,7 @@
     :key="opt.id"
     :task="opt"
     :enabled="checkbox"
+    v-model="opt.done"
   ></task-bar>
 </template>
 
