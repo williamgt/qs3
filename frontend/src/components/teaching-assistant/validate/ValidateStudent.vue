@@ -17,7 +17,7 @@
   </div>
   <div>
     <base-button @click="test" class="btn-outline-success">Confirm</base-button>
-    <base-button class="btn-close">Cancel</base-button>
+    <base-button class="btn-close">Postpone</base-button>
   </div>
 </template>
 
@@ -71,6 +71,7 @@ export default {
     },
     test() {
       console.log(this.tasks[0]);
+      console.log(this.tasks[1]);
     },
   },
   setup() {

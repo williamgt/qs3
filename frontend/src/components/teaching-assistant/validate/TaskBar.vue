@@ -6,7 +6,7 @@
         <input
           type="checkbox"
           :checked="task.done"
-          @input="(event) => $emit('update:checked', event.target.checked)"
+          @change="(event) => $emit('update:task.done', event.target.checked)"
         />
       </div>
     </div>

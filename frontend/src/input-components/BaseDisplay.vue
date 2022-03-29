@@ -34,7 +34,6 @@ export default {
   border-bottom: solid;
 }
 .display-container {
-  clear: both;
   font-size: 24px;
   font-weight: bold;
   display: grid;
