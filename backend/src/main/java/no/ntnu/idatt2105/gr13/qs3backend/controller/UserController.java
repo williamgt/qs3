@@ -2,7 +2,7 @@ package no.ntnu.idatt2105.gr13.qs3backend.controller;
 
 
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.User;
-import no.ntnu.idatt2105.gr13.qs3backend.service.LoginService;
+import no.ntnu.idatt2105.gr13.qs3backend.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping("/api")
-public class LoginController {
+public class UserController {
 
-    Logger logger = LoggerFactory.getLogger(LoginController.class);
+    Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
-    private LoginService service;
+    private UserService service;
 
 //    @GetMapping("/login/{username}")
 //    public ResponseEntity<User> getLoginById(@PathVariable("username") String username) {
@@ -44,5 +44,13 @@ public class LoginController {
         }
     }
 
-
+    @GetMapping("/user/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable("id") long id) {
+        User user = service.findById(id);
+        if (user != null) {
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
