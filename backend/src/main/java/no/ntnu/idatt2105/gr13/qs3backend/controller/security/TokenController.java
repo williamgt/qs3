@@ -1,7 +1,6 @@
 package no.ntnu.idatt2105.gr13.qs3backend.controller.security;
 
-import edu.ntnu.oflarsen.backendjpa.model.Login;
-import edu.ntnu.oflarsen.backendjpa.service.LoginService;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
