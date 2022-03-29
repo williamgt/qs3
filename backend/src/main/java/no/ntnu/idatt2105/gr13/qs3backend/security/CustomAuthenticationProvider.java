@@ -23,11 +23,12 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(final Authentication authentication) throws AuthenticationException {
         // get user and password info from the request
-        final String name = authentication.getName();
+        final String email = authentication.getName();
         final String password = authentication.getCredentials().toString();
-
+        User user = new User(email, password);
         // check credentials
         // NOTE: in a real-world scenario, one should do a database lookup for valid credentials instead of hardcoded check as here!
+        if()
         if (name.equals("admin") && password.equals("password")) {
             final List<GrantedAuthority> grantedAuths = new ArrayList<>();
             grantedAuths.add(new SimpleGrantedAuthority("USER"));

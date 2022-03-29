@@ -2,6 +2,7 @@ package no.ntnu.idatt2105.gr13.qs3backend.controller;
 
 
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.User;
+import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserDB;
 import no.ntnu.idatt2105.gr13.qs3backend.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,22 +32,14 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<Boolean> login(@RequestBody User user) {
-        try {
-            if(!service.login(user)) {
-                logger.info("Login failed: " + user.getUsername());
-                return new ResponseEntity<>(false, HttpStatus.UNAUTHORIZED);
-            }
-            logger.info("Login Successful: " + user.getUsername());
-            return new ResponseEntity<>(true, HttpStatus.ACCEPTED);
-        } catch (Exception e) {
-            System.out.printf(e.getMessage());
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        if(service.isAdmin(user)){
+
         }
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable("id") long id) {
-        User user = service.findById(id);
+    public ResponseEntity<UserDB> getUserById(@PathVariable("id") long id) {
+        UserDB user = service.findById(id);
         if (user != null) {
             return new ResponseEntity<>(user, HttpStatus.OK);
         } else {

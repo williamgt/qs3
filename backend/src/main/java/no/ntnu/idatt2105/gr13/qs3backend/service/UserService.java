@@ -2,6 +2,7 @@ package no.ntnu.idatt2105.gr13.qs3backend.service;
 
 
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.User;
+import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserDB;
 import no.ntnu.idatt2105.gr13.qs3backend.repository.JdbcUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,16 +20,11 @@ public class UserService {
     }
 
     public boolean login(User login){
-        User _login = userRepository.findByUsername(login.getUsername());
-        if(_login == null || !login.getPassword().equals(_login.getPassword())) {
-            return false;
-        }
         return true;
     }
 
     public boolean checkLogin(User login){
-        User _login = userRepository.findByUsername(login.getUsername());
-        return _login != null && login.getPassword().equals(_login.getPassword());
+        return false;
     }
 
     public List<User> getAllUsers(){
@@ -37,8 +33,21 @@ public class UserService {
         return users;
     }
 
-    public User findById(long id) {
-        User user = userRepository.findById(id);
+    public UserDB findById(long id) {
+        UserDB user = userRepository.findById(id);
         return user;
     }
+
+    public boolean isAdmin(User user) {
+        return userRepository.isAdmin(user);
+    }
+
+    public boolean isTeacher(User user) {
+        return userRepository.isAdmin(user);
+    }
+
+    public boolean isTA(User user) {
+        return userRepository.isAdmin(user);
+    }
+
 }
