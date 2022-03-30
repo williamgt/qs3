@@ -28,7 +28,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         // check credentials
         // NOTE: in a real-world scenario, one should do a database lookup for valid credentials instead of hardcoded check as here!
-        if (name.equals("admin") && password.equals("password")) {
+        if (true) {
             final List<GrantedAuthority> grantedAuths = new ArrayList<>();
             grantedAuths.add(new SimpleGrantedAuthority("USER"));
             final UserDetails principal = new User(name, password, grantedAuths);

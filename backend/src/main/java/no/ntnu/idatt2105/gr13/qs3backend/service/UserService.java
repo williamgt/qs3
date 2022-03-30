@@ -2,6 +2,8 @@ package no.ntnu.idatt2105.gr13.qs3backend.service;
 
 
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.User;
+import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserPerson;
+import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserPersonAll;
 import no.ntnu.idatt2105.gr13.qs3backend.repository.JdbcUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,27 +20,19 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
-    public boolean login(User login){
-        User _login = userRepository.findByUsername(login.getUsername());
-        if(_login == null || !login.getPassword().equals(_login.getPassword())) {
-            return false;
-        }
-        return true;
-    }
 
-    public boolean checkLogin(User login){
-        User _login = userRepository.findByUsername(login.getUsername());
-        return _login != null && login.getPassword().equals(_login.getPassword());
-    }
-
-    public List<User> getAllUsers(){
-        List<User> users = new ArrayList<User>();
-        users.addAll(userRepository.findAll());
+    public List<UserPerson> getAllUsers(){
+        List<UserPerson> users = new ArrayList<UserPerson>(userRepository.findAll());
         return users;
     }
 
-    public User findById(long id) {
-        User user = userRepository.findById(id);
+    public UserPerson findById(long id) {
+        UserPerson user = userRepository.findById(id);
+        return user;
+    }
+
+    public UserPersonAll findByIdAdmin(long id) {
+        UserPersonAll user = userRepository.findByIdAdmin(id);
         return user;
     }
 }
