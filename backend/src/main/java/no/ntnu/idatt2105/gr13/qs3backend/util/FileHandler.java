@@ -1,5 +1,6 @@
-package no.ntnu.idatt2105.gr13.qs3backend.model.filehandler;
+package no.ntnu.idatt2105.gr13.qs3backend.util;
 
+import no.ntnu.idatt2105.gr13.qs3backend.model.filehandler.RegisterStudent;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;

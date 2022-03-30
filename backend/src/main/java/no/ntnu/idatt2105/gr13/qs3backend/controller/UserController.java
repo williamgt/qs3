@@ -1,9 +1,8 @@
 package no.ntnu.idatt2105.gr13.qs3backend.controller;
 
 
-import no.ntnu.idatt2105.gr13.qs3backend.model.filehandler.FileHandler;
+import no.ntnu.idatt2105.gr13.qs3backend.util.FileHandler;
 import no.ntnu.idatt2105.gr13.qs3backend.model.filehandler.RegisterStudent;
-import no.ntnu.idatt2105.gr13.qs3backend.model.user.User;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserPerson;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserPersonAll;
 import no.ntnu.idatt2105.gr13.qs3backend.service.UserService;
@@ -16,7 +15,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
