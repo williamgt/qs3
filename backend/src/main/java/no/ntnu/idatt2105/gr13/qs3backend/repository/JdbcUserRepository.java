@@ -1,9 +1,6 @@
 package no.ntnu.idatt2105.gr13.qs3backend.repository;
 
-import no.ntnu.idatt2105.gr13.qs3backend.model.user.User;
-import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserDB;
-import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserPerson;
-import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserPersonAll;
+import no.ntnu.idatt2105.gr13.qs3backend.model.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.IncorrectResultSetColumnCountException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -22,12 +19,23 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public List<UserDB> findAll() {
+    public List<UserProtected> findAll() {
         return jdbcTemplate.query("SELECT * from User", (rs, rowNum) ->
-                new UserDB(
+                new UserProtected(
                         rs.getString("email"),
-                        "",
                         rs.getInt("personId")
+                ));
+    }
+
+    @Override
+    public List<UserPersonAll> findAllDetails() {
+        return jdbcTemplate.query("SELECT * from User, Person where User.personId = Person.id", (rs, rowNum) ->
+                new UserPersonAll(
+                        rs.getString("email"),
+                        rs.getString("firstname"),
+                        rs.getString("lastname"),
+                        rs.getInt("personId"),
+                        rs.getString("password")
                 ));
     }
 

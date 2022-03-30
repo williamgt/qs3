@@ -1,8 +1,6 @@
 package no.ntnu.idatt2105.gr13.qs3backend.repository;
 
-import no.ntnu.idatt2105.gr13.qs3backend.model.user.User;
-import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserDB;
-import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserPerson;
+import no.ntnu.idatt2105.gr13.qs3backend.model.user.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,7 +9,8 @@ import java.util.List;
 public interface UserRepository {
 
     User findByUsername(String username);
-    List<UserDB> findAll();
+    List<UserPersonAll> findAllDetails();
+    List<UserProtected> findAll();
     UserPerson findById(long id);
 
     UserPerson findByIdAdmin(long id);

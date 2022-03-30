@@ -1,12 +1,9 @@
 package no.ntnu.idatt2105.gr13.qs3backend.controller;
 
 
-import no.ntnu.idatt2105.gr13.qs3backend.model.user.User;
-import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserDB;
+import no.ntnu.idatt2105.gr13.qs3backend.model.user.*;
 import no.ntnu.idatt2105.gr13.qs3backend.util.FileHandler;
 import no.ntnu.idatt2105.gr13.qs3backend.model.filehandler.RegisterStudent;
-import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserPerson;
-import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserPersonAll;
 import no.ntnu.idatt2105.gr13.qs3backend.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,10 +32,10 @@ public class UserController {
     private MethodSecService methodSecService;
 
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping()
-    public ResponseEntity<List<UserDB>> getAllUsers(){
-        List<UserDB> users = new ArrayList<>();
-        users = service.getAllUsers();
+    @GetMapping("/all")
+    public ResponseEntity<List<UserPersonAll>> getAllUsersDetails(){
+        List<UserPersonAll> users = new ArrayList<>();
+        users = service.getAllUsersDetails();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
