@@ -2,6 +2,7 @@ package no.ntnu.idatt2105.gr13.qs3backend.service;
 
 
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.User;
+import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserDB;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserPerson;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserPersonAll;
 import no.ntnu.idatt2105.gr13.qs3backend.repository.JdbcUserRepository;
@@ -16,8 +17,8 @@ public class UserService {
     @Autowired
     JdbcUserRepository userRepository;
 
-    public List<UserPerson> getAllUsers(){
-        List<UserPerson> users = new ArrayList<UserPerson>(userRepository.findAll());
+    public List<UserDB> getAllUsers(){
+        List<UserDB> users = new ArrayList<UserDB>(userRepository.findAll());
         return users;
     }
 

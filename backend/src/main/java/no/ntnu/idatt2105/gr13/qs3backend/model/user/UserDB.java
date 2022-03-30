@@ -18,6 +18,11 @@ public class UserDB extends User{
         this.id = id;
     }
 
+    public UserDB(String email, int id) {
+        super(email);
+        this.id = id;
+    }
+
     public UserDB(User user, int id) {
         super(user);
         this.id = id;

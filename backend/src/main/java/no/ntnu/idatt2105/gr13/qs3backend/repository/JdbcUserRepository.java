@@ -22,8 +22,13 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public List<UserPerson> findAll() {
-        return jdbcTemplate.query("SELECT * from User", BeanPropertyRowMapper.newInstance(UserPerson.class));
+    public List<UserDB> findAll() {
+        return jdbcTemplate.query("SELECT * from User", (rs, rowNum) ->
+                new UserDB(
+                        rs.getString("email"),
+                        "",
+                        rs.getInt("personId")
+                ));
     }
 
     @Override

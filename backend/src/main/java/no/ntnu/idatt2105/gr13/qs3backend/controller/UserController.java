@@ -34,10 +34,10 @@ public class UserController {
     @Autowired
     private MethodSecService methodSecService;
 
-    //@PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping()
-    public ResponseEntity<List<UserPerson>> getAllUsers(){
-        List<UserPerson> users = new ArrayList<>();
+    public ResponseEntity<List<UserDB>> getAllUsers(){
+        List<UserDB> users = new ArrayList<>();
         users = service.getAllUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
@@ -54,7 +54,7 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}/all")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserPersonAll> getAllUserDetailsById(@PathVariable("id") long id) {
         UserPersonAll user = service.findByIdAdmin(id);
         if (user != null) {
