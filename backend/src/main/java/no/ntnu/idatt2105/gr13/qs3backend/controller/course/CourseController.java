@@ -12,17 +12,18 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/course")
-@CrossOrigin(origins = "http://localhost:8081")
+//@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin("*")
 public class CourseController {
     Logger logger = LoggerFactory.getLogger(CourseController.class);
 
     @Autowired
     private CourseService courseService;
 
-    @RequestMapping("/course/{course-code}")
+    @RequestMapping("/{course-code}")
     public Course getCourseByCourseCode(@PathVariable("course-code") String courseCode) {
         logger.info("Course with code " + courseCode + " requested.");
-        Course course = courseService.getCourseByCourseCode(courseCode);
+        Course course = courseService.getCourseByCourseCode(courseCode.trim().toUpperCase());
         if(course == null) {
             logger.info("No course with code " + courseCode + " was found in the db.");
         }else{
@@ -31,7 +32,7 @@ public class CourseController {
         return course;
     }
 
-    @PostMapping("/course/register")
+    @PostMapping("/register")
     public ResponseEntity<String> registerCourse(@RequestBody Course course) {
         logger.info("Registering course with code " + course.getCourseCode() + ".");
         try {
@@ -44,7 +45,7 @@ public class CourseController {
         }
     }
 
-    @PutMapping("/course/{course-code}")
+    @PutMapping("/{course-code}")
     public ResponseEntity<String> updateCourse(@PathVariable("course-code") String courseCode, @RequestBody Course course) {
         logger.info("Updating course with code " + courseCode);
         boolean updated = courseService.updateCourse(courseCode, course);
