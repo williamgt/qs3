@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:8081")
 @RestController
-@RequestMapping("/api")
 public class UserController {
 
     Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -30,12 +29,6 @@ public class UserController {
 //        return new ResponseEntity<>(data, HttpStatus.ACCEPTED);
 //    }
 
-    @PostMapping("/login")
-    public ResponseEntity<Boolean> login(@RequestBody User user) {
-        if(service.isAdmin(user)){
-
-        }
-    }
 
     @GetMapping("/user/{id}")
     public ResponseEntity<UserDB> getUserById(@PathVariable("id") long id) {

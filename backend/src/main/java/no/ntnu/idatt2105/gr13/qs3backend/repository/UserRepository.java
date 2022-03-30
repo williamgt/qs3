@@ -12,7 +12,4 @@ public interface UserRepository {
     User findByUsername(String username);
     List<User> findAll();
     UserDB findById(long id);
-    Boolean isAdmin(User user);
-    Boolean isTA(User user);
-    Boolean isTeacher(User user);
 }

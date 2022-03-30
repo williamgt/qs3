@@ -27,45 +27,11 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public UserDB findById(long id) {
         try{
-            String query = "SELECT * from User where user.id = ?";
+            String query = "SELECT * from User where User.id = ?";
             UserDB user = jdbcTemplate.queryForObject(query, BeanPropertyRowMapper.newInstance(UserDB.class), id);
             return user;
         }catch (IncorrectResultSetColumnCountException e){
             return null;
-        }
-    }
-
-    @Override
-    public Boolean isAdmin(User user) {
-
-        try{
-            String query = "Select * from AdminUser, User where User.email = AdminUser.email and AdminUser.email = ?";
-            UserDB admin = jdbcTemplate.queryForObject(query, BeanPropertyRowMapper.newInstance(UserDB.class), user.getEmail());
-            return true;
-        }catch (IncorrectResultSetColumnCountException e){
-            return false;
-        }
-    }
-
-    @Override
-    public Boolean isTA(User user) {
-        try{
-            String query = "Select * from TAUser, User where User.email = TAUser.email and TAUser.email = ?";
-            UserDB tA = jdbcTemplate.queryForObject(query, BeanPropertyRowMapper.newInstance(UserDB.class), user.getEmail());
-            return true;
-        }catch (IncorrectResultSetColumnCountException e){
-            return false;
-        }
-    }
-
-    @Override
-    public Boolean isTeacher(User user) {
-        try{
-            String query = "Select * from TeacherUser, User where User.email = TeacherUser.email and TeacherUser.email = ?";
-            UserDB teacher = jdbcTemplate.queryForObject(query, BeanPropertyRowMapper.newInstance(UserDB.class), user.getEmail());
-            return true;
-        }catch (IncorrectResultSetColumnCountException e){
-            return false;
         }
     }
 }

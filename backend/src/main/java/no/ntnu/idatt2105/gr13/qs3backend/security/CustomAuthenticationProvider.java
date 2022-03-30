@@ -25,14 +25,14 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         // get user and password info from the request
         final String email = authentication.getName();
         final String password = authentication.getCredentials().toString();
-        User user = new User(email, password);
+        no.ntnu.idatt2105.gr13.qs3backend.model.user.User user = new no.ntnu.idatt2105.gr13.qs3backend.model.user.User(email, password);
         // check credentials
         // NOTE: in a real-world scenario, one should do a database lookup for valid credentials instead of hardcoded check as here!
-        if()
-        if (name.equals("admin") && password.equals("password")) {
+        //if()
+        if (email.equals("admin") && password.equals("password")) {
             final List<GrantedAuthority> grantedAuths = new ArrayList<>();
             grantedAuths.add(new SimpleGrantedAuthority("USER"));
-            final UserDetails principal = new User(name, password, grantedAuths);
+            final UserDetails principal = new User(email, password, grantedAuths);
             final Authentication auth = new UsernamePasswordAuthenticationToken(principal, password, grantedAuths);
             return auth;
         } else {

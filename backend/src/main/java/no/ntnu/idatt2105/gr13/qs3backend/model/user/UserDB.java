@@ -1,16 +1,25 @@
 package no.ntnu.idatt2105.gr13.qs3backend.model.user;
 
-public class UserDB {
-    private String email;
-    private String password; //TODO need to look close on how to handle pswd
+public class UserDB extends User{
     private int id;
 
-    public String getEmail() {
-        return email;
+    public UserDB(UserDB user) {
+        super(new User(user.getEmail(), user.getPassword()));
+        id = user.getId();
     }
 
-    public String getPassword() {
-        return password;
+    public UserDB(int id) {
+        this.id = id;
+    }
+
+    public UserDB(String email, String password, int id) {
+        super(email, password);
+        this.id = id;
+    }
+
+    public UserDB(User user, int id) {
+        super(user);
+        this.id = id;
     }
 
     public int getId() {
