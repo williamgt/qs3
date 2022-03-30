@@ -20,6 +20,13 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
+    public boolean login(User login){
+        User _login = userRepository.findByUsername(login.getUsername());
+        if(_login == null || !login.getPassword().equals(_login.getPassword())) {
+            return false;
+        }
+        return true;
+    }
 
     public List<UserPerson> getAllUsers(){
         List<UserPerson> users = new ArrayList<UserPerson>(userRepository.findAll());
@@ -35,4 +42,6 @@ public class UserService {
         UserPersonAll user = userRepository.findByIdAdmin(id);
         return user;
     }
+
+
 }

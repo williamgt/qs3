@@ -1,8 +1,10 @@
 package no.ntnu.idatt2105.gr13.qs3backend.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -38,8 +40,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     {
         // token endpoint is not protected
         http
-                .csrf().disable()
-                .cors().and()
+                .csrf()
+                .disable()
+                .cors()
+                .and()
                 .addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/token").permitAll()
@@ -57,5 +61,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .roles("USER");
         */
         auth.authenticationProvider(authProvider);
+    }
+
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 }

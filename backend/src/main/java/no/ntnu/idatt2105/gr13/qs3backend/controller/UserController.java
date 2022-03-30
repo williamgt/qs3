@@ -1,6 +1,8 @@
 package no.ntnu.idatt2105.gr13.qs3backend.controller;
 
 
+import no.ntnu.idatt2105.gr13.qs3backend.model.user.User;
+import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserDB;
 import no.ntnu.idatt2105.gr13.qs3backend.util.FileHandler;
 import no.ntnu.idatt2105.gr13.qs3backend.model.filehandler.RegisterStudent;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserPerson;
@@ -37,12 +39,14 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<UserPerson> getUserById(@PathVariable("id") long id) {
-        UserPerson user = service.findById(id);
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UserDB> getUserById(@PathVariable("id") long id) {
+        UserDB user = service.findById(id);
         if (user != null) {
             return new ResponseEntity<>(user, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/user/{id}/all")
