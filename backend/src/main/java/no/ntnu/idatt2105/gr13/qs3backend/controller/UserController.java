@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import no.ntnu.idatt2105.gr13.qs3backend.service.security.MethodSecService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,9 @@ public class UserController {
     @Autowired
     private UserService service;
 
+    @Autowired
+    private MethodSecService methodSecService;
+
     //@PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping()
     public ResponseEntity<List<UserPerson>> getAllUsers(){
@@ -39,7 +43,7 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')  or @methodSecService.isTargetUser(#id)")
     public ResponseEntity<UserPerson> getUserById(@PathVariable("id") long id) {
         UserPerson user = service.findById(id);
         if (user != null) {
