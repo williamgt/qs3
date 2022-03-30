@@ -11,8 +11,6 @@ import java.util.List;
 public interface UserRepository {
 
     User findByUsername(String username);
-    List<User> findAll();
-    UserDB findById(long id);
     List<UserPerson> findAll();
     UserPerson findById(long id);
 

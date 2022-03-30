@@ -40,8 +40,8 @@ public class UserController {
 
     @GetMapping("/user/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<UserDB> getUserById(@PathVariable("id") long id) {
-        UserDB user = service.findById(id);
+    public ResponseEntity<UserPerson> getUserById(@PathVariable("id") long id) {
+        UserPerson user = service.findById(id);
         if (user != null) {
             return new ResponseEntity<>(user, HttpStatus.OK);
         } else {
