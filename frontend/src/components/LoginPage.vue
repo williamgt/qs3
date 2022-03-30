@@ -53,12 +53,12 @@ export default {
     };
   },
   methods: {
-    login() {
+    async login() {
       if (!this.validateEmail()) {
         this.error = "The email is not valid.";
       } else {
         this.error = "";
-        doLogin();
+        doLogin(this.userLogin);
       }
     },
     validateEmail() {
