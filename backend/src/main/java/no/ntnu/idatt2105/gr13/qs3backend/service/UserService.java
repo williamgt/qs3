@@ -16,18 +16,6 @@ public class UserService {
     @Autowired
     JdbcUserRepository userRepository;
 
-    public User okLogin(String username){
-        return userRepository.findByUsername(username);
-    }
-
-    public boolean login(User login){
-        User _login = userRepository.findByUsername(login.getUsername());
-        if(_login == null || !login.getPassword().equals(_login.getPassword())) {
-            return false;
-        }
-        return true;
-    }
-
     public List<UserPerson> getAllUsers(){
         List<UserPerson> users = new ArrayList<UserPerson>(userRepository.findAll());
         return users;
