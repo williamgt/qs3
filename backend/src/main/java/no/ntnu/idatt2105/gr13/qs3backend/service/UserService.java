@@ -38,16 +38,5 @@ public class UserService {
         return user;
     }
 
-    public boolean isAdmin(User user) {
-        return userRepository.isAdmin(user);
-    }
-
-    public boolean isTeacher(User user) {
-        return userRepository.isAdmin(user);
-    }
-
-    public boolean isTA(User user) {
-        return userRepository.isAdmin(user);
-    }
 
 }
