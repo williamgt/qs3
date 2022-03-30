@@ -11,9 +11,23 @@ export default createStore({
         ],
       },
     },
+    auth: {
+      token: {
+        type: String,
+        default: "",
+      },
+    },
   },
   getters: {},
-  mutations: {},
-  actions: {},
+  mutations: {
+    SET_TOKEN(state, token) {
+      state.auth.token = token;
+    },
+  },
+  actions: {
+    setToken({ commit }, token) {
+      return commit("SET_TOKEN", token);
+    },
+  },
   modules: {},
 });
