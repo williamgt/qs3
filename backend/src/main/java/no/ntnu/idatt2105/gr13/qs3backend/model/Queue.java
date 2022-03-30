@@ -1,10 +1,11 @@
 package no.ntnu.idatt2105.gr13.qs3backend.model;
 
-import no.ntnu.idatt2105.gr13.qs3backend.model.person.Student;
-
-import java.util.Map;
+import java.util.List;
 
 
 public class Queue {
-    Map<Student, String> queue; //Student and
+    private int queueId;
+    private boolean active;
+    private String description; //Message from TA
+    private List<StudentQueueInfo> studsInQueue;
 }

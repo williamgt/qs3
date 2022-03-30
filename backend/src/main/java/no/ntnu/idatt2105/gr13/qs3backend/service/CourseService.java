@@ -21,7 +21,7 @@ public class CourseService {
             return false;
         }
         else { //TODO add checks
-            //return courseRepo.updateCourse(courseCode, course);
+            return courseRepo.updateCourse(courseCode, course);
             return false;
         }
     }
