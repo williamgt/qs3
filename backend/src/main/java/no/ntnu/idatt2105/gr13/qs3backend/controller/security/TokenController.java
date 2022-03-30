@@ -3,6 +3,9 @@ package no.ntnu.idatt2105.gr13.qs3backend.controller.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import no.ntnu.idatt2105.gr13.qs3backend.model.security.Role;
+import no.ntnu.idatt2105.gr13.qs3backend.model.user.User;
+import no.ntnu.idatt2105.gr13.qs3backend.service.security.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpStatus;
@@ -29,6 +32,8 @@ public class TokenController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    AuthService service;
     public static String keyStr = "testsecrettestsecrettestsecrettestsecrettestsecret";
 
     @PostMapping(value = "")
@@ -41,7 +46,9 @@ public class TokenController {
                             password
                     )
             );
-            return generateToken1(username, "ROLE_USER");
+            System.out.println("Past authManager");
+            Role role = service.getRole(new no.ntnu.idatt2105.gr13.qs3backend.model.user.User(username, password));
+            return generateToken1(username, role.role);
         } catch (BadCredentialsException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect username or password");
         }

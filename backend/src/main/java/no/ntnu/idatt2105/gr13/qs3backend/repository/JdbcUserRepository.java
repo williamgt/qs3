@@ -27,8 +27,13 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public UserDB findById(long id) {
         try{
-            String query = "SELECT * from User where User.personId = ?";
-            UserDB user = jdbcTemplate.queryForObject(query, BeanPropertyRowMapper.newInstance(UserDB.class), id);
+            String query = "SELECT * from User, Person where User.personId = Person.id and User.personId = ?";
+            UserDB user = jdbcTemplate.queryForObject(query, (rs, rowNum) ->
+                    new UserDB(
+                            rs.getString("email"),
+                            rs.getString("password"),
+                            rs.getInt("personId")
+                    ), id);
             return user;
         }catch (IncorrectResultSetColumnCountException e){
             return null;

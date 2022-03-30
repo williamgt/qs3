@@ -5,6 +5,7 @@ import no.ntnu.idatt2105.gr13.qs3backend.model.user.User;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserDB;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.IncorrectResultSetColumnCountException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -25,21 +26,22 @@ public class JdbcAuthRepository implements AuthRepository{
                 if(user.getPassword().equals(userdb.getPassword()))
                     return Role.STUDENT;
             }
-            if((userdb = isTeacher(user)) == null){
+            if(!((userdb = isTeacher(user)) == null)){
                 if(user.getPassword().equals(userdb.getPassword()))
                     return Role.TEACHER;
             }
-            if((userdb = isTA(user)) == null){
+            if(!((userdb = isTA(user)) == null)){
                 if(user.getPassword().equals(userdb.getPassword()))
                     return Role.TA;
             }
-            if((userdb = isAdmin(user)) == null){
+            if(!((userdb = isAdmin(user)) == null)){
                 if(user.getPassword().equals(userdb.getPassword()))
                     return Role.ADMIN;
             }
-            return null;
-        }catch (IncorrectResultSetColumnCountException e){
-            return null;
+            return Role.UNDEFINED;
+        }catch (IncorrectResultSetColumnCountException  | EmptyResultDataAccessException e){
+            System.out.println("HERE");
+            return Role.UNDEFINED;
         }
     }
 
@@ -53,7 +55,7 @@ public class JdbcAuthRepository implements AuthRepository{
                     )
                     , user.getEmail());
             return userdb;
-        }catch (IncorrectResultSetColumnCountException e){
+        }catch (EmptyResultDataAccessException e){
             return null;
         }
     }
@@ -68,7 +70,7 @@ public class JdbcAuthRepository implements AuthRepository{
                     )
                     , user.getEmail());
             return userdb;
-        }catch (IncorrectResultSetColumnCountException e){
+        }catch (EmptyResultDataAccessException e){
             return null;
         }
     }
@@ -83,7 +85,7 @@ public class JdbcAuthRepository implements AuthRepository{
                     )
                     , user.getEmail());
             return userdb;
-        }catch (IncorrectResultSetColumnCountException e){
+        }catch (EmptyResultDataAccessException e){
             return null;
         }
     }
@@ -98,7 +100,7 @@ public class JdbcAuthRepository implements AuthRepository{
                     )
                     , user.getEmail());
             return userdb;
-        }catch (IncorrectResultSetColumnCountException e){
+        }catch (Exception e){
             return null;
         }
     }

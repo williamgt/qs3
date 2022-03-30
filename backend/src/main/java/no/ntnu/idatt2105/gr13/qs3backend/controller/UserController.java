@@ -13,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:8081")
+@RequestMapping("/users")
 @RestController
 public class UserController {
 
@@ -32,7 +33,7 @@ public class UserController {
 
 
     @GetMapping("/user/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserDB> getUserById(@PathVariable("id") long id) {
         UserDB user = service.findById(id);
         if (user != null) {
