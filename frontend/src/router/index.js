@@ -11,6 +11,8 @@ import StudentCourseInfo from "../components/student/StudentCourseInfo";
 import TACoursesView from "../components/teaching-assistant/TACoursesView";
 import homeAdminView from "@/views/admin/HomeAdminView";
 import CourseRegistration from "../components/admin/CourseRegistration";
+import AllUsersView from "@/views/admin/AllUsersView";
+import AllUsersDetailsView from "@/views/admin/AllUsersDetailsView";
 
 const routes = [
   {
@@ -89,6 +91,16 @@ const routes = [
     path: "/course-registration",
     name: "CourseRegistration",
     component: CourseRegistration,
+  },
+  {
+    path: "/users",
+    name: "AllUsers",
+    component: AllUsersView,
+  },
+  {
+    path: "/users/all",
+    name: "AllUsersDetails",
+    component: AllUsersDetailsView,
   },
 ];
 
