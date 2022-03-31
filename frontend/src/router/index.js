@@ -72,6 +72,15 @@ const routes = [
     component: LoginPage,
   },
   {
+    path: "/logout",
+    // eslint-disable-next-line no-unused-vars
+    beforeEnter: (to, from, next) => {
+      store.state.personLoggedIn = undefined;
+      store.state.auth.token = "";
+      return next({ name: "Login" });
+    },
+  },
+  {
     path: "/temp",
     name: "Temp",
     component: homeAdminView,
@@ -115,13 +124,11 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   NProgress.start();
-  console.log(store.state.auth.token);
   console.log(store.state.personLoggedIn);
-  console.log(store.state.personLoggedIn.default === undefined);
   if (to.matched.some((record) => record.meta.requiresLogin)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
-    if (store.state.personLoggedIn.default === undefined) {
+    if (store.state.personLoggedIn === undefined) {
       return next({ name: "Login" });
     } else {
       return next(); // go to wherever I'm going

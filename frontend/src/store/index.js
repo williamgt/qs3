@@ -12,15 +12,9 @@ export default createStore({
       },
     },
     auth: {
-      token: {
-        type: String,
-        default: "",
-      },
+      token: "",
     },
-    personLoggedIn: {
-      type: Object,
-      default: undefined,
-    },
+    personLoggedIn: undefined,
   },
   getters: {},
   mutations: {
