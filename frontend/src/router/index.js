@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import store from "@/store";
 import HomeView from "../views/HomeView.vue";
 import NotFound from "@/views/errors/NotFound";
 import NetworkError from "@/views/errors/NetworkError";
@@ -19,6 +20,9 @@ const routes = [
     path: "/",
     name: "Home",
     component: HomeView,
+    meta: {
+      requiresLogin: true,
+    },
   },
   {
     path: "/about",
@@ -109,16 +113,21 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from) => {
+router.beforeEach((to, from, next) => {
   NProgress.start();
-  const notAuthorized = false;
-  if (notAuthorized) {
-    if (from.href) {
-      return { path: "/401" };
+  console.log(store.state.auth.token);
+  console.log(store.state.personLoggedIn);
+  console.log(store.state.personLoggedIn.default === undefined);
+  if (to.matched.some((record) => record.meta.requiresLogin)) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    if (store.state.personLoggedIn.default === undefined) {
+      return next({ name: "Login" });
     } else {
-      return { path: "/" };
+      return next(); // go to wherever I'm going
     }
   }
+  return next();
 });
 
 router.afterEach(() => {

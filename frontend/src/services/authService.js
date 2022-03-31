@@ -1,8 +1,5 @@
 import axios from "axios";
 import store from "../store";
-const config = {
-  headers: { Authorization: `Bearer ${store.state.auth.token}` },
-};
 
 export function getToken(username, password) {
   const params = new URLSearchParams();
@@ -12,5 +9,8 @@ export function getToken(username, password) {
 }
 
 export function login(loginRequest) {
+  const config = {
+    headers: { Authorization: `Bearer ${store.state.auth.token}` },
+  };
   return axios.post("http://localhost:8085/login", loginRequest, config);
 }
