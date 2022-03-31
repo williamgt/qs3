@@ -1,7 +1,10 @@
 <template>
   <div class="grid-container">
-    <div class="grid-item">Email: {{ user.email }}</div>
-    <div class="grid-item">ID: {{ user.id }}</div>
+    <div class="grid-item">{{ user.id }}</div>
+    <div class="grid-item">{{ user.email }}</div>
+    <div class="grid-item">{{ user.firstname }}</div>
+    <div class="grid-item">{{ user.lastname }}</div>
+    <div class="grid-item">{{ user.password }}</div>
   </div>
 </template>
 
@@ -20,6 +23,18 @@ export default {
         type: Number,
         required: true,
       },
+      firstName: {
+        type: String,
+        required: true,
+      },
+      lastName: {
+        type: String,
+        required: true,
+      },
+      password: {
+        type: String,
+        required: true,
+      },
     },
   },
 };
@@ -28,9 +43,8 @@ export default {
 <style scoped>
 .grid-container {
   display: grid;
-  grid-template-columns: auto auto;
-  padding: 10px;
-  width: 50%;
+  grid-template-columns: auto auto auto auto auto;
+  width: 100%;
 }
 .grid-item {
   background-color: rgba(255, 255, 255, 0.8);

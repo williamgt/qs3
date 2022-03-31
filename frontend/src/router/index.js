@@ -109,11 +109,17 @@ const routes = [
     path: "/users",
     name: "AllUsers",
     component: AllUsersView,
+    meta: {
+      requiresLogin: true,
+    },
   },
   {
     path: "/users/all",
     name: "AllUsersDetails",
     component: AllUsersDetailsView,
+    meta: {
+      requiresLogin: true,
+    },
   },
 ];
 
