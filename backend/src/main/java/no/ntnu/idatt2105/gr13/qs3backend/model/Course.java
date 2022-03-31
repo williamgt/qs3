@@ -3,8 +3,8 @@ package no.ntnu.idatt2105.gr13.qs3backend.model;
 import no.ntnu.idatt2105.gr13.qs3backend.model.person.Student;
 import no.ntnu.idatt2105.gr13.qs3backend.model.person.Teacher;
 import no.ntnu.idatt2105.gr13.qs3backend.model.person.TeacherAssistant;
+import no.ntnu.idatt2105.gr13.qs3backend.model.task.Task;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Course {

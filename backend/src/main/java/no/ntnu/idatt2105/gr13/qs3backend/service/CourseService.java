@@ -14,15 +14,14 @@ public class CourseService {
     @Autowired
     private JdbcCourseRepository courseRepo;
 
-    public boolean updateCourse(String courseCode, Course course) { //TODO add checks and trim strings etc
+    public int updateCourse(String courseCode, Course course) { //TODO add checks and trim strings etc
         Course getCourse = courseRepo.getCourseByCode(courseCode);
         if(getCourse == null) {
             logger.info("Not able to update course with code " + courseCode + ", not found in db");
-            return false;
+            return -1;
         }
         else { //TODO add checks
             return courseRepo.updateCourse(courseCode, course);
-            return false;
         }
     }
 

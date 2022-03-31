@@ -48,8 +48,8 @@ public class CourseController {
     @PutMapping("/{course-code}")
     public ResponseEntity<String> updateCourse(@PathVariable("course-code") String courseCode, @RequestBody Course course) {
         logger.info("Updating course with code " + courseCode);
-        boolean updated = courseService.updateCourse(courseCode, course);
-        if(updated) {
+        int updated = courseService.updateCourse(courseCode, course);
+        if(updated > 0) {
             logger.info("Successfully updated course with code" + courseCode);
             return new ResponseEntity<>("Course was updated successfully.", HttpStatus.OK);
         } else {
