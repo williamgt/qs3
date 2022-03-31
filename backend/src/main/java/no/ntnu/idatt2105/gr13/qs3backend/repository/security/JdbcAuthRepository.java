@@ -47,11 +47,11 @@ public class JdbcAuthRepository implements AuthRepository{
 
     private UserDB isAdmin(User user) {
         try{
-            String query = "SELECT * from User, AdminUser where User.email = AdminUser.email and AdminUser.email =?";
+            String query = "SELECT * from User, AdminUser where User.id = AdminUser.id and User.email =?";
             UserDB userdb = jdbcTemplate.queryForObject(query, (rs, rowNum) -> new UserDB(
                     rs.getString("email"),
                     rs.getString("password"),
-                    rs.getInt("personId")
+                    rs.getInt("id")
                     )
                     , user.getEmail());
             return userdb;
@@ -62,11 +62,11 @@ public class JdbcAuthRepository implements AuthRepository{
 
     private UserDB isTA(User user) {
         try{
-            String query = "SELECT * from User, TAUser where User.email = TAUser.email and TAUser.email =?";
+            String query = "SELECT * from User, TAUser where User.id = TAUser.id and User.email =?";
             UserDB userdb = jdbcTemplate.queryForObject(query, (rs, rowNum) -> new UserDB(
                             rs.getString("email"),
                             rs.getString("password"),
-                            rs.getInt("personId")
+                            rs.getInt("id")
                     )
                     , user.getEmail());
             return userdb;
@@ -77,11 +77,11 @@ public class JdbcAuthRepository implements AuthRepository{
 
     private UserDB isTeacher(User user) {
         try{
-            String query = "SELECT * from User, TeacherUser where User.email = TeacherUser.email and TeacherUser.email =?";
+            String query = "SELECT * from User, TeacherUser where User.id = TeacherUser.id and User.email =?";
             UserDB userdb = jdbcTemplate.queryForObject(query, (rs, rowNum) -> new UserDB(
                             rs.getString("email"),
                             rs.getString("password"),
-                            rs.getInt("personId")
+                            rs.getInt("id")
                     )
                     , user.getEmail());
             return userdb;
@@ -92,11 +92,11 @@ public class JdbcAuthRepository implements AuthRepository{
 
     private UserDB isStudent(User user) {
         try{
-            String query = "SELECT * from User, StudentUser where User.email = StudentUser.email and StudentUser.email =?";
+            String query = "SELECT * from User, StudentUser where User.id = StudentUser.id and User.email =?";
             UserDB userdb = jdbcTemplate.queryForObject(query, (rs, rowNum) -> new UserDB(
                             rs.getString("email"),
                             rs.getString("password"),
-                            rs.getInt("personId")
+                            rs.getInt("id")
                     )
                     , user.getEmail());
             return userdb;

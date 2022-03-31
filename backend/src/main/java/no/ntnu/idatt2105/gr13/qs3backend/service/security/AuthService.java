@@ -3,6 +3,7 @@ package no.ntnu.idatt2105.gr13.qs3backend.service.security;
 import no.ntnu.idatt2105.gr13.qs3backend.model.person.Person;
 import no.ntnu.idatt2105.gr13.qs3backend.model.security.Role;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.User;
+import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserLogin;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserRole;
 import no.ntnu.idatt2105.gr13.qs3backend.repository.JdbcUserRepository;
 import no.ntnu.idatt2105.gr13.qs3backend.repository.security.JdbcAuthRepository;
@@ -17,9 +18,9 @@ public class AuthService {
     @Autowired
     JdbcUserRepository userRepository;
 
-    public Person login(User user){
+    public User login(UserLogin user){
         System.out.println(user.getEmail());
-        return userRepository.getPerson(user);
+        return userRepository.getUserDetails(user);
     }
 
     public Role getRole(User user){

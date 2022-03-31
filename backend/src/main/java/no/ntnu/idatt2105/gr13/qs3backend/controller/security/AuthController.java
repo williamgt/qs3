@@ -3,6 +3,7 @@ package no.ntnu.idatt2105.gr13.qs3backend.controller.security;
 import no.ntnu.idatt2105.gr13.qs3backend.controller.UserController;
 import no.ntnu.idatt2105.gr13.qs3backend.model.person.Person;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.User;
+import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserLogin;
 import no.ntnu.idatt2105.gr13.qs3backend.service.security.AuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,9 +24,9 @@ public class AuthController {
     Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @PostMapping("/login")
-    public ResponseEntity<Person> login(@RequestBody User user){
+    public ResponseEntity<User> login(@RequestBody UserLogin user){
         try{
-            Person p = service.login(user);
+            User p = service.login(user);
             logger.info("Logged in as: " + p.getLastName() + ", " + p.getFirstName());
             return new ResponseEntity<>(p, HttpStatus.ACCEPTED);
         }catch (Exception e){

@@ -10,10 +10,12 @@ import java.util.List;
 public interface UserRepository {
 
     User findByUsername(String username);
-    List<UserPersonAll> findAllDetails();
+
+    User getUserDetails(UserLogin user);
+
+    List<User> findAllDetails();
     List<UserProtected> findAll();
     UserPerson findById(long id);
-    public Person getPerson(User user);
 
-    UserPerson findByIdAdmin(long id);
+    User findByIdAdmin(long id);
 }
