@@ -1,35 +1,36 @@
 package no.ntnu.idatt2105.gr13.qs3backend.model;
 
-import no.ntnu.idatt2105.gr13.qs3backend.model.person.Student;
-import no.ntnu.idatt2105.gr13.qs3backend.model.person.Teacher;
-import no.ntnu.idatt2105.gr13.qs3backend.model.person.TeacherAssistant;
+
 import no.ntnu.idatt2105.gr13.qs3backend.model.task.Task;
+import no.ntnu.idatt2105.gr13.qs3backend.model.user.StudentUser;
+import no.ntnu.idatt2105.gr13.qs3backend.model.user.TAUser;
+import no.ntnu.idatt2105.gr13.qs3backend.model.user.TeacherUser;
 
 import java.util.List;
 
 public class Course {
-    private int year;
-    private int term;
-    private String courseCode;
-    private String courseName;
+    private int year; //
+    private int term; //
+    private String courseCode; //
+    private String courseName; //
 
-    private List<Teacher> teachers;
-    private List<TeacherAssistant> tas;
-    private List<Student> students;
+    private List<TeacherUser> teachers; //
+    private List<TAUser> tas; //
+    private List<StudentUser> students; //
     //boolean active; //This is not the queue
 
     private Queue queue;
 
-    private int obligatoryTaskAmount;
-    private int setOfTasks;
+    private int obligatoryTaskAmount; //
+    private int setOfTasks; //
     private List<List<Task>> tasksInEachSet;
     //private List<Integer> obligatoryPerSet;
-    private int[] obligatoryPerSet = new int[setOfTasks];
+    private int[] obligatoryPerSet; //
 
     public Course() {
     }
 
-    public Course(int year, int term, String courseCode, String courseName, List<Teacher> teachers, List<TeacherAssistant> tas, List<Student> students, Queue queue, int obligatoryTaskAmount, int setOfTasks, List<List<Task>> tasksInEachSet, int[] obligatoryPerSet) {
+    public Course(int year, int term, String courseCode, String courseName, List<TeacherUser> teachers, List<TAUser> tas, List<StudentUser> students, Queue queue, int obligatoryTaskAmount, int setOfTasks, List<List<Task>> tasksInEachSet, int[] obligatoryPerSet) {
         this.year = year;
         this.term = term;
         this.courseCode = courseCode;
@@ -80,15 +81,15 @@ public class Course {
         return courseCode;
     }
 
-    public List<Teacher> getTeachers() {
+    public List<TeacherUser> getTeachers() {
         return teachers;
     }
 
-    public List<TeacherAssistant> getTas() {
+    public List<TAUser> getTas() {
         return tas;
     }
 
-    public List<Student> getStudents() {
+    public List<StudentUser> getStudents() {
         return students;
     }
 
@@ -104,15 +105,15 @@ public class Course {
         this.courseCode = courseCode;
     }
 
-    public void setTeachers(List<Teacher> teachers) {
+    public void setTeachers(List<TeacherUser> teachers) {
         this.teachers = teachers;
     }
 
-    public void setTas(List<TeacherAssistant> tas) {
+    public void setTas(List<TAUser> tas) {
         this.tas = tas;
     }
 
-    public void setStudents(List<Student> students) {
+    public void setStudents(List<StudentUser> students) {
         this.students = students;
     }
 

@@ -19,7 +19,7 @@ public class UserService {
     }
 
     public boolean login(User login){
-        User _login = userRepository.findByUsername(login.getUsername());
+        User _login = userRepository.findByUsername(login.getEmail());
         if(_login == null || !login.getPassword().equals(_login.getPassword())) {
             return false;
         }
@@ -27,7 +27,7 @@ public class UserService {
     }
 
     public boolean checkLogin(User login){
-        User _login = userRepository.findByUsername(login.getUsername());
+        User _login = userRepository.findByUsername(login.getEmail());
         return _login != null && login.getPassword().equals(_login.getPassword());
     }
 

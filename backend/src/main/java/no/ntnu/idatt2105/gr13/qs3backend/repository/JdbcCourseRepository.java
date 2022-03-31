@@ -1,10 +1,12 @@
 package no.ntnu.idatt2105.gr13.qs3backend.repository;
 
 import no.ntnu.idatt2105.gr13.qs3backend.model.Course;
-import no.ntnu.idatt2105.gr13.qs3backend.model.person.Student;
-import no.ntnu.idatt2105.gr13.qs3backend.model.person.Teacher;
-import no.ntnu.idatt2105.gr13.qs3backend.model.person.TeacherAssistant;
+import no.ntnu.idatt2105.gr13.qs3backend.model.task.Task;
+import no.ntnu.idatt2105.gr13.qs3backend.model.task.TaskList;
 import no.ntnu.idatt2105.gr13.qs3backend.model.task.TaskSet;
+import no.ntnu.idatt2105.gr13.qs3backend.model.user.StudentUser;
+import no.ntnu.idatt2105.gr13.qs3backend.model.user.TAUser;
+import no.ntnu.idatt2105.gr13.qs3backend.model.user.TeacherUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.plaf.TableUI;
 import java.util.List;
 import java.util.Map;
 
@@ -21,23 +24,6 @@ import java.util.Map;
 public class JdbcCourseRepository {
     Logger logger = LoggerFactory.getLogger(JdbcCourseRepository.class);
 
-    private String selectAllTeachersWithGivenCode = "SELECT Person.firstname, Person.lastname " +
-            "FROM Course INNER JOIN CoursePerson ON Course.courseCode = CoursePerson.courseCode AND Course.year = CoursePerson.year AND Course.term = CoursePerson.term " +
-            "INNER JOIN Person ON CoursePerson.personId = Person.id " +
-            "INNER JOIN Teacher ON Person.id = Teacher.id " +
-            "WHERE Course.courseCode = ?";
-
-    private String selectAllTAsWithGivenCode = "SELECT Person.firstname, Person.lastname " +
-            "FROM Course INNER JOIN CoursePerson ON Course.courseCode = CoursePerson.courseCode AND Course.year = CoursePerson.year AND Course.term = CoursePerson.term " +
-            "INNER JOIN Person ON CoursePerson.personId = Person.id " +
-            "INNER JOIN TA ON Person.id = TA.id " +
-            "WHERE Course.courseCode = ?";
-
-    private String selectAllStudentsWithGivenCode = "SELECT Person.firstname, Person.lastname " +
-            "FROM Course INNER JOIN CoursePerson ON Course.courseCode = CoursePerson.courseCode AND Course.year = CoursePerson.year AND Course.term = CoursePerson.term " +
-            "INNER JOIN Person ON CoursePerson.personId = Person.id " +
-            "INNER JOIN Student ON Person.id = Student.id " +
-            "WHERE Course.courseCode = ?";
 
     private String selectQueueForACourse ="SELECT *" +
             "FROM Queue WHERE courseCode = ? AND year = ? AND term =?";
@@ -48,15 +34,76 @@ public class JdbcCourseRepository {
 
     public Course getCourseByCode(String courseCode) {
         try {
+            logger.info("Getting course...");
             Course course = jdbcTemplate.queryForObject("SELECT * FROM Course WHERE courseCode=?",
                     BeanPropertyRowMapper.newInstance(Course.class), courseCode);
-            List<Teacher> teachers = jdbcTemplate.query(selectAllTeachersWithGivenCode, BeanPropertyRowMapper.newInstance(Teacher.class), courseCode);
-            List<TeacherAssistant> tas = jdbcTemplate.query(selectAllTAsWithGivenCode, BeanPropertyRowMapper.newInstance(TeacherAssistant.class), courseCode);
-            List<Student> students = jdbcTemplate.query(selectAllStudentsWithGivenCode, BeanPropertyRowMapper.newInstance(Student.class), courseCode);
+
+            String selectAllTeachersWithGivenCode = "SELECT User.firstname, User.lastname " +
+                    "FROM Course INNER JOIN TeacherCourse ON Course.courseCode = TeacherCourse.courseCode AND Course.year = TeacherCourse.year AND Course.term = TeacherCourse.term " +
+                    "INNER JOIN User ON TeacherCourse.teacherId = User.id " +
+                    "WHERE Course.courseCode = ?";
+
+            String selectAllTAsWithGivenCode = "SELECT User.firstname, User.lastname " +
+                    "FROM Course INNER JOIN TACourse ON Course.courseCode = TACourse.courseCode AND Course.year = TACourse.year AND Course.term = TACourse.term " +
+                    "INNER JOIN User ON TACourse.tAId = User.id " +
+                    "WHERE Course.courseCode = ?";
+
+            String selectAllStudentsWithGivenCode = "SELECT User.firstname, User.lastname " +
+                    "FROM Course INNER JOIN StudentCourse ON Course.courseCode = StudentCourse.courseCode AND Course.year = StudentCourse.year AND Course.term = StudentCourse.term " +
+                    "INNER JOIN User ON StudentCourse.studentId = User.id " +
+                    "WHERE Course.courseCode = ?";
+
+            logger.info("Getting teachers...");
+            List<TeacherUser> teachers = jdbcTemplate.query(selectAllTeachersWithGivenCode, BeanPropertyRowMapper.newInstance(TeacherUser.class), courseCode);
+            logger.info("Getting teaching assistants...");
+            List<TAUser> tas = jdbcTemplate.query(selectAllTAsWithGivenCode, BeanPropertyRowMapper.newInstance(TAUser.class), courseCode);
+            logger.info("Getting students...");
+            List<StudentUser> students = jdbcTemplate.query(selectAllStudentsWithGivenCode, BeanPropertyRowMapper.newInstance(StudentUser.class), courseCode);
 
             course.setTeachers(teachers);
             course.setTas(tas);
             course.setStudents(students);
+
+            logger.info("Getting tasks...");
+            String selectTasksGivenBasicCourseInfo = "SELECT * FROM Tasks WHERE courseCode=? AND year=? AND term=?";
+            TaskList tasksList = jdbcTemplate.queryForObject(selectTasksGivenBasicCourseInfo,
+                    BeanPropertyRowMapper.newInstance(TaskList.class), course.getCourseCode(), course.getYear(), course.getTerm());
+
+            //No join
+            String selectTasksIdGivenBasicCourseInfo = "SELECT tasksId FROM Tasks WHERE courseCode=? AND year=? AND term=?";
+            String selectTaskSetWithTasksIdGivenBasicCourseInfo = "SELECT * FROM TaskSet WHERE tasksId = ("+selectTasksIdGivenBasicCourseInfo+")";
+            //Join
+            logger.info("Getting task sets...");
+            String selectTaskSetsRelatedToTasks = "SELECT TaskSet.amountMustDone, TaskSet.taskSetId FROM TaskSet INNER JOIN Tasks ON TaskSet.tasksId=Tasks.tasksId WHERE Tasks.courseCode=? AND Tasks.year=? AND Tasks.term=?";
+            List<TaskSet> taskSets = jdbcTemplate.query(selectTaskSetsRelatedToTasks, BeanPropertyRowMapper.newInstance(TaskSet.class), course.getCourseCode(), course.getYear(), course.getTerm());
+
+            course.setSetOfTasks(taskSets.size()); //Setting the right values for
+            course.setObligatoryPerSet(new int[course.getSetOfTasks()]);
+            for(int i = 0; i < course.getSetOfTasks(); i++){
+                course.getObligatoryPerSet()[i] = taskSets.get(i).getAmountMustDone();
+            }
+            /*String selectRelatedTasks = "SELECT Task.description, Task.taskSetId FROM " +
+                    "Task INNER JOIN TaskSet ON Task.taskSetId=TaskSet.taskSetId" +
+                    "TaskSet INNER JOIN Tasks ON TaskSet.tasksId=Tasks.tasksId WHERE Tasks.courseCode=? AND Tasks.year=? AND Tasks.term=?";
+            List<Task> tasks =  jdbcTemplate.query(selectRelatedTasks, BeanPropertyRowMapper.newInstance(Task.class), course.getCourseCode(), course.getYear(), course.getTerm());*/
+
+            String selectTasksRelatedToSet = "SELECT Task.description, Task.taskSetId FROM " +
+                    "Task INNER JOIN TaskSet ON Task.taskSetId=TaskSet.taskSetId" +
+                    "TaskSet INNER JOIN Tasks ON TaskSet.tasksId=Tasks.tasksId WHERE Tasks.courseCode=? AND Tasks.year=? AND Tasks.term=? AND TaskSet.taskSetId=?";
+            int obligatoryTaskAmount = 0;
+            List tasksInEach = null;
+            for(TaskSet t : taskSets) {
+                logger.info("Getting a list of tasks...");
+                List<Task> tasks =  jdbcTemplate.query(selectTasksRelatedToSet, BeanPropertyRowMapper.newInstance(Task.class), course.getCourseCode(), course.getYear(), course.getTerm(), t.getTaskSetId());
+                //t.setTasks(tasks);
+                tasksInEach.add(tasks);
+                obligatoryTaskAmount += tasks.size(); //Counting all obligatory tasks
+            }
+
+            course.setObligatoryTaskAmount(obligatoryTaskAmount);
+            course.setTasksInEachSet(tasksInEach);
+
+
             logger.info("Found course with code " + courseCode + ", returning...");
             return course;
         } catch (IncorrectResultSizeDataAccessException e) {
@@ -78,8 +125,7 @@ public class JdbcCourseRepository {
         String insertIntoTeacherCourseString = "INSERT INTO TeacherCourse (teacherId, courseCode, year, term) VALUES (?,?,?,?)";
         String insertIntoTACourseString = "INSERT INTO TACourse (tAId, courseCode, year, term) VALUES (?,?,?,?)";
         String insertIntoStudentCourseString = "INSERT INTO StudentCourse (studentId, courseCode, year, term) VALUES (?,?,?,?)";
-        String getPersonIdByEmailString = "SELECT personID FROM User WHERE email=?";
-
+        String getUserIdByEmail = "SELECT id FROM User WHERE email=?";
 
         int insertIntoCourseInt = 0;
         int insertIntoTasksInt = 0;
@@ -121,38 +167,40 @@ public class JdbcCourseRepository {
         //List<TaskSet> taskSets = jdbcTemplate.query(getTaskSetsString, new BeanPropertyRowMapper<>(TaskSet.class));
 
         //TODO this part assumes everything in the person and user related tables are taken care of
-        //Insertions related to persons
-        Integer userId;
-        for(Teacher t : course.getTeachers()){
-            userId = jdbcTemplate.queryForObject(getPersonIdByEmailString, new Object[] {t.getEmail()}, Integer.class);
+        //Insertions related to persons NB into PersonCourse tables
+        Integer id;
+        for(TeacherUser t : course.getTeachers()){
+            id = jdbcTemplate.queryForObject(getUserIdByEmail, new Object[] {t.getEmail()}, Integer.class);
             insertIntoTeacherCourseInt += jdbcTemplate.update(insertIntoTeacherCourseString,
-                    new Object[] {userId, course.getCourseCode(), course.getYear(), course.getTerm()});
+                    new Object[] {id, course.getCourseCode(), course.getYear(), course.getTerm()});
         }
 
-        for(TeacherAssistant ta : course.getTas()){
-            userId = jdbcTemplate.queryForObject(getPersonIdByEmailString, new Object[] {ta.getEmail()}, Integer.class);
+        for(TAUser ta : course.getTas()){
+            id = jdbcTemplate.queryForObject(getUserIdByEmail, new Object[] {ta.getEmail()}, Integer.class);
             insertIntoTACourseInt += jdbcTemplate.update(insertIntoTACourseString,
-                    new Object[] {userId, course.getCourseCode(), course.getYear(), course.getTerm()});
+                    new Object[] {id, course.getCourseCode(), course.getYear(), course.getTerm()});
         }
 
-        for(Student s : course.getStudents()){
-            userId = jdbcTemplate.queryForObject(getPersonIdByEmailString, new Object[] {s.getEmail()}, Integer.class);
+        for(StudentUser s : course.getStudents()){
+            id = jdbcTemplate.queryForObject(getUserIdByEmail, new Object[] {s.getEmail()}, Integer.class);
             insertIntoUserCourseInt += jdbcTemplate.update(insertIntoStudentCourseString,
-                    new Object[] {userId, course.getCourseCode(), course.getYear(), course.getTerm()});
+                    new Object[] {id, course.getCourseCode(), course.getYear(), course.getTerm()});
         }
 
         logger.info("Inserted new course and related info without any exceptions.");
         return insertIntoCourseInt + insertIntoTasksInt + insertIntoSetOfTasksInt + insertIntoTaskInt + insertIntoTeacherCourseInt + insertIntoTACourseInt + insertIntoUserCourseInt;
     }
 
-    private String updateCourseString = "UPDATE Course SET year=?, term=?, courseCode=?, courseName=? WHERE courseCode=";
-    private String updateTasksString = "UPDATE Tasks SET amount=? WHERE courseCode=? AND year=? AND term=?";
-    private String updateTaskSetString = "UPDATE TaskSet SET amountMustDone=? WHERE tasksID=?";
-    private String updateTaskString = "UPDATE Task SET description=? WHERE ";
-    private String getTasksId = "Select taskId FROM Tasks WHERE courseCode=? AND year=? AND term=?";
-    private String getTaskSetIds = "Select taskSetId FROM TaskSet WHERE tasksId=?";
+    //THIS DOES NOT WORK!!!!!!!!!!!!!!!
     @Transactional
     public int updateCourse(String courseCode, Course course) { //Returns the number of rows affected
+        String updateCourseString = "UPDATE Course SET year=?, term=?, courseCode=?, courseName=? WHERE courseCode=";
+        String updateTasksString = "UPDATE Tasks SET amount=? WHERE courseCode=? AND year=? AND term=?";
+        String updateTaskSetString = "UPDATE TaskSet SET amountMustDone=? WHERE tasksID=?";
+        String updateTaskString = "UPDATE Task SET description=? WHERE ";
+        String getTasksId = "Select taskId FROM Tasks WHERE courseCode=? AND year=? AND term=?";
+        String getTaskSetIds = "Select taskSetId FROM TaskSet WHERE tasksId=?";
+
         int updatedInCourse;
         int updatedTasks;
         int updatedTaskSet = 0;

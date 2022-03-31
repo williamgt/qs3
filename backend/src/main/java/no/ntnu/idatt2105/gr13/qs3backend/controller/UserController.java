@@ -33,10 +33,10 @@ public class UserController {
     public ResponseEntity<Boolean> login(@RequestBody User user) {
         try {
             if(!service.login(user)) {
-                logger.info("Login failed: " + user.getUsername());
+                logger.info("Login failed: " + user.getEmail());
                 return new ResponseEntity<>(false, HttpStatus.UNAUTHORIZED);
             }
-            logger.info("Login Successful: " + user.getUsername());
+            logger.info("Login Successful: " + user.getEmail());
             return new ResponseEntity<>(true, HttpStatus.ACCEPTED);
         } catch (Exception e) {
             System.out.printf(e.getMessage());
