@@ -8,6 +8,7 @@
 <script>
 import AllUsers from "@/components/admin/allUsers/AllUsers";
 import getUsers from "@/api/AllUsersAPI";
+import { getAllUsers } from "@/services/userService";
 export default {
   name: "AllUsersView",
   components: { AllUsers },
@@ -36,9 +37,14 @@ export default {
   //   }
   // },
   methods: {
-    async test() {
-      this.users = await getUsers();
+    test() {
+      getUsers();
     },
+  },
+  created() {
+    getAllUsers().then((response) => {
+      this.users = response.data;
+    });
   },
 };
 </script>
