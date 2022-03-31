@@ -23,7 +23,6 @@ public class User {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
-    public User() {
     }
 
     public User(String email, String password) {
