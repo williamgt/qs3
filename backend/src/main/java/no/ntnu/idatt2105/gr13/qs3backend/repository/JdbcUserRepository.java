@@ -46,7 +46,8 @@ public class JdbcUserRepository implements UserRepository {
                         rs.getString("email"),
                         rs.getString("password"),
                         rs.getString("firstname"),
-                        rs.getString("lastname")
+                        rs.getString("lastname"),
+                        rs.getInt("id")
                 ));
     }
 
