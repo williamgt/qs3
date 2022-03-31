@@ -13,12 +13,21 @@
           <div class="course-code">
             <BaseInput label="Code" v-model="courseCode"></BaseInput>
           </div>
+          <div class="course-year">
+            <BaseInput label="Year" v-model.number="year"></BaseInput>
+          </div>
+          <div class="course-term">
+            <BaseInput label="Term" v-model.number="term"></BaseInput>
+          </div>
         </fieldset>
 
         <fieldset>
           <legend>Teachers and teaching assistants</legend>
           <div class="information">
-            <h4>Please separate the names in the following fields with ','</h4>
+            <h4>
+              Please separate the names in the two following fields with ','
+            </h4>
+            <h4>Format the names like this: 'firstname, lastname, email\n'.</h4>
           </div>
           <div class="teacher-input">
             <BaseTextArea
@@ -37,7 +46,10 @@
         <fieldset>
           <legend>File uploader</legend>
           <div class="file-uploader">
-            <label for="file">Choose a .csv file of students to register</label>
+            <p>Format of file should be 'firstname, lastname, email\n'</p>
+            <label for="file"
+              >Choose a .csv file of students to register.</label
+            >
             <input
               type="file"
               id="file"
@@ -119,6 +131,8 @@ export default {
     return {
       courseName: "",
       courseCode: "",
+      year: undefined,
+      term: undefined,
       teachersString: "",
       tasString: "",
       csvFile: "PLACEHOLDER",
