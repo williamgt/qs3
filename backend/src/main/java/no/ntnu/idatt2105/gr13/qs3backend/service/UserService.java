@@ -19,8 +19,8 @@ public class UserService {
         return users;
     }
 
-    public List<UserPersonAll> getAllUsersDetails(){
-        List<UserPersonAll> users = new ArrayList<UserPersonAll>(userRepository.findAllDetails());
+    public List<User> getAllUsersDetails(){
+        List<User> users = new ArrayList<User>(userRepository.findAllDetails());
         return users;
     }
 
@@ -29,8 +29,8 @@ public class UserService {
         return user;
     }
 
-    public UserPersonAll findByIdAdmin(long id) {
-        UserPersonAll user = userRepository.findByIdAdmin(id);
+    public User findByIdAdmin(long id) {
+        User user = userRepository.findByIdAdmin(id);
         return user;
     }
 }

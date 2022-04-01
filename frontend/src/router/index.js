@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import store from "@/store";
 import HomeView from "../views/HomeView.vue";
 import NotFound from "@/views/errors/NotFound";
 import NetworkError from "@/views/errors/NetworkError";
@@ -13,12 +14,16 @@ import homeAdminView from "@/views/admin/HomeAdminView";
 import CourseRegistration from "../components/admin/CourseRegistration";
 import AllUsersView from "@/views/admin/AllUsersView";
 import AllUsersDetailsView from "@/views/admin/AllUsersDetailsView";
+import StudentProgressAdminView from "@/views/admin/StudentProgressAdminView";
 
 const routes = [
   {
     path: "/",
     name: "Home",
     component: HomeView,
+    meta: {
+      requiresLogin: true,
+    },
   },
   {
     path: "/about",
@@ -40,6 +45,11 @@ const routes = [
         component: QueueForm,
       },
     ],
+  },
+  {
+    path: "/users/user/:id",
+    name: "User",
+    component: StudentProgressAdminView,
   },
   {
     path: "/:catchAll(.*)",
@@ -66,6 +76,15 @@ const routes = [
     path: "/login",
     name: "Login",
     component: LoginPage,
+  },
+  {
+    path: "/logout",
+    // eslint-disable-next-line no-unused-vars
+    beforeEnter: (to, from, next) => {
+      store.state.personLoggedIn = undefined;
+      store.state.auth.token = "";
+      return next({ name: "Login" });
+    },
   },
   {
     path: "/temp",
@@ -96,11 +115,17 @@ const routes = [
     path: "/users",
     name: "AllUsers",
     component: AllUsersView,
+    meta: {
+      requiresLogin: true,
+    },
   },
   {
     path: "/users/all",
     name: "AllUsersDetails",
     component: AllUsersDetailsView,
+    meta: {
+      requiresLogin: true,
+    },
   },
 ];
 
@@ -109,16 +134,19 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from) => {
+router.beforeEach((to, from, next) => {
   NProgress.start();
-  const notAuthorized = false;
-  if (notAuthorized) {
-    if (from.href) {
-      return { path: "/401" };
+  console.log(store.state.personLoggedIn);
+  if (to.matched.some((record) => record.meta.requiresLogin)) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    if (store.state.personLoggedIn === undefined) {
+      return next({ name: "Login" });
     } else {
-      return { path: "/" };
+      return next(); // go to wherever I'm going
     }
   }
+  return next();
 });
 
 router.afterEach(() => {

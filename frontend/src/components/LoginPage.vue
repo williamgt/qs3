@@ -46,19 +46,19 @@ export default {
   data() {
     return {
       userLogin: {
-        email: "",
-        password: "",
+        email: "olav@123.com",
+        password: "123",
       },
       error: "",
     };
   },
   methods: {
-    login() {
+    async login() {
       if (!this.validateEmail()) {
         this.error = "The email is not valid.";
       } else {
         this.error = "";
-        doLogin();
+        doLogin(this.userLogin);
       }
     },
     validateEmail() {

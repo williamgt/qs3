@@ -1,4 +1,5 @@
 <template>
+  <user-element-header></user-element-header>
   <user-element
     v-for="user in users"
     :user="user"
@@ -8,9 +9,10 @@
 
 <script>
 import UserElement from "@/components/user/UserElement";
+import UserElementHeader from "@/components/user/UserElementHeader";
 export default {
   name: "AllUsers",
-  components: { UserElement },
+  components: { UserElementHeader, UserElement },
   props: {
     users: {
       type: Array,

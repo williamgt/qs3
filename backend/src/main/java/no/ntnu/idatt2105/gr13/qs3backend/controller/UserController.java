@@ -33,8 +33,8 @@ public class UserController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all")
-    public ResponseEntity<List<UserPersonAll>> getAllUsersDetails(){
-        List<UserPersonAll> users = new ArrayList<>();
+    public ResponseEntity<List<User>> getAllUsersDetails(){
+        List<User> users = new ArrayList<>();
         users = service.getAllUsersDetails();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
@@ -52,8 +52,8 @@ public class UserController {
 
     @GetMapping("/user/{id}/all")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<UserPersonAll> getAllUserDetailsById(@PathVariable("id") long id) {
-        UserPersonAll user = service.findByIdAdmin(id);
+    public ResponseEntity<User> getAllUserDetailsById(@PathVariable("id") long id) {
+        User user = service.findByIdAdmin(id);
         if (user != null) {
             return new ResponseEntity<>(user, HttpStatus.OK);
         }

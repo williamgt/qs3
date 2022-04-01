@@ -8,7 +8,10 @@
               Dropdown
               <i class="fa fa-caret-down"></i>
             </button>
-            <div class="dropdown-content">
+            <div
+              class="dropdown-content"
+              v-if="this.$store.state.personLoggedIn !== undefined"
+            >
               <router-link
                 v-for="(element, i) in navbarElements"
                 :to="element.path"
