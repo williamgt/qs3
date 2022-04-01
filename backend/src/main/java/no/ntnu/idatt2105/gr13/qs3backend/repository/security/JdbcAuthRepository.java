@@ -46,18 +46,17 @@ public class JdbcAuthRepository implements AuthRepository{
     @Override
     public Role getRoleOfUser(User user) {
         try{
-            UserDB userdb;
 
-            if(!((userdb = isStudent(user)) == null)){
+            if(!(isStudent(user) == null)){
                 return Role.STUDENT;
             }
-            if(!((userdb = isTeacher(user)) == null)){
+            if(!(isTeacher(user) == null)){
                 return Role.TEACHER;
             }
-            if(!((userdb = isTA(user)) == null)){
+            if(!(isTA(user) == null)){
                 return Role.TA;
             }
-            if(!((userdb = isAdmin(user)) == null)){
+            if(!(isAdmin(user) == null)){
                 return Role.ADMIN;
             }
             return Role.UNDEFINED;
