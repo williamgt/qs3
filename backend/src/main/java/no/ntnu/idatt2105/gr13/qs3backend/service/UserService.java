@@ -34,7 +34,7 @@ public class UserService {
         return user;
     }
 
-    public int insertUsers(List<User> users) {
+    public int insertUsers(List<UserBasic> users) {
         return userRepository.insertUsers(users);
     }
 

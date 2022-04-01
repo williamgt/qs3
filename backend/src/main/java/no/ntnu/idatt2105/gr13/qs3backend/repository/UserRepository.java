@@ -1,6 +1,5 @@
 package no.ntnu.idatt2105.gr13.qs3backend.repository;
 
-import no.ntnu.idatt2105.gr13.qs3backend.model.person.Person;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.*;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +17,6 @@ public interface UserRepository {
     UserPerson findById(long id);
 
     User findByIdAdmin(long id);
-    UserPerson findByIdAdmin(long id);
-    int insertUsers(List<User> users);
+
+    int insertUsers(List<UserBasic> users);
 }

@@ -1,6 +1,9 @@
 package no.ntnu.idatt2105.gr13.qs3backend.repository;
 
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.*;
+import no.ntnu.idatt2105.gr13.qs3backend.util.FileHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.IncorrectResultSetColumnCountException;
@@ -14,6 +17,9 @@ import java.util.List;
 public class JdbcUserRepository implements UserRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    Logger logger = LoggerFactory.getLogger(JdbcUserRepository.class);
+
 
     @Override
     public User findByUsername(String username) {
@@ -91,8 +97,7 @@ public class JdbcUserRepository implements UserRepository {
 
     @Transactional
     @Override
-    public int insertUsers(List<User> users) { //Implementation is not optimal, will get much slower over time and with large users list
-        Iterator<User> it = users.iterator();
+    public int insertUsers(List<UserBasic> users) { //Implementation is not optimal, will get much slower over time and with large users list
         String getIdWithMail = "SELECT id from User WHERE email=?";
         String insertUser = "INSERT INTO User (firstname, lastname, email, password) VALUES(?,?,?,?)";
         Integer id;
@@ -110,7 +115,6 @@ public class JdbcUserRepository implements UserRepository {
         return rowsAffected;
     }
 
-    Logger logger = LoggerFactory.getLogger(JdbcUserRepository.class);
 
     public void test(){
         String query = "SELECT id from User WHERE email='hei@paa.meg'";

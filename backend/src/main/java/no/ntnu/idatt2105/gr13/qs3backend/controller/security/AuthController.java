@@ -26,7 +26,7 @@ public class AuthController {
     public ResponseEntity<User> login(@RequestBody UserLogin user){
         try{
             User p = service.login(user);
-            logger.info("Logged in as: " + p.getLastName() + ", " + p.getFirstName());
+            logger.info("Logged in as: " + p.getLastname() + ", " + p.getFirstname());
             return new ResponseEntity<>(p, HttpStatus.ACCEPTED);
         }catch (Exception e){
             logger.info(e.getMessage());

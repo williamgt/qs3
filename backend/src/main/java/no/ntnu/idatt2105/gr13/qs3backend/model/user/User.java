@@ -5,49 +5,40 @@ public class User {
     private String lastname;
     private String email;
     private String password; //TODO need to look close on how to handle pswd
-    private String firstName;
-    private String lastName;
     private int id;
 
     public User(String email, String password, String firstName, String lastName, int id) {
         this.email = email;
         this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.firstname = firstName;
+        this.lastname = lastName;
         this.id = id;
     }
 
     public User(String email, String password, String firstName, String lastName) {
         this.email = email;
         this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.firstname = firstName;
+        this.lastname = lastName;
     }
 
     public User(String email, String firstName, String lastName) {
         this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.firstname = firstName;
+        this.lastname = lastName;
     }
 
-    public User(String email, String firstName, String lastName, int id) {
+    public User(String firstname, String lastname, String email, int id) {
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
         this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
 
     public User() {
     }

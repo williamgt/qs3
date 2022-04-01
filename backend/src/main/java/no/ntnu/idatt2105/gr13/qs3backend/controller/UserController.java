@@ -73,11 +73,15 @@ public class UserController {
     }
 
     @PostMapping("/insert")
-    public ResponseEntity<String> insertUsers(@RequestBody List<User> users) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> insertUsers(@RequestBody List<UserBasic> users) {
+        logger.info("User tries to register new users.");
         int rowsAffected = service.insertUsers(users);
         if(rowsAffected == 0) {
+            logger.info("No rows were affected.");
             return new ResponseEntity<>("No rows were added.", HttpStatus.OK);
         } else {
+            logger.info(rowsAffected+" rows were affected.");
             return new ResponseEntity<>("A total of "+rowsAffected+" users were created successfully.", HttpStatus.CREATED);
         }
     }
