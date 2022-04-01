@@ -1,16 +1,9 @@
 package no.ntnu.idatt2105.gr13.qs3backend.repository;
 
-import no.ntnu.idatt2105.gr13.qs3backend.model.user.User;
-import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserDB;
-import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserPerson;
-import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserPersonAll;
-import no.ntnu.idatt2105.gr13.qs3backend.util.FileHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import no.ntnu.idatt2105.gr13.qs3backend.model.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.IncorrectResultSetColumnCountException;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,19 +21,43 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public List<UserDB> findAll() {
+    public List<UserProtected> findAll() {
         return jdbcTemplate.query("SELECT * from User", (rs, rowNum) ->
-                new UserDB(
+                new UserProtected(
                         rs.getString("email"),
-                        "",
-                        rs.getInt("personId")
+                        rs.getString("firstname"),
+                        rs.getString("lastname")
+                ));
+    }
+
+    @Override
+    public User getUserDetails(UserLogin user){
+        System.out.println(user.getEmail());
+        return jdbcTemplate.queryForObject("SELECT * from User where User.email = ?", (rs, rowNum) ->
+                new User(
+                        rs.getString("email"),
+                        rs.getString("firstname"),
+                        rs.getString("lastname"),
+                        rs.getInt("id")
+                ),user.getEmail());
+    }
+
+    @Override
+    public List<User> findAllDetails() {
+        return jdbcTemplate.query("SELECT * from User", (rs, rowNum) ->
+                new User(
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("firstname"),
+                        rs.getString("lastname"),
+                        rs.getInt("id")
                 ));
     }
 
     @Override
     public UserPerson findById(long id) {
         try{
-            String query = "SELECT * from User, Person where User.personId = Person.id and User.personId = ?";
+            String query = "SELECT * from User where User.id = ?";
             UserPerson user = jdbcTemplate.queryForObject(query, (rs, rowNum) ->
                     new UserPerson(
                             rs.getString("email"),
@@ -55,16 +72,16 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public UserPersonAll findByIdAdmin(long id) {
+    public User findByIdAdmin(long id) {
         try{
-            String query = "SELECT * from User, Person where User.personId = Person.id and User.personId = ?";
-            UserPersonAll user = jdbcTemplate.queryForObject(query, (rs, rowNum) ->
-                    new UserPersonAll(
+            String query = "SELECT * from User where User.id = ?";
+            User user = jdbcTemplate.queryForObject(query, (rs, rowNum) ->
+                    new User(
                             rs.getString("email"),
+                            rs.getString("password"),
                             rs.getString("firstname"),
                             rs.getString("lastname"),
-                            rs.getInt("id"),
-                            rs.getString("password")
+                            rs.getInt("id")
                     ), id);
             return user;
         }catch (IncorrectResultSetColumnCountException e){
