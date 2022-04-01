@@ -114,8 +114,8 @@
                 :options="properSetAlternatives"
               ></BaseSelect>
             </div>
-            <p v-if="obligatoryError" class="error">{{obligatoryError}}</p>
           </div>
+          <p v-if="obligatoryError" class="error">{{obligatoryError}}</p>
 
           <div v-if="taskAmount > 0 && taskSetAmount === 1">
             <BaseSelect
@@ -124,6 +124,7 @@
               :options="properSetAlternatives"
             ></BaseSelect>
           </div>
+
         </fieldset>
         <button type="submit">Submit</button>
       </form>
@@ -156,8 +157,10 @@ export default {
       term: undefined,
       termError: "",
       teachersString: "",
+      teachers: [],
       teacherStringError: "",
       tasString: "",
+      tas: [],
       taStringError: "",
       csvFile: undefined,
       csvFileError: "",
@@ -215,6 +218,17 @@ export default {
               checked: false,
               id: i + " " + j,
             };
+          }
+        }
+      }
+    },
+    insertChosenTasksInArray() {
+      this.taskSetsChosenTasks = []; //Cleaning up if something in the array first
+      for(let i = 0; i < this.taskSetAmount; i++) {
+        this.taskSetsChosenTasks[i] = [];
+        for(let j = 0; j < this.taskAmount; j++) {
+          if(this.taskSets[i][j].checked){
+            this.taskSetsChosenTasks[i].push(this.taskSets[i][j]); //Adding only checked tasks to this list
           }
         }
       }
@@ -333,7 +347,7 @@ export default {
         for(let j = 0; j < this.taskAmount; j++){
           if(this.taskSets[i][j].checked === true) checkedPerTaskSet++;
         }
-        if(checkedPerTaskSet < this.obligatoryPerSet[i]){
+        if(checkedPerTaskSet < this.obligatoryPerSet[i] && this.taskSetAmount > 1){
           this.obligatoryError = "Can't have more obligatory tasks than checked tasks.";
           return false;
         }
@@ -357,8 +371,19 @@ export default {
           return false;
         } else if(teacherSplitRes.length === 0) {
           this.teacherStringError = "Teachers must be present.";
+          return false;
         } else {
           this.teacherStringError = "";
+        }
+        //Putting teachers into corresponding array
+        for (let i = 0; i < teacherSplitRes.length; i++) {
+          let teacherAtI = teacherSplitRes[i].split(","); //Guaranteed two commas per, no need to check again
+          this.teachers[i] =
+              {
+                firstname: teacherAtI[0],
+                lastname: teacherAtI[1],
+                email: teacherAtI[2]
+              }
         }
 
         //Handling teaching assistants
@@ -368,8 +393,19 @@ export default {
           return false;
         } else if (taSplitRes.length === 0) {
           this.taStringError = "Teaching assistants must be present.";
+          return false;
         } else {
-          this.teacherStringError = "";
+          this.taStringError = "";
+        }
+        //Putting tas into corresponding array
+        for (let i = 0; i < taSplitRes.length; i++) {
+          let taAtI = taSplitRes[i].split(","); //Guaranteed two commas per, no need to check again
+          this.tas[i] =
+              {
+                firstname: taAtI[0],
+                lastname: taAtI[1],
+                email: taAtI[2]
+              }
         }
 
         //Handling file
@@ -384,16 +420,36 @@ export default {
         //Handling obligatory tasks
         if(this.validateTaskAmount() && this.validateTaskSetAmount() && this.validateTaskSets() && this.validateObligatoryPerSet())
 
-        let course = {
-
-        }
         return true;
       }
     },
     registerCourse() {
+      console.log(this.validateTaskAmount());
+      console.log(this.validateTaskSetAmount());
+      console.log(this.validateTaskSets());
+      console.log(this.validateObligatoryPerSet());
+      this.insertChosenTasksInArray();
       if(this.validateEverything()){
+
+        let course = {
+          year: this.year,
+          term: this.term,
+          courseCode: this.courseCode,
+          courseName: this.courseName,
+          teachers: this.teachers,
+          tas: this.tas,
+          studentFile: this.csvFile,
+          obligatoryTaskAmount: this.taskAmount,
+          setOfTasks: this.taskSetAmount,
+          tasksInEachSet: this.taskSetsChosenTasks,
+          obligatoryPerSet: this.obligatoryPerSet
+        }
+
+        console.log(course);
         console.log("Registering course...");
         //Check every field, split teacher and ta string into arrays etc
+      } else {
+        console.log("NOT TRUE");
       }
     },
   },
