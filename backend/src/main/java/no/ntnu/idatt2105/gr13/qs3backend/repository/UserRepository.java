@@ -1,6 +1,7 @@
 package no.ntnu.idatt2105.gr13.qs3backend.repository;
 
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.*;
+import no.ntnu.idatt2105.gr13.qs3backend.model.user.basics.UserBasic;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,5 +19,5 @@ public interface UserRepository {
 
     User findByIdAdmin(long id);
 
-    int insertUsers(List<UserBasic> users);
+    int registerUsers(List<UserBasic> users);
 }

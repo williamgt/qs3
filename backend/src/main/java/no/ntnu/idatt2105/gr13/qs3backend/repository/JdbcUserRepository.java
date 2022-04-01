@@ -1,17 +1,18 @@
 package no.ntnu.idatt2105.gr13.qs3backend.repository;
 
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.*;
+import no.ntnu.idatt2105.gr13.qs3backend.model.user.basics.*;
 import no.ntnu.idatt2105.gr13.qs3backend.util.FileHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.IncorrectResultSetColumnCountException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Iterator;
 import java.util.List;
 @Repository
 public class JdbcUserRepository implements UserRepository {
@@ -97,7 +98,7 @@ public class JdbcUserRepository implements UserRepository {
 
     @Transactional
     @Override
-    public int insertUsers(List<UserBasic> users) { //Implementation is not optimal, will get much slower over time and with large users list
+    public int registerUsers(List<UserBasic> users) { //Implementation is not optimal, will get much slower over time and with large users list
         String getIdWithMail = "SELECT id from User WHERE email=?";
         String insertUser = "INSERT INTO User (firstname, lastname, email, password) VALUES(?,?,?,?)";
         Integer id;
@@ -105,7 +106,7 @@ public class JdbcUserRepository implements UserRepository {
 
         for(int i = 0; i < users.size(); i++) {
             try{
-                id = jdbcTemplate.queryForObject(getIdWithMail, Integer.class, users.get(i).getEmail());
+                id = jdbcTemplate.queryForObject(getIdWithMail, Integer.class, users.get(i).getEmail()); //Throws exception if no user has given mail
             }catch (EmptyResultDataAccessException e){
                 //Guaranteed no user is registered with given mail
                 rowsAffected += jdbcTemplate.update(insertUser,
@@ -115,10 +116,99 @@ public class JdbcUserRepository implements UserRepository {
         return rowsAffected;
     }
 
+    @Transactional
+    public int registerTeacherUsers(List<TeacherUserBasic> teacherUsers) { //Implementation is not optimal, will get much slower over time and with large users list
+        String getIdWithMail = "SELECT id from User WHERE email=?";
+        String insertUser = "INSERT INTO User (firstname, lastname, email, password) VALUES (?,?,?,?)";
+        String insertTeacherUser = "INSERT IGNORE INTO TeacherUser (id) VALUES (?)";
+        Integer id;
+        int rowsAffected = 0;
 
-    public void test(){
-        String query = "SELECT id from User WHERE email='hei@paa.meg'";
-        Integer id = jdbcTemplate.queryForObject(query, Integer.class);
-        logger.info("Id: "+String.valueOf(id));
+        for(int i = 0; i < teacherUsers.size(); i++) {
+            logger.info("Inserting user with email " + teacherUsers.get(i).getEmail());
+            try{
+                id = jdbcTemplate.queryForObject(getIdWithMail, Integer.class, teacherUsers.get(i).getEmail()); //Throws exception if no user has given mail
+                rowsAffected += jdbcTemplate.update(insertTeacherUser, id);
+            }catch (EmptyResultDataAccessException e){
+                //Guaranteed no user is registered with given mail, adding to both user and teacher
+                rowsAffected += jdbcTemplate.update(insertUser,
+                        new Object[] {teacherUsers.get(i).getFirstname(), teacherUsers.get(i).getLastname(), teacherUsers.get(i).getEmail(), FileHandler.getRandomPassword()});
+                id = jdbcTemplate.queryForObject(getIdWithMail, Integer.class, teacherUsers.get(i).getEmail());
+                rowsAffected += jdbcTemplate.update(insertTeacherUser, id);
+            }
+        }
+        return rowsAffected;
+    }
+
+    @Transactional
+    public int registerTAUsers(List<TAUserBasic> tAUsers) { //Implementation is not optimal, will get much slower over time and with large users list
+        String getIdWithMail = "SELECT id from User WHERE email=?";
+        String insertUser = "INSERT INTO User (firstname, lastname, email, password) VALUES (?,?,?,?)";
+        String insertTeacherUser = "INSERT IGNORE INTO TAUser (id) VALUES (?)";
+        Integer id;
+        int rowsAffected = 0;
+
+        for(int i = 0; i < tAUsers.size(); i++) {
+            logger.info("Inserting user with email " + tAUsers.get(i).getEmail());
+            try{
+                id = jdbcTemplate.queryForObject(getIdWithMail, Integer.class, tAUsers.get(i).getEmail()); //Throws exception if no user has given mail
+                rowsAffected += jdbcTemplate.update(insertTeacherUser, id);
+            }catch (EmptyResultDataAccessException e){
+                //Guaranteed no user is registered with given mail, adding to both user and teacher
+                rowsAffected += jdbcTemplate.update(insertUser,
+                        new Object[] {tAUsers.get(i).getFirstname(), tAUsers.get(i).getLastname(), tAUsers.get(i).getEmail(), FileHandler.getRandomPassword()});
+                id = jdbcTemplate.queryForObject(getIdWithMail, Integer.class, tAUsers.get(i).getEmail());
+                rowsAffected += jdbcTemplate.update(insertTeacherUser, id);
+            }
+        }
+        return rowsAffected;
+    }
+
+    @Transactional
+    public int registerStudentUsers(List<StudentUserBasic> studentUsers) { //Implementation is not optimal, will get much slower over time and with large users list
+        String getIdWithMail = "SELECT id from User WHERE email=?";
+        String insertUser = "INSERT INTO User (firstname, lastname, email, password) VALUES (?,?,?,?)";
+        String insertTeacherUser = "INSERT IGNORE INTO StudentUser (id) VALUES (?)";
+        Integer id;
+        int rowsAffected = 0;
+
+        for(int i = 0; i < studentUsers.size(); i++) {
+            logger.info("Inserting user with email " + studentUsers.get(i).getEmail());
+            try{
+                id = jdbcTemplate.queryForObject(getIdWithMail, Integer.class, studentUsers.get(i).getEmail()); //Throws exception if no user has given mail
+                rowsAffected += jdbcTemplate.update(insertTeacherUser, id);
+            }catch (EmptyResultDataAccessException e){
+                //Guaranteed no user is registered with given mail, adding to both user and teacher
+                rowsAffected += jdbcTemplate.update(insertUser,
+                        new Object[] {studentUsers.get(i).getFirstname(), studentUsers.get(i).getLastname(), studentUsers.get(i).getEmail(), FileHandler.getRandomPassword()});
+                id = jdbcTemplate.queryForObject(getIdWithMail, Integer.class, studentUsers.get(i).getEmail());
+                rowsAffected += jdbcTemplate.update(insertTeacherUser, id);
+            }
+        }
+        return rowsAffected;
+    }
+
+    @Transactional
+    public int registerAdminUsers(List<AdminUserBasic> adminUsers) { //Implementation is not optimal, will get much slower over time and with large users list
+        String getIdWithMail = "SELECT id from User WHERE email=?";
+        String insertUser = "INSERT INTO User (firstname, lastname, email, password) VALUES (?,?,?,?)";
+        String insertTeacherUser = "INSERT IGNORE INTO AdminUser (id) VALUES (?)";
+        Integer id;
+        int rowsAffected = 0;
+
+        for(int i = 0; i < adminUsers.size(); i++) {
+            logger.info("Inserting user with email " + adminUsers.get(i).getEmail());
+            try{
+                id = jdbcTemplate.queryForObject(getIdWithMail, Integer.class, adminUsers.get(i).getEmail()); //Throws exception if no user has given mail
+                rowsAffected += jdbcTemplate.update(insertTeacherUser, id);
+            }catch (EmptyResultDataAccessException e){
+                //Guaranteed no user is registered with given mail, adding to both user and teacher
+                rowsAffected += jdbcTemplate.update(insertUser,
+                        new Object[] {adminUsers.get(i).getFirstname(), adminUsers.get(i).getLastname(), adminUsers.get(i).getEmail(), FileHandler.getRandomPassword()});
+                id = jdbcTemplate.queryForObject(getIdWithMail, Integer.class, adminUsers.get(i).getEmail());
+                rowsAffected += jdbcTemplate.update(insertTeacherUser, id);
+            }
+        }
+        return rowsAffected;
     }
 }
