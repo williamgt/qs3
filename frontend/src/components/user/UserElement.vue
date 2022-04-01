@@ -3,8 +3,8 @@
     <div class="grid-container">
       <div class="grid-item">{{ user.id }}</div>
       <div class="grid-item">{{ user.email }}</div>
-      <div class="grid-item">{{ user.firstName }}</div>
-      <div class="grid-item">{{ user.lastName }}</div>
+      <div class="grid-item">{{ user.firstname }}</div>
+      <div class="grid-item">{{ user.lastname }}</div>
       <div class="grid-item">{{ user.password }}</div>
     </div>
   </router-link>

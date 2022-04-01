@@ -1,13 +1,13 @@
 <template>
-$END$
+  <edit-user-prot></edit-user-prot>
 </template>
 
 <script>
+import EditUserProt from "@/components/user/EditUserProt";
 export default {
-name: "SettingsPage"
-}
+  name: "SettingsPage",
+  components: { EditUserProt },
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

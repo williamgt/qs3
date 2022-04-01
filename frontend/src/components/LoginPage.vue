@@ -37,6 +37,8 @@
 <script>
 import BaseInput from "../input-components/BaseInput";
 import doLogin from "../api/LoginAPI";
+import { getRole } from "@/services/authService";
+import hasAdminAccess, { hasTAAccess, hasTeacherAccess } from "@/api/AuthAPI";
 
 export default {
   name: "LoginPage",
@@ -46,7 +48,7 @@ export default {
   data() {
     return {
       userLogin: {
-        email: "william@123.com",
+        email: "olav@123.com",
         password: "123",
       },
       error: "",
@@ -66,6 +68,29 @@ export default {
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       );
     },
+  },
+  // eslint-disable-next-line no-unused-vars
+  beforeRouteLeave(to, from) {
+    getRole(this.$store.state.personLoggedIn)
+      .then((response) => {
+        this.$store.dispatch("setRole", response.data);
+        console.log(this.$store.state.auth.role);
+        if (hasAdminAccess(response.data))
+          this.$store.dispatch("setNavbar", this.$store.state.navbar.admin);
+        else if (hasTeacherAccess(response.data)) {
+          //TODO
+        } else if (hasTAAccess(response.data)) {
+          //TODO
+        } else {
+          this.$store.dispatch(
+            "setNavbar",
+            this.$store.state.navbar.student.navbarElements
+          );
+        }
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
   },
 };
 </script>

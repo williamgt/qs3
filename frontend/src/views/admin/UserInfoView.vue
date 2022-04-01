@@ -1,25 +1,42 @@
 <template>
   <user-info :user="user"></user-info>
-  <button></button>
+  <button @click="deleteUser">Delete</button>
+  <button @click="toEdit">Edit</button>
 </template>
 
 <script>
 import UserInfo from "@/components/admin/allUsers/UserInfo";
-import { getUser } from "@/services/userService";
+import { deleteUser, getUser } from "@/services/userService";
 
 export default {
   name: "UserInfoView",
   components: { UserInfo },
   data() {
     return {
-      user: {
-        type: Object,
-      },
+      user: undefined,
     };
   },
-  created() {
-    const id = this.$route.params.id;
-    getUser(id).then((response) => {
+  methods: {
+    toEdit() {
+      this.$router.push({ name: "UserInfoEdit", params: this.user.id });
+    },
+    deleteUser() {
+      if (
+        confirm("Do you really want to delete user: " + this.user.email + "?")
+      ) {
+        deleteUser(this.user)
+          .then(() => {
+            this.$router.push({ path: "/users" });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    },
+  },
+  async created() {
+    console.log(this.$route.params);
+    this.user = getUser(this.$route.params.id).then((response) => {
       this.user = response.data;
     });
   },

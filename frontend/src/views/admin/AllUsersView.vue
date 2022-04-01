@@ -46,15 +46,17 @@ export default {
       .catch((error) => {
         console.log(error);
         console.log(error.response.data);
-        if (error.response.data.status === 403) {
-          this.$router.push("/401");
-          return;
+        if (
+          error.response.data.status === 403 ||
+          error.response.data.status === 401
+        ) {
+          ///return this.$router.push({ path: "/401" });
         }
         if (error.response.data.status === 404) {
-          this.$router.push("/404");
-          return;
+          //this.$router.push({ path: "/404", params: 123 });
+          //return;
         }
-        this.$router.push("/network-error");
+        //this.$router.push("/network-error");
       });
   },
 };

@@ -1,5 +1,5 @@
 <template>
-  <label v-if="label">{{ label }}</label>
+  <label v-if="label && !disableLabel">{{ label }}</label>
   <input
     v-bind="$attrs"
     :type="type"
@@ -33,6 +33,10 @@ export default {
     type: {
       type: String,
       default: "text",
+    },
+    disableLabel: {
+      type: Boolean,
+      default: false,
     },
   },
   /*  setup () {

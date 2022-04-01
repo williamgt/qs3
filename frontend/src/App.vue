@@ -110,11 +110,18 @@ export default {
   components: { NavigationBar },
   data() {
     return {
-      navbarElements: this.$store.state.navbar.student.navbarElements,
+      navbarElements: this.$store.state.navbar.current,
     };
   },
   beforeCreate() {
     document.querySelector("body").setAttribute("style", "margin:0px");
+  },
+  created() {
+    if (this.$store.state.auth.admin) {
+      this.navbarElements = this.$store.state.navbar.admin.navbarElements;
+      return;
+    }
+    this.navbarElements = this.$store.state.navbar.student.navbarElements;
   },
 };
 </script>

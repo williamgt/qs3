@@ -14,7 +14,12 @@ import homeAdminView from "@/views/admin/HomeAdminView";
 import CourseRegistration from "../components/admin/CourseRegistration";
 import AllUsersView from "@/views/admin/AllUsersView";
 import AllUsersDetailsView from "@/views/admin/AllUsersDetailsView";
+import EditUserAdminView from "@/views/admin/EditUserAdminView";
+import UserViewLayout from "@/views/admin/UserViewLayout";
+import Test from "@/views/admin/Test";
 import UserInfoView from "@/views/admin/UserInfoView";
+import SettingsView from "@/views/user/SettingsView";
+import hasAdminAccess from "@/api/AuthAPI";
 
 const routes = [
   {
@@ -47,14 +52,6 @@ const routes = [
     ],
   },
   {
-    path: "/users/user/:id",
-    name: "User",
-    component: UserInfoView,
-    meta: {
-      requiresLogin: true,
-    },
-  },
-  {
     path: "/:catchAll(.*)",
     name: "NotFound",
     component: NotFound,
@@ -63,7 +60,6 @@ const routes = [
     path: "/404/:resource",
     name: "404Resource",
     component: NotFound,
-    props: true,
   },
   {
     path: "/network-error",
@@ -74,6 +70,9 @@ const routes = [
     path: "/401",
     name: "NotAuthorized",
     component: NotAuthorized,
+    beforeEnter: (to, from, next) => {
+      return next();
+    },
   },
   {
     path: "/login",
@@ -118,8 +117,47 @@ const routes = [
     path: "/users",
     name: "AllUsers",
     component: AllUsersView,
+    props: true,
     meta: {
       requiresLogin: true,
+      requiresAdmin: true,
+    },
+  },
+  {
+    path: "/dusers/user/:id",
+    name: "Userssd",
+    component: UserViewLayout,
+    children: [
+      {
+        path: "",
+        name: "UserInfoVsadiew",
+        component: Test,
+      },
+    ],
+  },
+  {
+    path: "/users/user/:id",
+    name: "User",
+    component: UserInfoView,
+    meta: {
+      requiresLogin: true,
+    },
+  },
+  {
+    path: "/settings",
+    name: "Settings",
+    component: SettingsView,
+    meta: {
+      requiresLogin: true,
+    },
+  },
+  {
+    path: "/users/user/:id/edit",
+    name: "UserInfoEdit",
+    component: EditUserAdminView,
+    meta: {
+      requiresLogin: true,
+      requiresAdmin: true,
     },
   },
   {
@@ -128,6 +166,7 @@ const routes = [
     component: AllUsersDetailsView,
     meta: {
       requiresLogin: true,
+      requiresAdmin: true,
     },
   },
 ];
@@ -141,12 +180,18 @@ router.beforeEach((to, from, next) => {
   NProgress.start();
   console.log(store.state.personLoggedIn);
   if (to.matched.some((record) => record.meta.requiresLogin)) {
+    console.log(store.state.personLoggedIn);
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     if (store.state.personLoggedIn === undefined) {
       return next({ name: "Login" });
-    } else {
-      return next(); // go to wherever I'm going
+    }
+  }
+  if (to.matched.some((record) => record.meta.requiresAdmin)) {
+    console.log("here");
+    if (!hasAdminAccess(store.state.auth.role)) {
+      console.log("Here");
+      return next({ path: "/401" });
     }
   }
   return next();

@@ -1,7 +1,7 @@
 <template>
   <base-display label="ID" :message="user.id"></base-display>
-  <base-display label="First name" :message="user.firstName"></base-display>
-  <base-display label="Last name" :message="user.lastName"></base-display>
+  <base-display label="First name" :message="user.firstname"></base-display>
+  <base-display label="Last name" :message="user.lastname"></base-display>
   <base-display label="Email" :message="user.email"></base-display>
   <base-display label="Password" :message="user.password"></base-display>
 </template>

@@ -10,13 +10,19 @@ export default createStore({
           { name: "Log out", path: "/logout" },
         ],
       },
+      admin: [
+        { name: "Courses", path: "/courses" },
+        { name: "All Users", path: "/users" },
+        { name: "Settings", path: "/settings" },
+        { name: "Log out", path: "/logout" },
+      ],
+      current: undefined,
     },
     auth: {
       token: "",
+      role: "",
     },
-    admin: {
-      currentUserViewed: undefined,
-    },
+    admin: {},
     personLoggedIn: undefined,
   },
   getters: {},
@@ -27,6 +33,15 @@ export default createStore({
     SET_LOGIN(state, person) {
       state.personLoggedIn = person;
     },
+    SET_ADMIN_STATUS(state, status) {
+      state.auth.admin = status;
+    },
+    SET_NAVBAR(state, status) {
+      state.navbar.current = status;
+    },
+    SET_ROLE(state, role) {
+      state.auth.role = role;
+    },
   },
   actions: {
     setToken({ commit }, token) {
@@ -34,6 +49,15 @@ export default createStore({
     },
     setLogin({ commit }, token) {
       return commit("SET_LOGIN", token);
+    },
+    setAdminStatus({ commit }, status) {
+      return commit("SET_ADMIN_STATUS", status);
+    },
+    setNavbar({ commit }, status) {
+      return commit("SET_NAVBAR", status);
+    },
+    setRole({ commit }, role) {
+      return commit("SET_ROLE", role);
     },
   },
   modules: {},

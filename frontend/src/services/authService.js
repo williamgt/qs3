@@ -14,3 +14,10 @@ export function login(loginRequest) {
   };
   return axios.post("http://localhost:8085/login", loginRequest, config);
 }
+
+export function getRole(user) {
+  const config = {
+    headers: { Authorization: `Bearer ${store.state.auth.token}` },
+  };
+  return axios.post("http://localhost:8085/getRole", user, config);
+}
