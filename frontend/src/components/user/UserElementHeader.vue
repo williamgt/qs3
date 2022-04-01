@@ -17,8 +17,7 @@ export default {
 <style scoped>
 .grid-container {
   display: grid;
-  grid-template-columns: auto auto auto auto auto;
-  padding: 10px;
+  grid-template-columns: 20% 20% 20% 20% 20%;
   background-color: grey;
   width: 100%;
 }

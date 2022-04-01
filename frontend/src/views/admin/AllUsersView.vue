@@ -17,22 +17,6 @@ export default {
       error: null,
     };
   },
-  // beforeRouteEnter(to, from, next) {
-  //   getAllUsers((err, users) => {
-  //     next((vm) => vm.setData(err, users));
-  //   });
-  // },
-  // // when route changes and this component is already rendered,
-  // // the logic will be slightly different.
-  // // eslint-disable-next-line no-unused-vars
-  // async beforeRouteUpdate(to, from) {
-  //   this.users = null;
-  //   try {
-  //     this.users = await getAllUsers();
-  //   } catch (error) {
-  //     this.error = error.toString();
-  //   }
-  // },
   methods: {
     test() {
       getUsers();

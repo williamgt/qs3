@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{ name: 'User', params: { id: user.id } }" class="link">
+  <router-link :to="'/users/user/' + this.user.id" class="link">
     <div class="grid-container">
       <div class="grid-item">{{ user.id }}</div>
       <div class="grid-item">{{ user.email }}</div>
@@ -49,7 +49,7 @@ link {
 }
 .grid-container {
   display: grid;
-  grid-template-columns: auto auto auto auto auto;
+  grid-template-columns: 20% 20% 20% 20% 20%;
   width: 100%;
 }
 .grid-item {

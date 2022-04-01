@@ -1,5 +1,5 @@
 <template>
-  <!--  <user-element-header></user-element-header>-->
+  <user-element-header id="header"></user-element-header>
   <user-element
     v-for="user in users"
     :user="user"
@@ -20,6 +20,7 @@ export default {
       required: true,
     },
   },
+  beforeRouteLeave() {},
 };
 </script>
 
