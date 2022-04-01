@@ -17,4 +17,6 @@ public interface UserRepository {
     UserPerson findById(long id);
 
     User findByIdAdmin(long id);
+    Boolean updateUser(User user);
+    Boolean deleteUser(int id);
 }

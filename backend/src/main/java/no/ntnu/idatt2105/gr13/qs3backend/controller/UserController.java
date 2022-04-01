@@ -40,7 +40,7 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    @PreAuthorize("hasRole('ADMIN')  or @methodSecService.isTargetUser(#id)")
+    @PreAuthorize("hasRole('ADMIN') or @methodSecService.isTargetUser(#id)")
     public ResponseEntity<UserPerson> getUserById(@PathVariable("id") long id) {
         UserPerson user = service.findById(id);
         if (user != null) {
@@ -65,5 +65,34 @@ public class UserController {
     public ArrayList<RegisterStudent> generateToken(@RequestParam("file")MultipartFile file) throws Exception {
         logger.info("Yes");
         return FileHandler.getArrayList(file);
+    }
+
+    @PutMapping("/user/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Boolean> updateUser(@PathVariable("id") long id, @RequestBody User user){
+        logger.info("Hit here");
+        logger.info(user.getFirstname());
+        logger.info(user.getLastname());
+        logger.info(user.getPassword());
+        logger.info(user.getEmail());
+        logger.info(String.valueOf(user.getId()));
+        if(service.updateUser(user)){
+            logger.info("True");
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        }
+        logger.info("False");
+        return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+    }
+
+    @DeleteMapping("/user/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Boolean> deleteUser(@PathVariable("id") long id){
+        User user = service.findByIdAdmin(id);
+        if(service.deleteUser((int) id)){
+            logger.info("User: " + user.toString() + " deleted");
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        }
+        logger.info("Error deleting user: " + user.toString());
+        return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
     }
 }

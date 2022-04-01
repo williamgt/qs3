@@ -33,4 +33,12 @@ public class UserService {
         User user = userRepository.findByIdAdmin(id);
         return user;
     }
+
+    public Boolean updateUser(User user){
+        return userRepository.updateUser(user);
+    }
+
+    public boolean deleteUser(int id){
+        return userRepository.deleteUser(id);
+    }
 }

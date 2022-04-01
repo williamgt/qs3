@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.IncorrectResultSetColumnCountException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 @Repository
@@ -83,6 +84,42 @@ public class JdbcUserRepository implements UserRepository {
             return user;
         }catch (IncorrectResultSetColumnCountException e){
             return null;
+        }
+    }
+
+    @Transactional
+    @Override
+    public Boolean updateUser(User user) {
+        try{
+            String query = "UPDATE User SET firstname=?, lastname=?, password=? where id=?";
+            Object[] args = { user.getFirstname(), user.getLastname(), user.getPassword(), user.getId() };
+            int rowsAffected = jdbcTemplate.update(query,args);
+            if(rowsAffected == 1){
+                return true;
+            }
+            System.out.println(rowsAffected);
+            return false;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    @Transactional
+    @Override
+    public Boolean deleteUser(int id) {
+        try{
+            String query = "DELETE FROM User WHERE id=?";
+            Object[] args = { id};
+            int rowsAffected = jdbcTemplate.update(query,args);
+            if(rowsAffected == 1){
+                return true;
+            }
+            System.out.println(rowsAffected);
+            return false;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
         }
     }
 }

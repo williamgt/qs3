@@ -25,4 +25,8 @@ public class AuthService {
     public Role getRole(User user){
         return repository.getUserWithRole(user);
     };
+
+    public Role getRoleNotProt(User user){
+        return repository.getRoleOfUser(user);
+    }
 }

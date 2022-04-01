@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface AuthRepository {
     Role getUserWithRole(User user);
 
+    Role getRoleOfUser(User user);
 }

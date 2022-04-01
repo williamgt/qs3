@@ -3,11 +3,9 @@ package no.ntnu.idatt2105.gr13.qs3backend.repository.security;
 import no.ntnu.idatt2105.gr13.qs3backend.model.security.Role;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.User;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserDB;
-import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.IncorrectResultSetColumnCountException;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -37,6 +35,30 @@ public class JdbcAuthRepository implements AuthRepository{
             if(!((userdb = isAdmin(user)) == null)){
                 if(user.getPassword().equals(userdb.getPassword()))
                     return Role.ADMIN;
+            }
+            return Role.UNDEFINED;
+        }catch (IncorrectResultSetColumnCountException  | EmptyResultDataAccessException e){
+            System.out.println("HERE");
+            return Role.UNDEFINED;
+        }
+    }
+
+    @Override
+    public Role getRoleOfUser(User user) {
+        try{
+            UserDB userdb;
+
+            if(!((userdb = isStudent(user)) == null)){
+                return Role.STUDENT;
+            }
+            if(!((userdb = isTeacher(user)) == null)){
+                return Role.TEACHER;
+            }
+            if(!((userdb = isTA(user)) == null)){
+                return Role.TA;
+            }
+            if(!((userdb = isAdmin(user)) == null)){
+                return Role.ADMIN;
             }
             return Role.UNDEFINED;
         }catch (IncorrectResultSetColumnCountException  | EmptyResultDataAccessException e){
