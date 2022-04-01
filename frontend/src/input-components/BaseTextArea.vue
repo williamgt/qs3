@@ -8,7 +8,7 @@
       @input="$emit('update:modelValue', $event.target.value)"
       class="field"
     />
-    <base-error-message v-if="error" :id="`${uuid}-error`">
+    <base-error-message v-if="error" :id="`${uuid}-error`" class="errorMessage">
       {{ error }}
     </base-error-message>
   </div>
@@ -62,5 +62,8 @@ textarea {
   margin-left: 10px;
   margin-right: 10px;
   width: 80%;
+}
+.errorMessage {
+  color: red;
 }
 </style>

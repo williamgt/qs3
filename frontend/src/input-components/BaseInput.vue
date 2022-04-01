@@ -44,4 +44,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.errorMessage {
+  color: red;
+}
+</style>

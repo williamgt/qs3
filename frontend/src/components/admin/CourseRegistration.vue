@@ -8,31 +8,45 @@
         <fieldset>
           <legend>Course information</legend>
           <div class="course-name">
-            <BaseInput label="Name" v-model="courseName"></BaseInput>
+            <BaseInput
+              label="Name"
+              v-model="courseName"
+              :error="courseNameError"
+            ></BaseInput>
           </div>
           <div class="course-code">
-            <BaseInput label="Code" v-model="courseCode"></BaseInput>
+            <BaseInput
+              label="Code"
+              v-model="courseCode"
+              :error="courseCodeError"
+            ></BaseInput>
           </div>
           <div class="course-year">
-            <BaseInput label="Year" v-model.number="year"></BaseInput>
+            <BaseInput
+              label="Year"
+              v-model.number="year"
+              :error="yearError"
+            ></BaseInput>
           </div>
           <div class="course-term">
-            <BaseInput label="Term" v-model.number="term"></BaseInput>
+            <BaseInput
+              label="Term"
+              v-model.number="term"
+              :error="termError"
+            ></BaseInput>
           </div>
         </fieldset>
 
         <fieldset>
           <legend>Teachers and teaching assistants</legend>
           <div class="information">
-            <h4>
-              Please separate the names in the two following fields with ','
-            </h4>
             <h4>Format the names like this: 'firstname, lastname, email\n'.</h4>
           </div>
           <div class="teacher-input">
             <BaseTextArea
               label="Register teachers"
               v-model="teachersString"
+              :error="teacherStringError"
             ></BaseTextArea>
           </div>
           <div class="teacher-assistant-input">
@@ -56,6 +70,7 @@
               accept="text/csv"
               @change="fileUploaded($event)"
             />
+            <p v-if="csvFileError" class="error">{{csvFileError}}</p>
           </div>
         </fieldset>
 
@@ -66,14 +81,15 @@
             v-model.number="taskAmount"
             :options="taskAlternatives"
             @click="updateTasks"
+            :error="taskAmountError"
           ></BaseSelect>
           <BaseSelect
             v-if="taskAmount > 0"
             label="How many sets of tasks?"
             v-model.number="taskSetAmount"
             :options="properSetAlternatives"
-            :error="taskSetError"
-            @click="validateSetAmount"
+            :error="taskSetAmountError"
+            @click="updateSetAmount"
           ></BaseSelect>
           <div v-if="taskAmount > 0 && taskSetAmount > 1">
             <label>Which tasks are in each set?</label>
@@ -86,17 +102,19 @@
                 ></BaseCheckbox>
               </div>
             </div>
+            <p v-if="taskSetsError" class="error">{{taskSetsError}}</p>
           </div>
 
           <div v-if="taskAmount > 0 && taskSetAmount > 1">
             <label>How many tasks per set to be valid?</label>
             <div v-for="(set, index) in taskSets" :key="index">
               <BaseSelect
-                :label="'Set ' + index"
+                :label="'Set ' + (index+1)"
                 v-model.number="obligatoryPerSet[index]"
                 :options="properSetAlternatives"
               ></BaseSelect>
             </div>
+            <p v-if="obligatoryError" class="error">{{obligatoryError}}</p>
           </div>
 
           <div v-if="taskAmount > 0 && taskSetAmount === 1">
@@ -130,19 +148,29 @@ export default {
   data() {
     return {
       courseName: "",
+      courseNameError: "",
       courseCode: "",
+      courseCodeError: "",
       year: undefined,
+      yearError: "",
       term: undefined,
+      termError: "",
       teachersString: "",
+      teacherStringError: "",
       tasString: "",
-      csvFile: "PLACEHOLDER",
+      taStringError: "",
+      csvFile: undefined,
+      csvFileError: "",
       tasks: [],
       taskSets: [],
+      taskSetsError: "",
       taskSetsChosenTasks: [],
       obligatoryPerSet: [],
+      obligatoryError: "",
       taskAmount: 0,
+      taskAmountError: "",
       taskSetAmount: 0,
-      taskSetError: "",
+      taskSetAmountError: "",
       taskAlternatives: [
         0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
         20,
@@ -153,7 +181,7 @@ export default {
   methods: {
     //https://serversideup.net/uploading-files-vuejs-axios/
     fileUploaded(event) {
-      console.log(event.target.files[0]);
+      this.csvFileError = "";
       this.csvFile = event.target.files[0];
     },
     updateTasks() {
@@ -169,14 +197,14 @@ export default {
         this.taskAmount + 1
       );
     },
-    validateSetAmount() {
+    updateSetAmount() {
       if (this.taskSetAmount > this.taskAmount) {
         //alert("The amount of sets cannot exceed the amount of tasks."); //Does not work properly
-        this.taskSetError =
+        this.taskSetAmountError =
           "The amount of sets cannot exceed the amount of tasks.";
         this.taskSets = [];
       } else {
-        this.taskSetError = "";
+        this.taskSetAmountError = "";
         this.taskSets = [];
         this.obligatoryPerSet = [];
         for (let i = 0; i < this.taskSetAmount; i++) {
@@ -191,9 +219,182 @@ export default {
         }
       }
     },
+    validateCourseName() {
+      if (this.courseName.trim() === "") {
+        this.courseNameError = "Course name can't be empty.";
+        return false;
+      } else if (this.courseName.length > 60) {
+        this.courseNameError =
+          "Course name can't be longer than 60 characters.";
+        return false;
+      } else {
+        this.courseNameError = "";
+        return true;
+      }
+    },
+    validateCourseCode() {
+      if (this.courseCode.length > 10) {
+        this.courseCodeError =
+          "Course code can't be longer than 10 characters.";
+        return false;
+      } else if (this.courseCode.trim() === "") {
+        this.courseCodeError = "Course code must be given";
+        return false;
+      } else {
+        this.courseCodeError = "";
+        return true;
+      }
+    },
+    validateYear() {
+      if (this.year < 1000 || this.year > 9999) {
+        this.yearError = "Year must be 4 digits";
+        return false;
+      } else if (isNaN(this.year)) {
+        this.yearError = "Year must be a number";
+      } else {
+        this.yearError = "";
+        return true;
+      }
+    },
+    validateTerm() {
+      if (this.term !== 1 && this.term !== 2) {
+        this.termError = "Term must be either 1 or 2";
+        return false;
+      } else if (isNaN(this.term)) {
+        this.termError = "Term must be a number";
+      } else {
+        this.termError = "";
+        return true;
+      }
+    },
+    splitAndValidateTextArea(input) {
+      let inputArray = input.trim().split('\n');
+      for(let i = 0; i < inputArray.length; i++) {
+        let commasInLine = (inputArray[i].match(/,/g) || []).length; //Need two commas in each line
+        if(commasInLine !== 2) return "Formatting is wrong";
+      }
+      return inputArray;
+    },
+    validateTaskAmount() {
+      if(this.taskAmount == 0) {
+        this.taskAmountError = "A course must have 1 or more tasks.";
+        return false;
+      } else {
+        this.taskAmountError = "";
+        return true;
+      }
+    },
+    validateTaskSetAmount() {
+      if(this.taskSetAmount === 0) {
+        this.taskSetAmountError = "A course must have 1 or more task sets.";
+        return false;
+      } else {
+        this.taskSetAmountError = "";
+        return true;
+      }
+    },
+    validateTaskSets() {
+      //No need to validate if only one set
+      if(this.taskSets.length === 1) return true;
+      //Validating that no tasks overlap
+      let checkedTasks = new Array(this.taskAmount).fill(false);
+      for(let i = 0; i < this.taskSetAmount; i++){
+        for(let j =  0; j < this.taskAmount; j++){
+          if(checkedTasks[j] === true && this.taskSets[i][j].checked === true){
+            this.taskSetsError = "Some of the tasks in each set overlap.";
+            return false;
+          } else if(this.taskSets[i][j].checked === true) {
+            checkedTasks[j] = true;
+          }
+        }
+      }
+      //Validating that all tasks are checked
+      if(!checkedTasks.every(e => e === true)){
+        this.taskSetsError = "Not every task is checked.";
+        return false;
+      }
+      this.taskSetsError = "";
+      return true;
+    },
+    validateObligatoryPerSet() {
+      let obligatoryTotal = this.obligatoryPerSet.reduce(function (a,b) {
+        return a + b;
+      }, 0);
+      if(obligatoryTotal > this.taskAmount) {
+        this.obligatoryError = "Total amount of obligatory tasks can't exceed amount of tasks.";
+        return false;
+      }
+      if(obligatoryTotal < this.taskSetAmount) {
+        this.obligatoryError = "Must be at least one obligatory task per set.";
+        return false;
+      }
+      for(let i = 0; i < this.taskSetAmount; i++){
+        let checkedPerTaskSet = 0;
+        for(let j = 0; j < this.taskAmount; j++){
+          if(this.taskSets[i][j].checked === true) checkedPerTaskSet++;
+        }
+        if(checkedPerTaskSet < this.obligatoryPerSet[i]){
+          this.obligatoryError = "Can't have more obligatory tasks than checked tasks.";
+          return false;
+        }
+      }
+
+      this.obligatoryError = "";
+      return true;
+    },
+    validateEverything() {
+      //Handling course information
+      if (
+          this.validateCourseName() &&
+          this.validateCourseCode() &&
+          this.validateYear() &&
+          this.validateTerm()
+      ) {
+        //Handling teachers
+        let teacherSplitRes = this.splitAndValidateTextArea(this.teachersString);
+        if(typeof teacherSplitRes === "string") {
+          this.teacherStringError = teacherSplitRes;
+          return false;
+        } else if(teacherSplitRes.length === 0) {
+          this.teacherStringError = "Teachers must be present.";
+        } else {
+          this.teacherStringError = "";
+        }
+
+        //Handling teaching assistants
+        let taSplitRes = this.splitAndValidateTextArea(this.tasString);
+        if(typeof taSplitRes === "string") {
+          this.teacherStringError = taSplitRes;
+          return false;
+        } else if (taSplitRes.length === 0) {
+          this.taStringError = "Teaching assistants must be present.";
+        } else {
+          this.teacherStringError = "";
+        }
+
+        //Handling file
+        console.log(this.csvFile); //TODO NEED TO DO SOMETHING ABOUT THIS
+        if(this.csvFile === undefined) {
+          this.csvFileError = "A csv file must be uploaded";
+          return false;
+        } else {
+          this.csvFileError = "";
+        }
+
+        //Handling obligatory tasks
+        if(this.validateTaskAmount() && this.validateTaskSetAmount() && this.validateTaskSets() && this.validateObligatoryPerSet())
+
+        let course = {
+
+        }
+        return true;
+      }
+    },
     registerCourse() {
-      //Check every field, split teacher and ta string into arrays etc
-      console.log("Registering course...");
+      if(this.validateEverything()){
+        console.log("Registering course...");
+        //Check every field, split teacher and ta string into arrays etc
+      }
     },
   },
   computed: {
@@ -211,4 +412,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.error {
+  color: red;
+}
+</style>
