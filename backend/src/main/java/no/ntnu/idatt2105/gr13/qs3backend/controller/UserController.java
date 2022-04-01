@@ -68,11 +68,6 @@ public class UserController {
         return FileHandler.getArrayList(file);
     }
 
-    @GetMapping("/testtest")
-    public void test() {
-        service.test();
-    }
-
     /**
      * Takes a list of UserBasic and registers them in User table if they are not already registered.
      * A UserBasic has firstname, lastname and email.
@@ -123,7 +118,7 @@ public class UserController {
      * @return amount of rows affected
      */
     @PostMapping("/insert-tas")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
     public ResponseEntity<String> registerTAUsers(@RequestBody List<TAUserBasic> taUsers) {
         logger.info("User tries to register new teachers.");
         int rowsAffected = service.registerTAUsers(taUsers);
@@ -144,7 +139,7 @@ public class UserController {
      * @return amount of rows affected
      */
     @PostMapping("/insert-students")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
     public ResponseEntity<String> registerStudentUsers(@RequestBody List<StudentUserBasic> studentUsers) {
         logger.info("User tries to register new teachers.");
         int rowsAffected = service.registerStudentUsers(studentUsers);

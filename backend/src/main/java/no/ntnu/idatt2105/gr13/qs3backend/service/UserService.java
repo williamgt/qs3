@@ -56,10 +56,6 @@ public class UserService {
         return userRepository.registerStudentUsers(studentUsers);
     }
 
-    public void test(){
-        userRepository.test();
-    }
-
     public int registerAdminUsers(List<AdminUserBasic> adminUsers) {
         return userRepository.registerAdminUsers(adminUsers);
     }
