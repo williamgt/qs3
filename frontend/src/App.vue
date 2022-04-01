@@ -104,6 +104,20 @@ button.-icon-center {
 .button-decline {
   background-color: orangered;
 }
+.login-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 52px;
+  padding: 0 40px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.2s linear;
+}
 </style>
 <script>
 import NavigationBar from "@/components/global/NavigationBar";

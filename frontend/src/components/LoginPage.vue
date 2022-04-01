@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div class="title">
-      <h1>QS</h1>
+      <h1 class="header">Login</h1>
     </div>
 
     <div class="error" v-if="this.error">
@@ -11,7 +11,6 @@
     <div class="login-form">
       <form @submit.prevent="login">
         <fieldset>
-          <legend>Login</legend>
           <BaseInput v-model="userLogin.email" label="Email" type="text" />
           <br />
           <BaseInput
@@ -26,8 +25,9 @@
         </div>
 
         <div class="general-info">
-          <p>Forgotten password? PLACEHOLDER</p>
-          <p>Not yet registered? Contact Orakeltjenesten</p>
+          <!--          <p>Forgotten password?</p>-->
+          <p>Not yet registered?</p>
+          <p>Contact Orakeltjenesten</p>
         </div>
       </form>
     </div>
@@ -37,8 +37,6 @@
 <script>
 import BaseInput from "../input-components/BaseInput";
 import doLogin from "../api/LoginAPI";
-import { getRole } from "@/services/authService";
-import hasAdminAccess, { hasTAAccess, hasTeacherAccess } from "@/api/AuthAPI";
 
 export default {
   name: "LoginPage",
@@ -48,7 +46,7 @@ export default {
   data() {
     return {
       userLogin: {
-        email: "olav@123.com",
+        email: "lars@123.com",
         password: "123",
       },
       error: "",
@@ -70,36 +68,63 @@ export default {
     },
   },
   // eslint-disable-next-line no-unused-vars
-  beforeRouteLeave(to, from) {
-    getRole(this.$store.state.personLoggedIn)
-      .then((response) => {
-        this.$store.dispatch("setRole", response.data);
-        console.log(this.$store.state.auth.role);
-        //Sets navbar for logged in
-        if (hasAdminAccess(response.data)) {
-          this.$store.dispatch("setNavbar", this.$store.state.navbar.admin);
-          console.log(this.$store.state.navbar.current);
-        } else if (hasTeacherAccess(response.data)) {
-          //TODO
-        } else if (hasTAAccess(response.data)) {
-          //TODO
-        } else {
-          this.$store.dispatch(
-            "setNavbar",
-            this.$store.state.navbar.student.navbarElements
-          );
-          console.log(this.$store.state.navbar.current);
-        }
-      })
-      .catch((err) => {
-        console.log(err.response);
-      });
-  },
 };
 </script>
 
 <style scoped>
 fieldset {
   border: 0;
+}
+.header {
+  font-size: 32px;
+  text-align: center;
+}
+
+@media (max-width: 960px) {
+  .header {
+    font-size: 32px;
+    text-align: center;
+  }
+}
+.general-info {
+  font-size: 20px;
+  text-align: center;
+}
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 52px;
+  padding: 0 40px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.2s linear;
+  background-color: dodgerblue;
+}
+.submit-button {
+  align-self: center;
+  text-align: center;
+}
+button:hover {
+  -webkit-transform: scale(1.02);
+  transform: scale(1.02);
+  box-shadow: 0 7px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+button:active {
+  -webkit-transform: scale(1);
+  transform: scale(1);
+  box-shadow: none;
+}
+button:focus {
+  outline: 0;
+}
+button:disabled {
+  -webkit-transform: scale(1);
+  transform: scale(1);
+  box-shadow: none;
 }
 </style>

@@ -16,6 +16,16 @@ export default createStore({
         { name: "Settings", path: "/settings" },
         { name: "Log out", path: "/logout" },
       ],
+      teacher: [
+        { name: "Courses", path: "/courses" },
+        { name: "Settings", path: "/settings" },
+        { name: "Log out", path: "/logout" },
+      ],
+      ta: [
+        { name: "Courses", path: "/courses" },
+        { name: "Settings", path: "/settings" },
+        { name: "Log out", path: "/logout" },
+      ],
       current: undefined,
     },
     auth: {

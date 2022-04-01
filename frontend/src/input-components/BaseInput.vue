@@ -1,13 +1,17 @@
 <template>
-  <label v-if="label && !disableLabel">{{ label }}</label>
-  <input
-    v-bind="$attrs"
-    :type="type"
-    :value="modelValue"
-    :placeholder="label"
-    @input="$emit('update:modelValue', $event.target.value)"
-    class="field"
-  />
+  <div class="label-container">
+    <label class="label" v-if="label && !disableLabel">{{ label }}</label>
+  </div>
+  <div class="input-container">
+    <input
+      v-bind="$attrs"
+      :type="type"
+      :value="modelValue"
+      :placeholder="label"
+      @input="$emit('update:modelValue', $event.target.value)"
+      class="field"
+    />
+  </div>
   <p v-if="error" class="errorMessage">
     {{ error }}
   </p>
@@ -48,4 +52,42 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+@media (max-width: 960px) {
+  input[type="text"],
+  select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  .label {
+    font-size: 24px;
+  }
+}
+@media (min-width: 960px) {
+  input[type="text"],
+  select {
+    width: 60%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 24px;
+  }
+  .input-container {
+    text-align: center;
+  }
+  .label-container {
+    text-align: center;
+  }
+}
+.label {
+  font-size: 24px;
+}
+</style>

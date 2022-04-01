@@ -17,8 +17,7 @@ import AllUsersDetailsView from "@/views/admin/AllUsersDetailsView";
 import EditUserAdminView from "@/views/admin/EditUserAdminView";
 import UserInfoView from "@/views/admin/UserInfoView";
 import SettingsView from "@/views/user/SettingsView";
-import hasAdminAccess, { hasTAAccess } from "@/api/AuthAPI";
-import HomeAdminView from "@/views/admin/HomeAdminView";
+import hasAdminAccess from "@/api/AuthAPI";
 
 const routes = [
   {
@@ -27,13 +26,6 @@ const routes = [
     component: HomeView,
     meta: {
       requiresLogin: true,
-    },
-    // eslint-disable-next-line no-unused-vars
-    beforeEnter(to, from) {
-      if (hasTAAccess(store.state.auth.role)) {
-        return (this.component = HomeAdminView);
-      }
-      return (this.component = StudentCoursesView);
     },
   },
   {

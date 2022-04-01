@@ -62,6 +62,7 @@ export default {
             console.log(err);
           });
       }
+      console.log("Form not valid");
     },
     validatePassword() {
       if (this.user.password.length < 7) {
@@ -87,6 +88,7 @@ export default {
         this.error = "LastName must be shorter than 30 chars";
         return false;
       }
+      return true;
     },
     cancel() {
       this.$router.push({ name: "User", params: this.$route.params.id });
