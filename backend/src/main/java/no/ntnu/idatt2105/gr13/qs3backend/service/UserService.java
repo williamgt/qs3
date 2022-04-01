@@ -33,6 +33,4 @@ public class UserService {
         UserPersonAll user = userRepository.findByIdAdmin(id);
         return user;
     }
-
-
 }
