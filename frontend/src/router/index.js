@@ -15,11 +15,10 @@ import CourseRegistration from "../components/admin/CourseRegistration";
 import AllUsersView from "@/views/admin/AllUsersView";
 import AllUsersDetailsView from "@/views/admin/AllUsersDetailsView";
 import EditUserAdminView from "@/views/admin/EditUserAdminView";
-import UserViewLayout from "@/views/admin/UserViewLayout";
-import Test from "@/views/admin/Test";
 import UserInfoView from "@/views/admin/UserInfoView";
 import SettingsView from "@/views/user/SettingsView";
-import hasAdminAccess from "@/api/AuthAPI";
+import hasAdminAccess, { hasTAAccess } from "@/api/AuthAPI";
+import HomeAdminView from "@/views/admin/HomeAdminView";
 
 const routes = [
   {
@@ -28,6 +27,13 @@ const routes = [
     component: HomeView,
     meta: {
       requiresLogin: true,
+    },
+    // eslint-disable-next-line no-unused-vars
+    beforeEnter(to, from) {
+      if (hasTAAccess(store.state.auth.role)) {
+        return (this.component = HomeAdminView);
+      }
+      return (this.component = StudentCoursesView);
     },
   },
   {
@@ -122,18 +128,6 @@ const routes = [
       requiresLogin: true,
       requiresAdmin: true,
     },
-  },
-  {
-    path: "/dusers/user/:id",
-    name: "Userssd",
-    component: UserViewLayout,
-    children: [
-      {
-        path: "",
-        name: "UserInfoVsadiew",
-        component: Test,
-      },
-    ],
   },
   {
     path: "/users/user/:id",
