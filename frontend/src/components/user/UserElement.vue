@@ -1,11 +1,13 @@
 <template>
-  <div class="grid-container">
-    <div class="grid-item">{{ user.id }}</div>
-    <div class="grid-item">{{ user.email }}</div>
-    <div class="grid-item">{{ user.firstName }}</div>
-    <div class="grid-item">{{ user.lastName }}</div>
-    <div class="grid-item">{{ user.password }}</div>
-  </div>
+  <router-link :to="{ name: 'User', params: { id: user.id } }">
+    <div class="grid-container">
+      <div class="grid-item">{{ user.id }}</div>
+      <div class="grid-item">{{ user.email }}</div>
+      <div class="grid-item">{{ user.firstName }}</div>
+      <div class="grid-item">{{ user.lastName }}</div>
+      <div class="grid-item">{{ user.password }}</div>
+    </div>
+  </router-link>
 </template>
 
 <script>
@@ -41,6 +43,8 @@ export default {
 </script>
 
 <style scoped>
+a {
+}
 .grid-container {
   display: grid;
   grid-template-columns: auto auto auto auto auto;
@@ -54,5 +58,6 @@ export default {
   text-align: center;
   overflow: hidden;
   max-width: 100%;
+  text-decoration: none;
 }
 </style>

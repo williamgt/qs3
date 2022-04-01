@@ -14,6 +14,9 @@ export default createStore({
     auth: {
       token: "",
     },
+    admin: {
+      currentUserViewed: undefined,
+    },
     personLoggedIn: undefined,
   },
   getters: {},

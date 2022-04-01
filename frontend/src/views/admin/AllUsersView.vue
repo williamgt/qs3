@@ -1,8 +1,5 @@
 <template>
   <all-users :users="this.users"></all-users>
-  <p>{{ error }}</p>
-  <button @click="test">Click</button>
-  <p>{{ users }}</p>
 </template>
 
 <script>

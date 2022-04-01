@@ -14,6 +14,7 @@ import homeAdminView from "@/views/admin/HomeAdminView";
 import CourseRegistration from "../components/admin/CourseRegistration";
 import AllUsersView from "@/views/admin/AllUsersView";
 import AllUsersDetailsView from "@/views/admin/AllUsersDetailsView";
+import StudentProgressAdminView from "@/views/admin/StudentProgressAdminView";
 
 const routes = [
   {
@@ -44,6 +45,11 @@ const routes = [
         component: QueueForm,
       },
     ],
+  },
+  {
+    path: "/users/user/:id",
+    name: "User",
+    component: StudentProgressAdminView,
   },
   {
     path: "/:catchAll(.*)",
