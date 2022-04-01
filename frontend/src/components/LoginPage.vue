@@ -75,9 +75,11 @@ export default {
       .then((response) => {
         this.$store.dispatch("setRole", response.data);
         console.log(this.$store.state.auth.role);
-        if (hasAdminAccess(response.data))
+        //Sets navbar for logged in
+        if (hasAdminAccess(response.data)) {
           this.$store.dispatch("setNavbar", this.$store.state.navbar.admin);
-        else if (hasTeacherAccess(response.data)) {
+          console.log(this.$store.state.navbar.current);
+        } else if (hasTeacherAccess(response.data)) {
           //TODO
         } else if (hasTAAccess(response.data)) {
           //TODO
@@ -86,6 +88,7 @@ export default {
             "setNavbar",
             this.$store.state.navbar.student.navbarElements
           );
+          console.log(this.$store.state.navbar.current);
         }
       })
       .catch((err) => {
