@@ -69,4 +69,19 @@ public class UserController {
         logger.info("Yes");
         return FileHandler.getArrayList(file);
     }
+
+    @GetMapping("/testtest")
+    public void test() {
+        service.test();
+    }
+
+    @PostMapping("/insert")
+    public ResponseEntity<String> insertUsers(@RequestBody List<User> users) {
+        int rowsAffected = service.insertUsers(users);
+        if(rowsAffected == 0) {
+            return new ResponseEntity<>("No rows were added.", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("A total of "+rowsAffected+" users were created successfully.", HttpStatus.CREATED);
+        }
+    }
 }

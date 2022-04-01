@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class FileHandler { //TODO csv file of new students to be registered
     public static String TYPE = "text/csv";
-    private static String getRandomPassword(){
+    public static String getRandomPassword(){
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~`!@#$%^&*()-_=+[{]}\\|;:\'\",<.>/?";
         return RandomStringUtils.random( 15, characters );
     }

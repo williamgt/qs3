@@ -1,7 +1,6 @@
 package no.ntnu.idatt2105.gr13.qs3backend.controller.security;
 
 import no.ntnu.idatt2105.gr13.qs3backend.controller.UserController;
-import no.ntnu.idatt2105.gr13.qs3backend.model.person.Person;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.User;
 import no.ntnu.idatt2105.gr13.qs3backend.service.security.AuthService;
 import org.slf4j.Logger;
@@ -25,7 +24,7 @@ public class AuthController {
     Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @PostMapping("/login")
-    public ResponseEntity<Person> login(User user){
+    public ResponseEntity<User> login(User user){
         try{
             service.login(user);
             return null;

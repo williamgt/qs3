@@ -13,6 +13,6 @@ public interface UserRepository {
     User findByUsername(String username);
     List<UserDB> findAll();
     UserPerson findById(long id);
-
     UserPerson findByIdAdmin(long id);
+    int insertUsers(List<User> users);
 }

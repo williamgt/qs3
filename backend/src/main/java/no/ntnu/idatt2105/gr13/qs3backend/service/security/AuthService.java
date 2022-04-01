@@ -1,6 +1,5 @@
 package no.ntnu.idatt2105.gr13.qs3backend.service.security;
 
-import no.ntnu.idatt2105.gr13.qs3backend.model.person.Person;
 import no.ntnu.idatt2105.gr13.qs3backend.model.security.Role;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.User;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserRole;
@@ -14,7 +13,7 @@ public class AuthService {
     @Autowired
     JdbcAuthRepository repository;
 
-    public Person login(User user){
+    public User login(User user){
 
         return null;
     }

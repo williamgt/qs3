@@ -31,4 +31,12 @@ public class UserService {
         UserPersonAll user = userRepository.findByIdAdmin(id);
         return user;
     }
+
+    public int insertUsers(List<User> users) {
+        return userRepository.insertUsers(users);
+    }
+
+    public void test(){
+        userRepository.test();
+    }
 }
