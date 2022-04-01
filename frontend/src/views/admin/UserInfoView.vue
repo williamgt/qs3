@@ -1,5 +1,6 @@
 <template>
   <user-info :user="user"></user-info>
+  <button></button>
 </template>
 
 <script>
@@ -17,7 +18,7 @@ export default {
     };
   },
   created() {
-    const id = $route.params.id;
+    const id = this.$route.params.id;
     getUser(id).then((response) => {
       this.user = response.data;
     });

@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{ name: 'User', params: { id: user.id } }">
+  <router-link :to="{ name: 'User', params: { id: user.id } }" class="link">
     <div class="grid-container">
       <div class="grid-item">{{ user.id }}</div>
       <div class="grid-item">{{ user.email }}</div>
@@ -43,7 +43,9 @@ export default {
 </script>
 
 <style scoped>
-a {
+link {
+  text-decoration: none;
+  display: inline-block;
 }
 .grid-container {
   display: grid;
@@ -58,6 +60,5 @@ a {
   text-align: center;
   overflow: hidden;
   max-width: 100%;
-  text-decoration: none;
 }
 </style>

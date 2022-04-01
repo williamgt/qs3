@@ -39,9 +39,23 @@ export default {
     },
   },
   created() {
-    getAllUsers().then((response) => {
-      this.users = response.data;
-    });
+    getAllUsers()
+      .then((response) => {
+        this.users = response.data;
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log(error.response.data);
+        if (error.response.data.status === 403) {
+          this.$router.push("/401");
+          return;
+        }
+        if (error.response.data.status === 404) {
+          this.$router.push("/404");
+          return;
+        }
+        this.$router.push("/network-error");
+      });
   },
 };
 </script>

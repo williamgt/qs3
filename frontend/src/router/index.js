@@ -14,7 +14,7 @@ import homeAdminView from "@/views/admin/HomeAdminView";
 import CourseRegistration from "../components/admin/CourseRegistration";
 import AllUsersView from "@/views/admin/AllUsersView";
 import AllUsersDetailsView from "@/views/admin/AllUsersDetailsView";
-import StudentProgressAdminView from "@/views/admin/StudentProgressAdminView";
+import UserInfoView from "@/views/admin/UserInfoView";
 
 const routes = [
   {
@@ -49,7 +49,10 @@ const routes = [
   {
     path: "/users/user/:id",
     name: "User",
-    component: StudentProgressAdminView,
+    component: UserInfoView,
+    meta: {
+      requiresLogin: true,
+    },
   },
   {
     path: "/:catchAll(.*)",

@@ -1,5 +1,5 @@
 <template>
-  <user-element-header></user-element-header>
+  <!--  <user-element-header></user-element-header>-->
   <user-element
     v-for="user in users"
     :user="user"
@@ -12,6 +12,7 @@ import UserElement from "@/components/user/UserElement";
 import UserElementHeader from "@/components/user/UserElementHeader";
 export default {
   name: "AllUsers",
+  // eslint-disable-next-line vue/no-unused-components
   components: { UserElementHeader, UserElement },
   props: {
     users: {
