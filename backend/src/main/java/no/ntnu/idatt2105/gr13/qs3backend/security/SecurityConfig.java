@@ -84,7 +84,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers(/*HttpMethod.POST, "/token"*/"/**").permitAll()
+                .antMatchers(/*HttpMethod.POST, "/token"*/"/**").permitAll() //TODO NB THIS!!!!
                 .anyRequest().authenticated();
     }
 

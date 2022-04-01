@@ -2,6 +2,7 @@ package no.ntnu.idatt2105.gr13.qs3backend.controller;
 
 
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.*;
+import no.ntnu.idatt2105.gr13.qs3backend.model.user.basics.*;
 import no.ntnu.idatt2105.gr13.qs3backend.util.FileHandler;
 import no.ntnu.idatt2105.gr13.qs3backend.model.filehandler.RegisterStudent;
 import no.ntnu.idatt2105.gr13.qs3backend.service.UserService;
@@ -65,6 +66,111 @@ public class UserController {
     public ArrayList<RegisterStudent> generateToken(@RequestParam("file")MultipartFile file) throws Exception {
         logger.info("Yes");
         return FileHandler.getArrayList(file);
+    }
+
+    /**
+     * Takes a list of UserBasic and registers them in User table if they are not already registered.
+     * A UserBasic has firstname, lastname and email.
+     * A password is generated for each user as they are added to the table.
+     * @param users
+     * @return amount of rows affected
+     */
+    @PostMapping("/insert-users")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> registerUsers(@RequestBody List<UserBasic> users) {
+        logger.info("User tries to register new users.");
+        int rowsAffected = service.registerUsers(users);
+        if(rowsAffected == 0) {
+            logger.info("No rows were affected.");
+            return new ResponseEntity<>("No rows were added.", HttpStatus.OK);
+        } else {
+            logger.info(rowsAffected+" rows were affected.");
+            return new ResponseEntity<>("A total of "+rowsAffected+" users were created successfully.", HttpStatus.CREATED);
+        }
+    }
+
+    /**
+     * Takes a list of TeacherUserBasic and registers them in TeacherUser table if they are not already registered.
+     * A TeacherUserBasic has firstname, lastname and email.
+     * A password is generated for each user as they are added to the table.
+     * @param teacherUsers
+     * @return amount of rows affected
+     */
+    @PostMapping("/insert-teachers")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> registerTeacherUsers(@RequestBody List<TeacherUserBasic> teacherUsers) {
+        logger.info("User tries to register new teachers.");
+        int rowsAffected = service.registerTeacherUsers(teacherUsers);
+        if(rowsAffected == 0) {
+            logger.info("No rows were affected.");
+            return new ResponseEntity<>("No rows were added.", HttpStatus.OK);
+        } else {
+            logger.info(rowsAffected+" rows were affected.");
+            return new ResponseEntity<>("A total of "+rowsAffected+" users were created successfully.", HttpStatus.CREATED);
+        }
+    }
+
+    /**
+     * Takes a list of TAUserBasic and registers them in TAUser table if they are not already registered.
+     * A TAUserBasic has firstname, lastname and email.
+     * A password is generated for each user as they are added to the table.
+     * @param taUsers
+     * @return amount of rows affected
+     */
+    @PostMapping("/insert-tas")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
+    public ResponseEntity<String> registerTAUsers(@RequestBody List<TAUserBasic> taUsers) {
+        logger.info("User tries to register new teachers.");
+        int rowsAffected = service.registerTAUsers(taUsers);
+        if(rowsAffected == 0) {
+            logger.info("No rows were affected.");
+            return new ResponseEntity<>("No rows were added.", HttpStatus.OK);
+        } else {
+            logger.info(rowsAffected+" rows were affected.");
+            return new ResponseEntity<>("A total of "+rowsAffected+" users were created successfully.", HttpStatus.CREATED);
+        }
+    }
+
+    /**
+     * Takes a list of StudentUserBasic and registers them in StudentUser table if they are not already registered.
+     * A StudentUserBasic has firstname, lastname and email.
+     * A password is generated for each user as they are added to the table.
+     * @param studentUsers
+     * @return amount of rows affected
+     */
+    @PostMapping("/insert-students")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
+    public ResponseEntity<String> registerStudentUsers(@RequestBody List<StudentUserBasic> studentUsers) {
+        logger.info("User tries to register new teachers.");
+        int rowsAffected = service.registerStudentUsers(studentUsers);
+        if(rowsAffected == 0) {
+            logger.info("No rows were affected.");
+            return new ResponseEntity<>("No rows were added.", HttpStatus.OK);
+        } else {
+            logger.info(rowsAffected+" rows were affected.");
+            return new ResponseEntity<>("A total of "+rowsAffected+" users were created successfully.", HttpStatus.CREATED);
+        }
+    }
+
+    /**
+     * Takes a list of AdminUserBasic and registers them in AdminUser table if they are not already registered.
+     * An AdminUserBasic has firstname, lastname and email.
+     * A password is generated for each user as they are added to the table.
+     * @param adminUsers
+     * @return amount of rows affected
+     */
+    @PostMapping("/insert-admins")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> registerAdminUsers(@RequestBody List<AdminUserBasic> adminUsers) {
+        logger.info("User tries to register new teachers.");
+        int rowsAffected = service.registerAdminUsers(adminUsers);
+        if(rowsAffected == 0) {
+            logger.info("No rows were affected.");
+            return new ResponseEntity<>("No rows were added.", HttpStatus.OK);
+        } else {
+            logger.info(rowsAffected+" rows were affected.");
+            return new ResponseEntity<>("A total of "+rowsAffected+" users were created successfully.", HttpStatus.CREATED);
+        }
     }
 
     @PutMapping("/user/{id}")

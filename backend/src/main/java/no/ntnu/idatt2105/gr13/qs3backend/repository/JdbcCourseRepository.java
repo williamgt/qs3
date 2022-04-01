@@ -91,7 +91,7 @@ public class JdbcCourseRepository {
                     "Task INNER JOIN TaskSet ON Task.taskSetId=TaskSet.taskSetId" +
                     "TaskSet INNER JOIN Tasks ON TaskSet.tasksId=Tasks.tasksId WHERE Tasks.courseCode=? AND Tasks.year=? AND Tasks.term=? AND TaskSet.taskSetId=?";
             int obligatoryTaskAmount = 0;
-            List tasksInEach = null;
+            List tasksInEach = null; //TODO might throw null pointer exception
             for(TaskSet t : taskSets) {
                 logger.info("Getting a list of tasks...");
                 List<Task> tasks =  jdbcTemplate.query(selectTasksRelatedToSet, BeanPropertyRowMapper.newInstance(Task.class), course.getCourseCode(), course.getYear(), course.getTerm(), t.getTaskSetId());

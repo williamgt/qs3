@@ -5,8 +5,6 @@ public class User {
     private String lastname;
     private String email;
     private String password; //TODO need to look close on how to handle pswd
-    private String firstName;
-    private String lastName;
     private int id;
 
     public User(String email, String password, String firstName, String lastName, int id) {
@@ -30,24 +28,17 @@ public class User {
         this.lastname = lastName;
     }
 
-    public User(String email, String firstName, String lastName, int id) {
+    public User(String firstname, String lastname, String email, int id) {
         this.email = email;
-        this.firstname = firstName;
-        this.lastname = lastName;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
 
     public User() {
     }
@@ -82,6 +73,10 @@ public class User {
         password = user.getPassword();
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -104,8 +99,6 @@ public class User {
                 "firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
                 ", email='" + email + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
                 ", id=" + id +
                 '}';
     }
