@@ -22,9 +22,16 @@ export function getBuilding(id) {
   return axios.get("http://localhost:8085/locations/building/" + id, config);
 }
 
-export function addCampus(name) {
+export function registerCampus(name) {
   const config = {
     headers: { Authorization: `Bearer ${store.state.auth.token}` },
   };
   return axios.post("http://localhost:8085/locations/campus", name, config);
+}
+
+export function registerRoom(room) {
+  const config = {
+    headers: { Authorization: `Bearer ${store.state.auth.token}` },
+  };
+  return axios.post("http://localhost:8085/locations/room", room, config);
 }

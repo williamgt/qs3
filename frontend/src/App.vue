@@ -2,9 +2,25 @@
   <NavigationBar
     :navbar-elements="this.$store.state.navbar.current"
   ></NavigationBar>
+  <div id="flashMessage" v-if="GStore.flashMessage">
+    {{ GStore.flashMessage }}
+  </div>
   <router-view />
 </template>
 <style src="@vueform/multiselect/themes/default.css">
+@keyframes yellowfade {
+  from {
+    background: yellow;
+  }
+  to {
+    background: transparent;
+  }
+}
+
+#flashMessage {
+  animation-name: yellowfade;
+  animation-duration: 5s;
+}
 body {
   margin: 0;
   padding: 0;
@@ -127,6 +143,7 @@ import NavigationBar from "@/components/global/NavigationBar";
 
 export default {
   components: { NavigationBar },
+  inject: ["GStore"],
   beforeCreate() {
     document.querySelector("body").setAttribute("style", "margin:0px");
   },
