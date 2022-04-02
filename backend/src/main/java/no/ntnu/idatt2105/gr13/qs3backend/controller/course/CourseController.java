@@ -1,7 +1,8 @@
 package no.ntnu.idatt2105.gr13.qs3backend.controller.course;
 
 
-import no.ntnu.idatt2105.gr13.qs3backend.model.Course;
+import no.ntnu.idatt2105.gr13.qs3backend.model.course.Course;
+import no.ntnu.idatt2105.gr13.qs3backend.model.course.CourseForm;
 import no.ntnu.idatt2105.gr13.qs3backend.service.CourseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,11 +34,11 @@ public class CourseController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerCourse(@RequestBody Course course) {
+    public ResponseEntity<String> registerCourse(@RequestBody CourseForm course) {
         logger.info("Registering course with code " + course.getCourseCode() + ".");
         try {
-            courseService.registerCourse(course);
-            logger.info("Successfully registered course with code " + course.getCourseCode() + ".");
+            int affectedRows = courseService.registerCourse(course);
+            logger.info("Successfully registered course with code " + course.getCourseCode() + ", affected rows: "+affectedRows+".");
             return new ResponseEntity<>("Course was successfully registered.", HttpStatus.CREATED);
         } catch (Exception e) {
             logger.info("Something went wrong when registering course: " + e.getMessage());

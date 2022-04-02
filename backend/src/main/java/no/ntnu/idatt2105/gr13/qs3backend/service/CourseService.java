@@ -1,7 +1,9 @@
 package no.ntnu.idatt2105.gr13.qs3backend.service;
 
-import no.ntnu.idatt2105.gr13.qs3backend.model.Course;
+import no.ntnu.idatt2105.gr13.qs3backend.model.course.Course;
+import no.ntnu.idatt2105.gr13.qs3backend.model.course.CourseForm;
 import no.ntnu.idatt2105.gr13.qs3backend.repository.JdbcCourseRepository;
+import no.ntnu.idatt2105.gr13.qs3backend.repository.JdbcUserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,9 @@ public class CourseService {
     @Autowired
     private JdbcCourseRepository courseRepo;
 
+    @Autowired
+    private JdbcUserRepository userRepo;
+
     public int updateCourse(String courseCode, Course course) { //TODO add checks and trim strings etc
         Course getCourse = courseRepo.getCourseByCode(courseCode);
         if(getCourse == null) {
@@ -25,9 +30,23 @@ public class CourseService {
         }
     }
 
-    public void registerCourse(Course course) {
-        logger.info("Trying to register a new course...");
-        //courseRepo.registerCourse(course);
+    /**
+     * Registers a course and Users of different types. Each call inside the method is tagged with Transactional,
+     * but registerCourse in its entirety is NOT transactional. This is a weakness. Could have put functionality
+     * for registering Users of various kinds in insertCourse from JdbcCourseRepository, but it fits better in
+     * JdbcUserRepository.
+     * @param course
+     */
+    public int registerCourse(CourseForm course) {
+        logger.info("Registering Students...");
+        int rowsAffectedStuds = userRepo.registerStudentUsers(course.getStudents());
+        logger.info("Registering Teachers...");
+        int rowsAffectedTeachers = userRepo.registerTeacherUsers(course.getTeachers());
+        logger.info("Registering TAs...");
+        int rowsAffectedTAs = userRepo.registerTAUsers(course.getTas());
+        logger.info("Registering Course...");
+        int rowsAffectedCourse = courseRepo.insertCourse(course);
+        return rowsAffectedStuds + rowsAffectedTeachers + rowsAffectedTAs + rowsAffectedCourse;
     }
 
     public Course getCourseByCourseCode(String courseCode) {

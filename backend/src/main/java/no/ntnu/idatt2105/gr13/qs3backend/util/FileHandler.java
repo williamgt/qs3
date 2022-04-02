@@ -32,9 +32,9 @@ public class FileHandler { //TODO csv file of new students to be registered
         if(file.isEmpty()){
             throw new IllegalArgumentException("File can't be empty");
         }
-        if(hasCSVFormat(file)){
+        /*if(hasCSVFormat(file)){
             throw new IllegalArgumentException("Must be an CSV or txt file");
-        }
+        }*/
 
         ArrayList<RegisterStudent> students = new ArrayList<>();
         InputStream is = file.getInputStream();
@@ -43,6 +43,7 @@ public class FileHandler { //TODO csv file of new students to be registered
                      CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());) {
             Iterable<CSVRecord> csvRecords = csvParser.getRecords();
             for (CSVRecord csvRecord : csvRecords) {
+                System.out.println(1);
                 RegisterStudent student = new RegisterStudent(
                         csvRecord.get("lastname"),
                         csvRecord.get("firstname"),

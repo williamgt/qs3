@@ -1,6 +1,7 @@
-package no.ntnu.idatt2105.gr13.qs3backend.model;
+package no.ntnu.idatt2105.gr13.qs3backend.model.course;
 
 
+import no.ntnu.idatt2105.gr13.qs3backend.model.Queue;
 import no.ntnu.idatt2105.gr13.qs3backend.model.task.Task;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.StudentUser;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.TAUser;
@@ -140,4 +141,6 @@ public class Course {
     public void setObligatoryPerSet(int[] obligatoryPerSet) {
         this.obligatoryPerSet = obligatoryPerSet;
     }
+
+
 }

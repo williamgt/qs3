@@ -1,22 +1,27 @@
 package no.ntnu.idatt2105.gr13.qs3backend.repository;
 
-import no.ntnu.idatt2105.gr13.qs3backend.model.Course;
+import no.ntnu.idatt2105.gr13.qs3backend.model.course.Course;
+import no.ntnu.idatt2105.gr13.qs3backend.model.course.CourseForm;
 import no.ntnu.idatt2105.gr13.qs3backend.model.task.Task;
 import no.ntnu.idatt2105.gr13.qs3backend.model.task.TaskList;
 import no.ntnu.idatt2105.gr13.qs3backend.model.task.TaskSet;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.StudentUser;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.TAUser;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.TeacherUser;
+import no.ntnu.idatt2105.gr13.qs3backend.model.user.basics.StudentUserBasic;
+import no.ntnu.idatt2105.gr13.qs3backend.model.user.basics.TAUserBasic;
+import no.ntnu.idatt2105.gr13.qs3backend.model.user.basics.TeacherUserBasic;
+import no.ntnu.idatt2105.gr13.qs3backend.util.FileHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.plaf.TableUI;
 import java.util.List;
 import java.util.Map;
 
@@ -113,14 +118,14 @@ public class JdbcCourseRepository {
     }
 
     @Transactional
-    public int insertCourse(Course course) {
+    public int insertCourse(CourseForm course) {
         String insertIntoCourseString = "INSERT INTO Course (courseCode, year, term, courseName) VALUES (?,?,?,?)";
 
         String insertIntoTasksString = "INSERT INTO Tasks (amount, courseCode, year, term) VALUES (?,?,?,?)";
-        String insertIntoSetOfTasksString = "INSERT INTO TaskSet (amountMustDone, taskId) VALUES (?,?)";
+        String insertIntoSetOfTasksString = "INSERT INTO TaskSet (amountMustDone, tasksId) VALUES (?,?)";
         String insertIntoTaskString = "INSERT INTO Task (description, taskSetId) VALUES (?,?)";
         String getTasksIdString = "SELECT tasksId FROM Tasks WHERE courseCode=? AND year=? AND term=?";
-        String getTaskSetIdString = "SELECT TaskSetId FROM TaskSet WHERE tasksId=?";
+        String getTaskSetIdString = "SELECT taskSetId FROM TaskSet WHERE tasksId=?";
 
         String insertIntoTeacherCourseString = "INSERT INTO TeacherCourse (teacherId, courseCode, year, term) VALUES (?,?,?,?)";
         String insertIntoTACourseString = "INSERT INTO TACourse (tAId, courseCode, year, term) VALUES (?,?,?,?)";
@@ -146,16 +151,20 @@ public class JdbcCourseRepository {
                 new Object[] {course.getObligatoryTaskAmount(), course.getCourseCode(), course.getYear(), course.getTerm()});
 
         //Getting the id of newly inserted Tasks instance
-        Integer tasksId = jdbcTemplate.queryForObject(getTasksIdString,
-                new Object[] {course.getCourseCode(), course.getYear(), course.getTerm()}, Integer.class);
+        Integer tasksId = jdbcTemplate.queryForObject(getTasksIdString, Integer.class,
+                new Object[] {course.getCourseCode(), course.getYear(), course.getTerm()});
         //Looping through all the sets of tasks in given course and inserting these
         for(int i = 0; i < course.getSetOfTasks(); i++) {
             insertIntoSetOfTasksInt += jdbcTemplate.update(insertIntoSetOfTasksString,
-                    new Object[] {course.getObligatoryPerSet()[i], tasksId});
+                    new Object[] {course.getObligatoryPerSet().get(i), tasksId});
         }
 
         //Getting the id of all new TaskSet instances
-        List<Integer> taskSetIds = jdbcTemplate.query(getTaskSetIdString, new BeanPropertyRowMapper<>(Integer.class)); //TODO this might fail
+        List<Integer> taskSetIds = jdbcTemplate.query(getTaskSetIdString, (rs, rowNum) ->
+                Integer.valueOf(
+                        rs.getInt("taskSetId")
+                ), tasksId); //TODO this might fail
+
         for(int i = 0; i < taskSetIds.size(); i++) {
             for(int j = 0; j < course.getTasksInEachSet().get(i).size(); j++) {
                 insertIntoTaskInt += jdbcTemplate.update(insertIntoTaskString,
@@ -167,28 +176,29 @@ public class JdbcCourseRepository {
         //List<TaskSet> taskSets = jdbcTemplate.query(getTaskSetsString, new BeanPropertyRowMapper<>(TaskSet.class));
 
         //TODO this part assumes everything in the person and user related tables are taken care of
-        //Insertions related to persons NB into PersonCourse tables
+        //Insertions related to Users NB into UserTypeCourse tables
         Integer id;
-        for(TeacherUser t : course.getTeachers()){
-            id = jdbcTemplate.queryForObject(getUserIdByEmail, new Object[] {t.getEmail()}, Integer.class);
+        for(TeacherUserBasic t : course.getTeachers()){
+            id = jdbcTemplate.queryForObject(getUserIdByEmail, Integer.class, new Object[] {t.getEmail()});
             insertIntoTeacherCourseInt += jdbcTemplate.update(insertIntoTeacherCourseString,
                     new Object[] {id, course.getCourseCode(), course.getYear(), course.getTerm()});
         }
 
-        for(TAUser ta : course.getTas()){
+        for(TAUserBasic ta : course.getTas()){
             id = jdbcTemplate.queryForObject(getUserIdByEmail, new Object[] {ta.getEmail()}, Integer.class);
             insertIntoTACourseInt += jdbcTemplate.update(insertIntoTACourseString,
                     new Object[] {id, course.getCourseCode(), course.getYear(), course.getTerm()});
         }
 
-        for(StudentUser s : course.getStudents()){
+        for(StudentUserBasic s : course.getStudents()){
             id = jdbcTemplate.queryForObject(getUserIdByEmail, new Object[] {s.getEmail()}, Integer.class);
             insertIntoUserCourseInt += jdbcTemplate.update(insertIntoStudentCourseString,
                     new Object[] {id, course.getCourseCode(), course.getYear(), course.getTerm()});
         }
 
-        logger.info("Inserted new course and related info without any exceptions.");
-        return insertIntoCourseInt + insertIntoTasksInt + insertIntoSetOfTasksInt + insertIntoTaskInt + insertIntoTeacherCourseInt + insertIntoTACourseInt + insertIntoUserCourseInt;
+        int totalRowsAffected = insertIntoCourseInt + insertIntoTasksInt + insertIntoSetOfTasksInt + insertIntoTaskInt + insertIntoTeacherCourseInt + insertIntoTACourseInt + insertIntoUserCourseInt;
+        logger.info("Inserted new course and related info without any exceptions. Rows affected: " + totalRowsAffected);
+        return totalRowsAffected;
     }
 
     //THIS DOES NOT WORK!!!!!!!!!!!!!!!

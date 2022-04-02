@@ -19,7 +19,7 @@ import no.ntnu.idatt2105.gr13.qs3backend.service.security.MethodSecService;
 import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:8081")
+@CrossOrigin(origins = "http://localhost:8080")
 @RequestMapping("/users")
 @RestController
 public class UserController {
@@ -61,11 +61,18 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping(value = "/test")
+    @PostMapping(value = "/upload-students-file")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public ArrayList<RegisterStudent> generateToken(@RequestParam("file")MultipartFile file) throws Exception {
-        logger.info("Yes");
-        return FileHandler.getArrayList(file);
+    public ArrayList<RegisterStudent> uploadStudents(@RequestParam("file")MultipartFile file) throws Exception {
+        logger.info("Received file with students.");
+        try{
+            ArrayList<RegisterStudent> students =  FileHandler.getArrayList(file);
+            logger.info("Returning list containing "+students.size()+" students.");
+            return students;
+        } catch (RuntimeException e) {
+            logger.info(e.getMessage());
+        }
+        return null;
     }
 
     /**
