@@ -11,7 +11,7 @@
   </div>
   <div class="button-container">
     <button>Edit Campus</button>
-    <button>Add Building</button>
+    <button @click="toRegisterBuilding">Register Building</button>
   </div>
 </template>
 
@@ -35,6 +35,13 @@ export default {
       },
       path: "/locations/building/", //"/building",
     };
+  },
+  methods: {
+    toRegisterBuilding() {
+      this.$router.push(
+        "/locations/campus/" + this.$route.params.id + "/register"
+      );
+    },
   },
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <h1 class="header">Register campus</h1>
+  <h1 class="header">Register Room</h1>
   <base-input label="Room name" v-model="room.roomName"></base-input>
   <base-input
     label="Room floor"
@@ -15,6 +15,7 @@
     <br v-if="error === ''" />
     <br v-if="error === ''" />
     <p class="error">{{ this.error }}</p>
+    <base-button type="submit" @click="cancel">Cancel</base-button>
     <base-button type="submit" @click="submit">Register</base-button>
   </div>
 </template>
@@ -50,17 +51,21 @@ export default {
       }
       return true;
     },
+    cancel() {
+      this.$router.push("/locations/campus/" + this.$route.params.id);
+    },
     submit() {
       if (this.validateInput()) {
-        registerRoom(this.name)
+        this.room.buildingId = this.$route.params.id;
+        registerRoom(this.room)
           .then(() => {
             this.GStore.flashMessage = "Room registered!";
-            this.$router.push("/locations/campus");
+            this.$router.push("/locations/building/" + this.room.buildingId);
           })
           .catch((err) => {
             console.log(err.response);
             this.GStore.flashMessage = "Problems registering Room";
-            this.$router.push("/locations/campus");
+            this.$router.push("/locations/building/" + this.room.buildingId);
           });
       }
     },

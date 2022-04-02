@@ -9,8 +9,8 @@
     ></room-element>
   </div>
   <div class="button-container">
-    <button>Edit Campus</button>
-    <button>Add Building</button>
+    <button>Edit Building</button>
+    <button @click="registerRoom">Add Room</button>
   </div>
 </template>
 
@@ -22,6 +22,11 @@ export default {
   components: { RoomElement, RoomHeader },
   props: {
     campus: Object,
+  },
+  methods: {
+    registerRoom() {
+      this.$router.push(this.$route.params.id + "/register");
+    },
   },
 };
 </script>

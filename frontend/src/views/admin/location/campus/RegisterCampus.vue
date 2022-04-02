@@ -6,6 +6,7 @@
     <br v-if="error === ''" />
     <br v-if="error === ''" />
     <p class="error">{{ this.error }}</p>
+    <base-button type="submit" @click="cancel">Cancel</base-button>
     <base-button type="submit" @click="submit">Register</base-button>
   </div>
 </template>
@@ -31,6 +32,9 @@ export default {
         return false;
       }
       return true;
+    },
+    cancel() {
+      this.$router.push("/locations/campus/" + this.$route.params.id);
     },
     submit() {
       if (this.validateInput()) {

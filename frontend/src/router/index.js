@@ -22,6 +22,7 @@ import AllLocationView from "@/views/admin/location/AllLocationView";
 import LocationView from "@/views/admin/location/LocationView";
 import AddCampus from "@/views/admin/location/campus/RegisterCampus";
 import RegisterRoom from "@/views/admin/location/room/RegisterRoom";
+import RegisterBuilding from "@/views/admin/location/building/RegisterBuilding";
 
 const routes = [
   {
@@ -246,8 +247,17 @@ const routes = [
   },
   {
     path: "/locations/building/:id/register",
-    name: "AddRoom",
+    name: "RegisterRoom",
     component: RegisterRoom,
+    meta: {
+      requiresLogin: true,
+      requiresAdmin: true,
+    },
+  },
+  {
+    path: "/locations/campus/:id/register",
+    name: "RegisterBuilding",
+    component: RegisterBuilding,
     meta: {
       requiresLogin: true,
       requiresAdmin: true,

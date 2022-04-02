@@ -33,5 +33,18 @@ export function registerRoom(room) {
   const config = {
     headers: { Authorization: `Bearer ${store.state.auth.token}` },
   };
+  console.log(room);
   return axios.post("http://localhost:8085/locations/room", room, config);
+}
+
+export function registerBuilding(building) {
+  const config = {
+    headers: { Authorization: `Bearer ${store.state.auth.token}` },
+  };
+  console.log(building);
+  return axios.post(
+    "http://localhost:8085/locations/building",
+    building,
+    config
+  );
 }
