@@ -20,6 +20,7 @@ import SettingsView from "@/views/user/SettingsView";
 import hasAdminAccess from "@/api/AuthAPI";
 import AllLocationView from "@/views/admin/location/AllLocationView";
 import LocationView from "@/views/admin/location/LocationView";
+import AddCampus from "@/views/admin/location/campus/RegisterCampus";
 
 const routes = [
   {
@@ -228,6 +229,15 @@ const routes = [
     path: "/locations/building/:id",
     name: "Building",
     component: () => import("../views/admin/location/building/BuildingView"),
+    meta: {
+      requiresLogin: true,
+      requiresAdmin: true,
+    },
+  },
+  {
+    path: "/locations/campus/register",
+    name: "AddCampus",
+    component: AddCampus,
     meta: {
       requiresLogin: true,
       requiresAdmin: true,

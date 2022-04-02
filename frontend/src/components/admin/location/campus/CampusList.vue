@@ -9,7 +9,9 @@
       :path="path"
     ></element-to-list>
     <div class="button-container">
-      <button></button>
+      <button @click="this.$router.push('/locations/campus/register')">
+        Register Campus
+      </button>
     </div>
   </div>
 </template>
@@ -47,6 +49,7 @@ export default {
   text-align: center;
 }
 .button-container {
+  margin-top: 10px;
   text-align: center;
 }
 </style>

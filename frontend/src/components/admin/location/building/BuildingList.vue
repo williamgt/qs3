@@ -9,6 +9,10 @@
       :path="path"
     ></element-to-list>
   </div>
+  <div class="button-container">
+    <button>Edit Campus</button>
+    <button>Add Building</button>
+  </div>
 </template>
 
 <script>
@@ -42,5 +46,13 @@ export default {
 }
 .header {
   text-align: center;
+}
+.button-container {
+  margin-top: 10px;
+  text-align: center;
+}
+button {
+  margin-left: 10px;
+  margin-right: 10px;
 }
 </style>

@@ -21,3 +21,10 @@ export function getBuilding(id) {
   };
   return axios.get("http://localhost:8085/locations/building/" + id, config);
 }
+
+export function addCampus(name) {
+  const config = {
+    headers: { Authorization: `Bearer ${store.state.auth.token}` },
+  };
+  return axios.post("http://localhost:8085/locations/campus", name, config);
+}
