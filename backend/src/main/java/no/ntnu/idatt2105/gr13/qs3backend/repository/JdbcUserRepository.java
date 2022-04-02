@@ -113,6 +113,7 @@ public class JdbcUserRepository implements UserRepository {
                         new Object[] {users.get(i).getFirstname(), users.get(i).getLastname(), users.get(i).getEmail(), FileHandler.getRandomPassword()});
             }
         }
+        logger.info(rowsAffected + " rows were affected by insertions into User.");
         return rowsAffected;
     }
 
@@ -125,7 +126,6 @@ public class JdbcUserRepository implements UserRepository {
         int rowsAffected = 0;
 
         for(int i = 0; i < teacherUsers.size(); i++) {
-            logger.info("Inserting user with email " + teacherUsers.get(i).getEmail());
             try{
                 id = jdbcTemplate.queryForObject(getIdWithMail, Integer.class, teacherUsers.get(i).getEmail()); //Throws exception if no user has given mail
                 rowsAffected += jdbcTemplate.update(insertTeacherUser, id);
@@ -137,6 +137,7 @@ public class JdbcUserRepository implements UserRepository {
                 rowsAffected += jdbcTemplate.update(insertTeacherUser, id);
             }
         }
+        logger.info(rowsAffected + " rows were affected by insertions into User and TeacherUser.");
         return rowsAffected;
     }
 
@@ -149,7 +150,6 @@ public class JdbcUserRepository implements UserRepository {
         int rowsAffected = 0;
 
         for(int i = 0; i < tAUsers.size(); i++) {
-            logger.info("Inserting user with email " + tAUsers.get(i).getEmail());
             try{
                 id = jdbcTemplate.queryForObject(getIdWithMail, Integer.class, tAUsers.get(i).getEmail()); //Throws exception if no user has given mail
                 rowsAffected += jdbcTemplate.update(insertTeacherUser, id);
@@ -161,6 +161,7 @@ public class JdbcUserRepository implements UserRepository {
                 rowsAffected += jdbcTemplate.update(insertTeacherUser, id);
             }
         }
+        logger.info(rowsAffected + " rows were affected by insertions into User and TAUser.");
         return rowsAffected;
     }
 
@@ -171,9 +172,7 @@ public class JdbcUserRepository implements UserRepository {
         String insertTeacherUser = "INSERT IGNORE INTO StudentUser (id) VALUES (?)";
         Integer id;
         int rowsAffected = 0;
-
         for(int i = 0; i < studentUsers.size(); i++) {
-            logger.info("Inserting user with email " + studentUsers.get(i).getEmail());
             try{
                 id = jdbcTemplate.queryForObject(getIdWithMail, Integer.class, studentUsers.get(i).getEmail()); //Throws exception if no user has given mail
                 rowsAffected += jdbcTemplate.update(insertTeacherUser, id);
@@ -185,6 +184,7 @@ public class JdbcUserRepository implements UserRepository {
                 rowsAffected += jdbcTemplate.update(insertTeacherUser, id);
             }
         }
+        logger.info(rowsAffected + " rows were affected by insertions into User and StudentUser.");
         return rowsAffected;
     }
 
@@ -197,7 +197,6 @@ public class JdbcUserRepository implements UserRepository {
         int rowsAffected = 0;
 
         for(int i = 0; i < adminUsers.size(); i++) {
-            logger.info("Inserting user with email " + adminUsers.get(i).getEmail());
             try{
                 id = jdbcTemplate.queryForObject(getIdWithMail, Integer.class, adminUsers.get(i).getEmail()); //Throws exception if no user has given mail
                 rowsAffected += jdbcTemplate.update(insertTeacherUser, id);
@@ -209,6 +208,9 @@ public class JdbcUserRepository implements UserRepository {
                 rowsAffected += jdbcTemplate.update(insertTeacherUser, id);
             }
         }
+        logger.info(rowsAffected + " rows were affected by insertions into User and AdminUser.");
         return rowsAffected;
     }
+
+
 }
