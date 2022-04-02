@@ -1,10 +1,10 @@
 <template>
-  <h1>All locations</h1>
+  <h1>Overview</h1>
 </template>
 
 <script>
 export default {
-  name: "AllLocations",
+  name: "LocationInfo",
 };
 </script>
 

@@ -1,10 +1,10 @@
 <template>
-  <h1>All locations</h1>
+  <h1>Edit location</h1>
 </template>
 
 <script>
 export default {
-  name: "AllLocations",
+  name: "EditLocationView",
 };
 </script>
 

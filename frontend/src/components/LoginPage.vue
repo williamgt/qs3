@@ -47,7 +47,7 @@ export default {
   data() {
     return {
       userLogin: {
-        email: "lars@123.com",
+        email: "olav@123.com",
         password: "123",
       },
       error: "",

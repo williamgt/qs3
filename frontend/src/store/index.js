@@ -13,6 +13,7 @@ export default createStore({
       admin: [
         { name: "Courses", path: "/courses" },
         { name: "All Users", path: "/users" },
+        { name: "Locations", path: "/locations/campus" },
         { name: "Settings", path: "/settings" },
         { name: "Log out", path: "/logout" },
       ],

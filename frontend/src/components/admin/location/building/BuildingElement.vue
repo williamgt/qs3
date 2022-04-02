@@ -1,10 +1,10 @@
 <template>
-  <loca
+
 </template>
 
 <script>
 export default {
-  name: "LocationsView"
+  name: "BuildingElement"
 }
 </script>
 

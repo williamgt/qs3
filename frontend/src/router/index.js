@@ -18,6 +18,9 @@ import EditUserAdminView from "@/views/admin/EditUserAdminView";
 import UserInfoView from "@/views/admin/UserInfoView";
 import SettingsView from "@/views/user/SettingsView";
 import hasAdminAccess from "@/api/AuthAPI";
+import AllLocationView from "@/views/admin/AllLocationView";
+import LocationView from "@/views/admin/LocationView";
+import AllCampusesView from "@/views/admin/AllCampusesView";
 
 const routes = [
   {
@@ -181,6 +184,33 @@ const routes = [
     path: "/users/all",
     name: "AllUsersDetails",
     component: AllUsersDetailsView,
+    meta: {
+      requiresLogin: true,
+      requiresAdmin: true,
+    },
+  },
+  {
+    path: "/locations/all",
+    name: "Locations",
+    component: AllLocationView,
+    meta: {
+      requiresLogin: true,
+      requiresAdmin: true,
+    },
+  },
+  {
+    path: "/locations/location/:id",
+    name: "Location",
+    component: LocationView,
+    meta: {
+      requiresLogin: true,
+      requiresAdmin: true,
+    },
+  },
+  {
+    path: "/locations/campus",
+    name: "Campuses",
+    component: AllCampusesView,
     meta: {
       requiresLogin: true,
       requiresAdmin: true,

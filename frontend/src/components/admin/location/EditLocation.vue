@@ -4,10 +4,8 @@
 
 <script>
 export default {
-  name: "EditLocation"
-}
+  name: "EditLocation",
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
