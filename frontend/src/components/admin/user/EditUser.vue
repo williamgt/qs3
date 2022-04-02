@@ -3,8 +3,10 @@
   <base-edit-display
     label="First name"
     v-model="user.firstname"
+    :holder="user.firstname"
   ></base-edit-display>
   <base-edit-display
+    :holder="user.lastname"
     label="Last name"
     v-model="user.lastname"
   ></base-edit-display>
@@ -15,13 +17,17 @@
     type="password"
   ></base-edit-display>
   <base-edit-display
-    label="Password"
+    label="Password Again"
     v-model="rePassword"
     type="password"
   ></base-edit-display>
-  <button @click="cancel">Cancel</button>
-  <button @click="submit">Confirm</button>
-  <p>{{ error }}</p>
+  <div class="button-container">
+    <br v-if="error === ''" />
+    <br v-if="error === ''" />
+    <p class="error">{{ error }}</p>
+    <button @click="cancel">Cancel</button>
+    <button @click="submit">Confirm</button>
+  </div>
 </template>
 
 <script>
@@ -62,6 +68,7 @@ export default {
             console.log(err);
           });
       }
+      console.log("Form not valid");
     },
     validatePassword() {
       if (this.user.password.length < 7) {
@@ -87,6 +94,7 @@ export default {
         this.error = "LastName must be shorter than 30 chars";
         return false;
       }
+      return true;
     },
     cancel() {
       this.$router.push({ name: "User", params: this.$route.params.id });
@@ -95,4 +103,11 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.button-container {
+  text-align: center;
+}
+.error {
+  color: red;
+}
+</style>

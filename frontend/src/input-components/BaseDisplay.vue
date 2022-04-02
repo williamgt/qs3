@@ -29,7 +29,7 @@ export default {
 .message-display {
   padding: 20px;
   font-size: 20px;
-  text-align: left;
+  text-align: center;
   border-bottom-color: black;
   border-bottom: solid;
 }
@@ -37,7 +37,7 @@ export default {
   font-size: 24px;
   font-weight: bold;
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: 50% 50%;
   padding: 10px;
 }
 .label-display {

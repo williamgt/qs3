@@ -2,10 +2,13 @@
   <div class="navbar">
     <div class="navbar-text">
       <nav>
-        <div class="">
+        <div>
+          <router-link to="/">
+            <img class="logo" :src="logo" width="63" height="63" alt="Home" />
+          </router-link>
           <div class="dropdown">
             <button class="dropbtn">
-              Dropdown
+              <img :src="hamb" width="80" height="63" />
               <i class="fa fa-caret-down"></i>
             </button>
             <div
@@ -35,6 +38,12 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      logo: require("@/assets/qsLogo.png"),
+      hamb: require("@/assets/hamburger-bar.png"),
+    };
+  },
 };
 </script>
 
@@ -59,12 +68,17 @@ export default {
   border: none;
   outline: none;
   color: white;
-  padding: 20px 24px;
+  padding: 0;
+  margin-right: 30px;
+  margin-left: 10px;
   background-color: inherit;
   font-family: inherit;
-  margin: 0;
+  width: 63px;
+  height: 63px;
 }
-
+.logo {
+  float: left;
+}
 .navbar a:hover,
 .dropdown:hover .dropbtn {
   background-color: midnightblue;

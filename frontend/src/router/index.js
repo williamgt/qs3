@@ -15,11 +15,12 @@ import CourseRegistration from "../components/admin/CourseRegistration";
 import AllUsersView from "@/views/admin/AllUsersView";
 import AllUsersDetailsView from "@/views/admin/AllUsersDetailsView";
 import EditUserAdminView from "@/views/admin/EditUserAdminView";
-import UserViewLayout from "@/views/admin/UserViewLayout";
-import Test from "@/views/admin/Test";
 import UserInfoView from "@/views/admin/UserInfoView";
 import SettingsView from "@/views/user/SettingsView";
 import hasAdminAccess from "@/api/AuthAPI";
+import AllLocationView from "@/views/admin/AllLocationView";
+import LocationView from "@/views/admin/LocationView";
+import AllCampusesView from "@/views/admin/AllCampusesView";
 
 const routes = [
   {
@@ -55,16 +56,25 @@ const routes = [
     path: "/:catchAll(.*)",
     name: "NotFound",
     component: NotFound,
+    meta: {
+      requiresLogin: true,
+    },
   },
   {
     path: "/404/:resource",
     name: "404Resource",
     component: NotFound,
+    meta: {
+      requiresLogin: true,
+    },
   },
   {
     path: "/network-error",
     name: "NetworkError",
     component: NetworkError,
+    meta: {
+      requiresLogin: true,
+    },
   },
   {
     path: "/401",
@@ -73,11 +83,21 @@ const routes = [
     beforeEnter: (to, from, next) => {
       return next();
     },
+    meta: {
+      requiresLogin: true,
+    },
   },
   {
     path: "/login",
     name: "Login",
     component: LoginPage,
+    // eslint-disable-next-line no-unused-vars
+    beforeEnter: (to, from, next) => {
+      if (store.state.personLoggedIn !== undefined) {
+        return next({ path: "/" });
+      }
+      return next();
+    },
   },
   {
     path: "/logout",
@@ -97,21 +117,33 @@ const routes = [
     path: "/courses",
     name: "Courses",
     component: StudentCoursesView,
+    meta: {
+      requiresLogin: true,
+    },
   },
   {
     path: "/course-info",
     name: "CourseInfo",
     component: StudentCourseInfo,
+    meta: {
+      requiresLogin: true,
+    },
   },
   {
     path: "/ta-courses",
     name: "TACoursesView",
     component: TACoursesView,
+    meta: {
+      requiresLogin: true,
+    },
   },
   {
     path: "/course-registration",
     name: "CourseRegistration",
     component: CourseRegistration,
+    meta: {
+      requiresLogin: true,
+    },
   },
   {
     path: "/users",
@@ -122,18 +154,6 @@ const routes = [
       requiresLogin: true,
       requiresAdmin: true,
     },
-  },
-  {
-    path: "/dusers/user/:id",
-    name: "Userssd",
-    component: UserViewLayout,
-    children: [
-      {
-        path: "",
-        name: "UserInfoVsadiew",
-        component: Test,
-      },
-    ],
   },
   {
     path: "/users/user/:id",
@@ -164,6 +184,33 @@ const routes = [
     path: "/users/all",
     name: "AllUsersDetails",
     component: AllUsersDetailsView,
+    meta: {
+      requiresLogin: true,
+      requiresAdmin: true,
+    },
+  },
+  {
+    path: "/locations/all",
+    name: "Locations",
+    component: AllLocationView,
+    meta: {
+      requiresLogin: true,
+      requiresAdmin: true,
+    },
+  },
+  {
+    path: "/locations/location/:id",
+    name: "Location",
+    component: LocationView,
+    meta: {
+      requiresLogin: true,
+      requiresAdmin: true,
+    },
+  },
+  {
+    path: "/locations/campus",
+    name: "Campuses",
+    component: AllCampusesView,
     meta: {
       requiresLogin: true,
       requiresAdmin: true,

@@ -9,12 +9,16 @@
     type="password"
   ></base-edit-display>
   <base-edit-display
-    label="Passwordre"
+    label="Password again"
     v-model="rePassword"
     type="password"
   ></base-edit-display>
-  <button @click="submit">Save</button>
-  <p>{{ error }}</p>
+  <div class="button-container">
+    <br v-if="error === ''" />
+    <br v-if="error === ''" />
+    <p class="error">{{ error }}</p>
+    <button @click="submit">Save</button>
+  </div>
 </template>
 
 <script>
@@ -54,6 +58,14 @@ export default {
       }
     },
     validatePassword() {
+      if (this.user.password === undefined) {
+        this.error = "Please insert a new password";
+        return false;
+      }
+      if (this.user.rePassword === undefined) {
+        this.error = "Please re enter a password";
+        return false;
+      }
       if (this.user.password.length < 7) {
         this.error = "Password must be longer than 7 chars";
         return false;
@@ -84,5 +96,11 @@ export default {
   },
 };
 </script>
-
-<style scoped></style>
+<style scoped>
+.button-container {
+  text-align: center;
+}
+.error {
+  color: red;
+}
+</style>

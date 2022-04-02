@@ -33,7 +33,7 @@ export default {
 <style scoped>
 .grid-container {
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: 33% 33% 33%;
   padding: 10px;
   width: 100%;
 }
