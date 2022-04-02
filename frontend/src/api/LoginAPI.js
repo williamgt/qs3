@@ -2,9 +2,10 @@ import { getRole, getToken, login } from "@/services/authService";
 import store from "../store";
 import hasAdminAccess, { hasTAAccess, hasTeacherAccess } from "@/api/AuthAPI";
 import router from "@/router";
-export default function doLogin(userLogin) {
+export default async function doLogin(userLogin) {
   let token;
-  getToken(userLogin.email, userLogin.password)
+  let errorM = "";
+  await getToken(userLogin.email, userLogin.password)
     .then((data) => {
       token = data.data;
       store.dispatch("setToken", token).then(
@@ -21,14 +22,16 @@ export default function doLogin(userLogin) {
       );
     })
     .catch((error) => {
-      console.log(error);
+      console.log(error.response.status === 401);
       if (error)
-        if (error.response.status === 403) {
-          alert("Wrong username or password");
+        if (error.response.status === 403 || error.response.status === 401) {
+          errorM = "Wrong username or password";
         } else {
-          console.log(error);
+          errorM =
+            "Unknown error. Try again later. Code: " + error.response.status;
         }
     });
+  return errorM;
 }
 
 export async function setRole() {

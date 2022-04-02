@@ -1,10 +1,12 @@
 <template>
-  <user-element-header id="header"></user-element-header>
-  <user-element
-    v-for="user in users"
-    :user="user"
-    :key="user.id"
-  ></user-element>
+  <div class="table-container">
+    <user-element-header id="header"></user-element-header>
+    <user-element
+      v-for="user in users"
+      :user="user"
+      :key="user.id"
+    ></user-element>
+  </div>
 </template>
 
 <script>
@@ -24,4 +26,10 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.table-container {
+  text-align: center;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+</style>

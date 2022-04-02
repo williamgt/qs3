@@ -53,16 +53,25 @@ const routes = [
     path: "/:catchAll(.*)",
     name: "NotFound",
     component: NotFound,
+    meta: {
+      requiresLogin: true,
+    },
   },
   {
     path: "/404/:resource",
     name: "404Resource",
     component: NotFound,
+    meta: {
+      requiresLogin: true,
+    },
   },
   {
     path: "/network-error",
     name: "NetworkError",
     component: NetworkError,
+    meta: {
+      requiresLogin: true,
+    },
   },
   {
     path: "/401",
@@ -71,11 +80,21 @@ const routes = [
     beforeEnter: (to, from, next) => {
       return next();
     },
+    meta: {
+      requiresLogin: true,
+    },
   },
   {
     path: "/login",
     name: "Login",
     component: LoginPage,
+    // eslint-disable-next-line no-unused-vars
+    beforeEnter: (to, from, next) => {
+      if (store.state.personLoggedIn !== undefined) {
+        return next({ path: "/" });
+      }
+      return next();
+    },
   },
   {
     path: "/logout",
@@ -95,21 +114,33 @@ const routes = [
     path: "/courses",
     name: "Courses",
     component: StudentCoursesView,
+    meta: {
+      requiresLogin: true,
+    },
   },
   {
     path: "/course-info",
     name: "CourseInfo",
     component: StudentCourseInfo,
+    meta: {
+      requiresLogin: true,
+    },
   },
   {
     path: "/ta-courses",
     name: "TACoursesView",
     component: TACoursesView,
+    meta: {
+      requiresLogin: true,
+    },
   },
   {
     path: "/course-registration",
     name: "CourseRegistration",
     component: CourseRegistration,
+    meta: {
+      requiresLogin: true,
+    },
   },
   {
     path: "/users",

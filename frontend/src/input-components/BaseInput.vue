@@ -7,7 +7,7 @@
       v-bind="$attrs"
       :type="type"
       :value="modelValue"
-      :placeholder="label"
+      :placeholder="holder"
       @input="$emit('update:modelValue', $event.target.value)"
       class="field"
     />
@@ -42,6 +42,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    holder: {
+      type: String,
+      default: "",
+    },
   },
   /*  setup () {
     const uuid = UniqueID().getID()
@@ -55,7 +59,7 @@ export default {
 <style scoped>
 @media (max-width: 960px) {
   input[type="text"],
-  select {
+  input[type="password"] {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -70,7 +74,7 @@ export default {
 }
 @media (min-width: 960px) {
   input[type="text"],
-  select {
+  input[type="password"] {
     width: 60%;
     padding: 12px 20px;
     margin: 8px 0;

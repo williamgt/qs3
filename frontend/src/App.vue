@@ -118,6 +118,9 @@ button.-icon-center {
   white-space: nowrap;
   transition: all 0.2s linear;
 }
+.error {
+  color: red;
+}
 </style>
 <script>
 import NavigationBar from "@/components/global/NavigationBar";

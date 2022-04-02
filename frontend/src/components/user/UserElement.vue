@@ -46,6 +46,7 @@ export default {
 link {
   text-decoration: none;
   display: inline-block;
+  border-bottom: none;
 }
 .grid-container {
   display: grid;
@@ -60,5 +61,19 @@ link {
   text-align: center;
   overflow: hidden;
   max-width: 100%;
+  text-decoration: none;
+  display: inline-block;
+  color: black;
+}
+.grid-item-text {
+  border: none;
+  outline-width: 0;
+}
+a:link,
+a:visited,
+a:hover,
+a:active {
+  text-decoration: none;
+  color: #f00;
 }
 </style>

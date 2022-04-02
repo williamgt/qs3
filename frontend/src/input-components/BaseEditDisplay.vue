@@ -1,13 +1,16 @@
 <template>
   <div class="display-container">
     <span class="label-display">{{ label }}</span>
-    <base-input
-      @change="$emit('update:modelValue', $event.target.value)"
-      :value="modelValue"
-      :label="modelValue"
-      :disable-label="true"
-      :type="type"
-    />
+    <div>
+      <base-input
+        :holder="holder"
+        v-model="modelValueProp"
+        @change="$emit('update:modelValue', $event.target.value)"
+        :value="modelValueProp"
+        :disable-label="true"
+        :type="type"
+      />
+    </div>
   </div>
 </template>
 
@@ -16,6 +19,11 @@ import BaseInput from "@/input-components/BaseInput";
 export default {
   name: "BaseEditDisplay",
   components: { BaseInput },
+  data() {
+    return {
+      modelValueProp: undefined,
+    };
+  },
   props: {
     label: {
       type: String,
@@ -31,6 +39,13 @@ export default {
     type: {
       type: String,
     },
+    holder: {
+      type: String,
+      default: "",
+    },
+  },
+  created() {
+    this.modelValueProp = this.modelValue;
   },
 };
 </script>
@@ -47,7 +62,7 @@ export default {
   font-size: 24px;
   font-weight: bold;
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: 50% 50%;
   padding: 10px;
 }
 .label-display {
