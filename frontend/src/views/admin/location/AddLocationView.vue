@@ -1,4 +1,6 @@
-<template></template>
+<template>
+  <h2>d</h2>
+</template>
 
 <script>
 export default {

@@ -1,23 +1,52 @@
 <template>
-  <h2>Campuses</h2>
-  <campus-element-header></campus-element-header>
-  <campus-element
-    v-for="campus in campuses"
-    :key="campus.id"
-    :campus="campus"
-  ></campus-element>
+  <h1 class="header">Campuses</h1>
+  <div class="table-container">
+    <element-header :element="header"></element-header>
+    <element-to-list
+      v-for="campus in campuses"
+      :key="campus.id"
+      :element="campus"
+      :path="path"
+    ></element-to-list>
+    <div class="button-container">
+      <button></button>
+    </div>
+  </div>
 </template>
 
 <script>
-import CampusElement from "@/components/admin/location/campus/CampusElement";
-import CampusElementHeader from "@/components/admin/location/campus/CampusElementHeader";
+import ElementHeader from "@/components/admin/location/ElementHeader";
+import ElementToList from "@/components/admin/location/ElementToList";
 export default {
   name: "CampusList",
-  components: { CampusElementHeader, CampusElement },
+  components: {
+    ElementToList,
+    ElementHeader,
+  },
   props: {
     campuses: Array,
+  },
+  data() {
+    return {
+      header: {
+        st: "ID",
+        nd: "Name",
+      },
+      path: "campus/",
+    };
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.table-container {
+  margin-right: 5%;
+  margin-left: 5%;
+}
+.header {
+  text-align: center;
+}
+.button-container {
+  text-align: center;
+}
+</style>

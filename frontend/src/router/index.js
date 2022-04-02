@@ -12,15 +12,14 @@ import StudentCourseInfo from "../components/student/StudentCourseInfo";
 import TACoursesView from "../components/teaching-assistant/TACoursesView";
 import homeAdminView from "@/views/admin/HomeAdminView";
 import CourseRegistration from "../components/admin/CourseRegistration";
-import AllUsersView from "@/views/admin/AllUsersView";
-import AllUsersDetailsView from "@/views/admin/AllUsersDetailsView";
-import EditUserAdminView from "@/views/admin/EditUserAdminView";
-import UserInfoView from "@/views/admin/UserInfoView";
+import AllUsersView from "@/views/admin/user/AllUsersView";
+import AllUsersDetailsView from "@/views/admin/user/AllUsersDetailsView";
+import EditUserAdminView from "@/views/admin/user/EditUserAdminView";
+import UserInfoView from "@/views/admin/user/UserInfoView";
 import SettingsView from "@/views/user/SettingsView";
 import hasAdminAccess from "@/api/AuthAPI";
-import AllLocationView from "@/views/admin/AllLocationView";
-import LocationView from "@/views/admin/LocationView";
-import AllCampusesView from "@/views/admin/AllCampusesView";
+import AllLocationView from "@/views/admin/location/AllLocationView";
+import LocationView from "@/views/admin/location/LocationView";
 
 const routes = [
   {
@@ -210,7 +209,25 @@ const routes = [
   {
     path: "/locations/campus",
     name: "Campuses",
-    component: AllCampusesView,
+    meta: {
+      requiresLogin: true,
+      requiresAdmin: true,
+    },
+    component: () => import("../views/admin/location/campus/AllCampusesView"),
+  },
+  {
+    path: "/locations/campus/:id",
+    name: "Campus",
+    component: () => import("../views/admin/location/campus/CampusView"),
+    meta: {
+      requiresLogin: true,
+      requiresAdmin: true,
+    },
+  },
+  {
+    path: "/locations/building/:id",
+    name: "Building",
+    component: () => import("../views/admin/location/building/BuildingView"),
     meta: {
       requiresLogin: true,
       requiresAdmin: true,

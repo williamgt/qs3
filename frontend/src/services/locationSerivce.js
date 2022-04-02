@@ -12,5 +12,12 @@ export function getCampus(id) {
   const config = {
     headers: { Authorization: `Bearer ${store.state.auth.token}` },
   };
-  return axios.post("http://localhost:8085/getRole/" + id, config);
+  return axios.get("http://localhost:8085/locations/campus/" + id, config);
+}
+
+export function getBuilding(id) {
+  const config = {
+    headers: { Authorization: `Bearer ${store.state.auth.token}` },
+  };
+  return axios.get("http://localhost:8085/locations/building/" + id, config);
 }
