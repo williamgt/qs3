@@ -33,7 +33,6 @@ public class JdbcCourseRepository {
     private String selectQueueForACourse ="SELECT *" +
             "FROM Queue WHERE courseCode = ? AND year = ? AND term =?";
 
-    //@PreAuthoriz("hasAuthority()")
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -121,6 +120,8 @@ public class JdbcCourseRepository {
     public int insertCourse(CourseForm course) {
         String insertIntoCourseString = "INSERT INTO Course (courseCode, year, term, courseName) VALUES (?,?,?,?)";
 
+        String insertIntoQueueString = "INSERT INTO Queue (courseCode, year, term) VALUES (?,?,?)";
+
         String insertIntoTasksString = "INSERT INTO Tasks (amount, courseCode, year, term) VALUES (?,?,?,?)";
         String insertIntoSetOfTasksString = "INSERT INTO TaskSet (amountMustDone, tasksId) VALUES (?,?)";
         String insertIntoTaskString = "INSERT INTO Task (description, taskSetId) VALUES (?,?)";
@@ -132,7 +133,9 @@ public class JdbcCourseRepository {
         String insertIntoStudentCourseString = "INSERT INTO StudentCourse (studentId, courseCode, year, term) VALUES (?,?,?,?)";
         String getUserIdByEmail = "SELECT id FROM User WHERE email=?";
 
+
         int insertIntoCourseInt = 0;
+        int insertIntoQueueInt = 0;
         int insertIntoTasksInt = 0;
         int insertIntoSetOfTasksInt = 0;
         int insertIntoTaskInt = 0;
@@ -144,6 +147,10 @@ public class JdbcCourseRepository {
         //Inserting info into Course table
         insertIntoCourseInt = jdbcTemplate.update(insertIntoCourseString,
                 new Object[] {course.getCourseCode(), course.getYear(), course.getTerm(), course.getCourseName()});
+
+        //Insertion related to Queue
+        insertIntoQueueInt = jdbcTemplate.update(insertIntoQueueString,
+                new Object[] {course.getCourseCode(), course.getYear(), course.getTerm()});
 
         //Insertions related to Tasks
         //Inserting info into Tasks table
@@ -196,7 +203,7 @@ public class JdbcCourseRepository {
                     new Object[] {id, course.getCourseCode(), course.getYear(), course.getTerm()});
         }
 
-        int totalRowsAffected = insertIntoCourseInt + insertIntoTasksInt + insertIntoSetOfTasksInt + insertIntoTaskInt + insertIntoTeacherCourseInt + insertIntoTACourseInt + insertIntoUserCourseInt;
+        int totalRowsAffected = insertIntoCourseInt + insertIntoQueueInt + insertIntoTasksInt + insertIntoSetOfTasksInt + insertIntoTaskInt + insertIntoTeacherCourseInt + insertIntoTACourseInt + insertIntoUserCourseInt;
         logger.info("Inserted new course and related info without any exceptions. Rows affected: " + totalRowsAffected);
         return totalRowsAffected;
     }
