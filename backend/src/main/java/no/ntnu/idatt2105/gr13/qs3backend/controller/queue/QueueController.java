@@ -1,17 +1,20 @@
 package no.ntnu.idatt2105.gr13.qs3backend.controller.queue;
 
+import no.ntnu.idatt2105.gr13.qs3backend.model.course.Course;
 import no.ntnu.idatt2105.gr13.qs3backend.model.queue.Queue;
 import no.ntnu.idatt2105.gr13.qs3backend.model.course.SimpleCourse;
 import no.ntnu.idatt2105.gr13.qs3backend.model.course.TAMessageCourse;
+import no.ntnu.idatt2105.gr13.qs3backend.model.queue.QueueRequest;
 import no.ntnu.idatt2105.gr13.qs3backend.model.queue.SimpleQueue;
 import no.ntnu.idatt2105.gr13.qs3backend.service.queue.QueueService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/queue")
@@ -28,14 +31,19 @@ public class QueueController {
      * @param course course object containing information that only one could have
      * @return queue
      */
-    @RequestMapping
-    public Queue getQueueBySimpleCourse(SimpleCourse course) {
-        logger.info("User requested queue from course " +course.getCourseCode() + ", " + course.getYear()+ ", "+course.getTerm());
-        Queue q = queueService.getQueueByCourse(course);
+    @RequestMapping("/course") //localhost:8085/queue/course?course=code,year,term
+    public Queue getQueueBySimpleCourse(@RequestParam List<String> course) {
+        if(course.size() != 3) {
+            logger.info("Invalid amount of arguments when getting course.");
+            return null;
+        }
+        SimpleCourse userCourse = new SimpleCourse(course.get(0),course.get(1),course.get(2));
+        logger.info("User requested queue from course " +userCourse.getCourseCode() + ", " + userCourse.getYear()+ ", "+userCourse.getTerm());
+        Queue q = queueService.getQueueByCourse(userCourse);
         if(q == null) {
-            logger.info("No queue for course " +course.getCourseCode() + ", " + course.getYear()+ ", "+course.getTerm() + " was found");
+            logger.info("No queue for course " +userCourse.getCourseCode() + ", " + userCourse.getYear()+ ", "+userCourse.getTerm() + " was found");
         } else {
-            logger.info("Returning queue for course " +course.getCourseCode() + ", " + course.getYear()+ ", "+course.getTerm());
+            logger.info("Returning queue for course " +userCourse.getCourseCode() + ", " + userCourse.getYear()+ ", "+userCourse.getTerm());
         }
         return q;
     }
@@ -48,5 +56,11 @@ public class QueueController {
     @PutMapping
     public int putTAMessage(TAMessageCourse courseAndMsg) {
         return 0;
+    }
+
+    @PostMapping("/queue-up")
+    public ResponseEntity<String> queueUp(@RequestBody QueueRequest req) {
+        logger.info("Received request from user: " + req.toString());
+        return new ResponseEntity<>("Successfully got into  queue.", HttpStatus.CREATED);
     }
 }

@@ -43,13 +43,18 @@ const routes = [
     path: "/courses/:id",
     name: "NotFound",
     component: NotFound,
-    children: [
+   /* children: [
       {
         path: "register",
         name: "QueueForm",
         component: QueueForm,
       },
-    ],
+    ],*/
+  },
+  {
+    path: "/temp",
+    name: "QueueForm",
+    component: QueueForm,
   },
   {
     path: "/:catchAll(.*)",

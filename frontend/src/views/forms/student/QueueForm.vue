@@ -79,7 +79,7 @@
       >
       </base-text-area>
     </div>
-    <BaseButton type="submit" class="button button-accept" @click="test">
+    <BaseButton type="submit" class="button button-accept" @click="submit">
       Queue
     </BaseButton>
     <BaseButton type="cancel" class="button button-decline">
@@ -99,6 +99,7 @@ import BaseTextArea from "@/input-components/BaseTextArea";
 import Multiselect from "@vueform/multiselect";
 import { ref } from "vue";
 import MultCheck from "@/input-components/mult-check";
+import queueUp from "@/services/queueServices";
 export default {
   name: "QueueForm",
   components: {
@@ -219,15 +220,35 @@ export default {
     };
   },
   methods: {
-    test() {
-      console.log(this.message);
+    async submit() {
+/*      console.log(this.message);
       console.log(this.home);
       console.log(this.campus);
       console.log(this.table);
       console.log(this.room);
       console.log(this.vali);
       console.log(this.group);
-      console.log(this.task);
+      console.log(this.task);*/
+
+      let queueInfo = {
+        message: this.message,
+        home: this.home,
+        campus: this.campus,
+        table: this.table,
+        room: this.room,
+        vali: this.vali,
+        group: this.group,
+        task: this.task
+      }
+
+      console.log(queueInfo);
+      await queueUp(queueInfo)
+          .then(response => {
+            console.log(response);
+          })
+          .catch(e => {
+            console.log(e);
+          })
     },
   },
 };

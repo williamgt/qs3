@@ -8,6 +8,12 @@ public class SimpleCourse {
     public SimpleCourse() {
     }
 
+    public SimpleCourse(String courseCode, String year, String term) {
+        this.courseCode = courseCode;
+        this.year = Integer.parseInt(year);
+        this.term = Integer.parseInt((term));
+    }
+
     public String getCourseCode() {
         return courseCode;
     }

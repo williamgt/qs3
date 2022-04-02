@@ -29,10 +29,6 @@ public class JdbcQueueRepository {
     public Queue getQueueByCourse(SimpleCourse course) {
         String queueGivenCourseInfoQuery = "SELECT queueId, description, active FROM Queue WHERE courseCode=? AND year=? AND term=?"; //Put into Queue obj, then convert to SimpleQueue after
         String queueInfoGivenQueueIdQuery = "SELECT * FROM QueueInfo WHERE queueId=? AND active=1"; //Put into SimpleQueueInfo
-        String studentAndQueueInfoGivenQueueInfoId = "SELECT * FROM QueueInfo " + //Put into SimpleStudentQueueInfo
-                "INNER JOIN StudentQueueInfo ON QueueInfo.queueInfoId=StudentQueueInfo.queueInfoId" +
-                "INNER JOIN User ON StudentQueueInfo.studentId=User.id" +
-                "WHERE QueueInfo.queueInfoId=?";
         String studentRelatedToQueueInfo = "SELECT User.firstname, User.lastname, User.email, QueueInfo.queueInfoId FROM User" +
                 "INNER JOIN StudentQueueInfo ON User.id=StudentQueueInfo.studentId" +
                 "INNER JOIN QueueInfo ON StudentQueueInfo.queueInfoId=QueueInfo.queueInfoId";
@@ -54,15 +50,6 @@ public class JdbcQueueRepository {
                 "INNER JOIN TaskQueueInfo ON Task.taskId=TaskQueueInfo.taskId" +
                 "INNER JOIN QueueInfo ON TaskQueueInfo.queueInfoId=QueueInfo.queueInfoId" +
                 "WHERE queueInfoId=?";
-
-        String selectEverything = "SELECT * FROM Queue INNER JOIN QueueInfo ON Queue.queueId=QueueInfo.queueId" +
-                "INNER JOIN StudentQueueInfo ON QueueInfo.queueInfoId=StudentQueueInfo.queueInfoId" +
-                "INNER JOIN User ON StudentQueueInfo.studentId=User.id" +
-                "INNER JOIN Location ON QueueInfo.locationId=Location.locationId" +
-                "INNER JOIN Room ON Location.roomId=Room.roomId" +
-                "INNER JOIN Building ON Room.buildingId=Building.buildingId" +
-                "INNER JOIN Campus ON Building.campusId=Campus.campusId" +
-                "WHERE Queue.courseDescription? AND Queue.year=? AND Queue.term=?";
 
         //Getting info for queue, have its ID here
         SimpleQueue simpleQueue;
