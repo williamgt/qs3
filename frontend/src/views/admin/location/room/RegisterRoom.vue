@@ -22,7 +22,7 @@
 <script>
 import BaseInput from "@/input-components/BaseInput";
 import BaseButton from "@/input-components/BaseButton";
-import { registerCampus, registerRoom } from "@/services/locationSerivce";
+import { registerRoom } from "@/services/locationSerivce";
 export default {
   inject: ["GStore"],
   name: "RegisterRoom",
