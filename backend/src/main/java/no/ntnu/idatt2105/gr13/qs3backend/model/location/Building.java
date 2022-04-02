@@ -5,12 +5,12 @@ import java.util.List;
 
 public class Building {
     int id;
-    String buildingName;
+    String name;
     ArrayList<RoomDisplay> rooms;
 
-    public Building(int id, String buildingName) {
+    public Building(int id, String name) {
         this.id = id;
-        this.buildingName = buildingName;
+        this.name = name;
         this.rooms = new ArrayList<>();
     }
 
@@ -19,8 +19,8 @@ public class Building {
     }
 
 
-    public String getBuildingName() {
-        return buildingName;
+    public String getName() {
+        return name;
     }
 
     public ArrayList<RoomDisplay> getRooms() {
