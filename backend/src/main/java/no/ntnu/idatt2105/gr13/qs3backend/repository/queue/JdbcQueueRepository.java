@@ -150,18 +150,21 @@ public class JdbcQueueRepository {
         return returnQ;
     }
 
-    public void queueUp(QueueRequest req) {
-        logger.info(req.toString());
-        String courseGivenCourseHashQuery = "SELECT courseCode, year, term FROM Course WHERE hashId=?";
-    }
-
     @Transactional
-    public int queueUpHome(QueueRequest req) {
+    public int queueUp(QueueRequest req, boolean home) {
         String queueIdGivenCourseHashId = "SELECT Queue.queueId FROM Course " +
                 "INNER JOIN Queue ON Course.courseCode=Queue.courseCode AND Course.year=Queue.year AND Course.term=Queue.term " +
                 "WHERE Course.hashId=?";
 
         String insertIntoQueueInfo = "INSERT INTO QueueInfo (validate, locationId, comment, queueId, `table`) VALUES (?,?,?,?,?)";
+
+        String getLocationIdQuery = "SELECT Location.locationId FROM Location " +
+                "INNER JOIN Room ON Location.roomId=Room.roomId " +
+                "INNER JOIN Building ON Room.buildingId=Building.buildingId " +
+                "INNER JOIN Campus ON Building.campusId=Campus.campusId " +
+                "WHERE Campus.campusId=? AND Building.buildingId=? AND Room.roomId=?";
+
+        String insertLocationIfNotExistsQuery = "INSERT INTO Location (roomId) VALUES (?)";
 
         String insertIntoStudentQueueInfo = "INSERT INTO StudentQueueInfo (queueInfoId, studentId) VALUES (?,?)";
 
@@ -179,34 +182,61 @@ public class JdbcQueueRepository {
                 new Object[]{req.getHashId()});
         logger.info("got id");
 
-        int locationId;
-        int table;
-        boolean home = true;
-        //Student is home
-        //if(home) {
-            locationId = 1; //locationId is always 1 for home
-            table = 0; //No table if home
-        //}
-        //Student is not home
-        //else {
-
-        //}
-
         int validate = req.isVali() ? 1 : 0; //Setting validate int based on given boolean
+        KeyHolder queueInfoKeyHolder = new GeneratedKeyHolder(); //Saving auto generated id for QueueInfo here
+        //int locationId;
+        int table;
 
-        KeyHolder queueInfoKeyHolder = new GeneratedKeyHolder(); //Saving auto generated id here
+        //Student is home
+        if(home) {
+            int locationId = 1; //locationId is always 1 for home
+            table = 0; //No table if home
 
-        //Inserting into QueueInfo:
-        totalRowsAffected += jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement(insertIntoQueueInfo, Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, validate);
-            ps.setInt(2, locationId);
-            ps.setString(3, req.getMessage());
-            ps.setInt(4, queueId);
-            ps.setInt(5, table);
-            return ps;
-        }, queueInfoKeyHolder);
-        logger.info(totalRowsAffected + " total rows affected after inserting into QueueInfo.");
+            //Inserting into QueueInfo:
+            totalRowsAffected += jdbcTemplate.update(connection -> {
+                PreparedStatement ps = connection.prepareStatement(insertIntoQueueInfo, Statement.RETURN_GENERATED_KEYS);
+                ps.setInt(1, validate);
+                ps.setInt(2, locationId);
+                ps.setString(3, req.getMessage());
+                ps.setInt(4, queueId);
+                ps.setInt(5, table);
+                return ps;
+            }, queueInfoKeyHolder);
+            logger.info(totalRowsAffected + " total rows affected after inserting into QueueInfo.");
+        }
+
+        //Student is not home
+        else {
+            //Need to find and potentially insert location since not at home
+            table = req.getTable();
+            int locationId;
+            try {
+                locationId = jdbcTemplate.queryForObject(getLocationIdQuery,
+                        Integer.class, new Object[] {req.getCampusId(), req.getBuildingId(), req.getRoomId()});
+            } catch (IncorrectResultSizeDataAccessException e){
+                logger.info("No location with campusId " + req.getCampusId() + ", buildingId " + req.getBuildingId() + ", roomId " + req.getRoomId() + " exists, inserting now.");
+                KeyHolder locationIdHolder = new GeneratedKeyHolder(); //Saving auto generated id for location here
+                totalRowsAffected += jdbcTemplate.update(connection -> {
+                    PreparedStatement ps = connection.prepareStatement(insertLocationIfNotExistsQuery, Statement.RETURN_GENERATED_KEYS);
+                    ps.setInt(1, req.getRoomId());
+                    return ps;
+                }, locationIdHolder);
+                locationId = locationIdHolder.getKey().intValue();
+            }
+
+            //Inserting into QueueInfo:
+            int finalLocationId = locationId;
+            totalRowsAffected += jdbcTemplate.update(connection -> {
+                PreparedStatement ps = connection.prepareStatement(insertIntoQueueInfo, Statement.RETURN_GENERATED_KEYS);
+                ps.setInt(1, validate);
+                ps.setInt(2, finalLocationId);
+                ps.setString(3, req.getMessage());
+                ps.setInt(4, queueId);
+                ps.setInt(5, table);
+                return ps;
+            }, queueInfoKeyHolder);
+            logger.info(totalRowsAffected + " total rows affected after inserting into QueueInfo.");
+        }
 
         int queueInfoId = queueInfoKeyHolder.getKey().intValue(); //Getting primary key for created QueueInfo
         logger.info("Queueinfoid: "+queueInfoId + " and stucent id : " + req.getUser().getId());
