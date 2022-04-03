@@ -23,20 +23,6 @@ export default {
   name: "StudentCoursesView",
   data() {
     return {
-      activeCourses: [
-        {
-          courseName: "Fulllstack",
-          courseCode: "IDATT2105",
-          id: 1,
-        },
-      ],
-      inactiveCourses: [
-        {
-          courseName: "kcatslluF",
-          courseCode: "5012TTADI",
-          id: 2,
-        },
-      ],
       handlers: {
         "course-clicked": this.courseClicked,
         "course-tasks-clicked": this.courseTasksClicked,

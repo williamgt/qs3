@@ -1,12 +1,9 @@
 package no.ntnu.idatt2105.gr13.qs3backend.controller.queue;
 
-import no.ntnu.idatt2105.gr13.qs3backend.model.course.Course;
 import no.ntnu.idatt2105.gr13.qs3backend.model.queue.Queue;
 import no.ntnu.idatt2105.gr13.qs3backend.model.course.SimpleCourse;
 import no.ntnu.idatt2105.gr13.qs3backend.model.course.TAMessageCourse;
 import no.ntnu.idatt2105.gr13.qs3backend.model.queue.QueueRequest;
-import no.ntnu.idatt2105.gr13.qs3backend.model.queue.SimpleQueue;
-import no.ntnu.idatt2105.gr13.qs3backend.model.task.TaskWithNums;
 import no.ntnu.idatt2105.gr13.qs3backend.service.queue.QueueService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/queue")
@@ -29,7 +24,7 @@ public class QueueController {
 
     /**
      * Returns all information regarding a queue related to a given course.
-     * @param courseHashId hashed ID of course
+     * @param courseHashId hashed ID for course
      * @return queue
      */
     @RequestMapping("/course/{hashId}") //localhost:8085/queue/course?course=code,year,term
@@ -58,7 +53,7 @@ public class QueueController {
     public ResponseEntity<String> queueUp(@RequestBody QueueRequest req) {
         logger.info("Received queue request from user");
         try{
-            int rowsAffected = queueService.queueUp2(req);
+            int rowsAffected = queueService.queueUp(req);
             logger.info("Queued up and affected rows " + rowsAffected);
             return new ResponseEntity<>("Successfully got into queue.", HttpStatus.CREATED);
         } catch (Exception e) {

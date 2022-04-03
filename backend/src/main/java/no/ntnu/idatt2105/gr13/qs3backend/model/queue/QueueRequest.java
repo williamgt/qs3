@@ -12,14 +12,41 @@ public class QueueRequest {
     private String message;
     private boolean home;
     private String campus;
+    private int campusId;
     private String building;
+    private int buildingId;
     private int table;
     private String room;
+    private int roomId;
     private boolean vali;
     private List<User> group;
     private List<TaskWithNums> task;
 
     public QueueRequest() {
+    }
+
+    public int getCampusId() {
+        return campusId;
+    }
+
+    public void setCampusId(int campusId) {
+        this.campusId = campusId;
+    }
+
+    public int getBuildingId() {
+        return buildingId;
+    }
+
+    public void setBuildingId(int buildingId) {
+        this.buildingId = buildingId;
+    }
+
+    public int getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
     }
 
     public String getBuilding() {

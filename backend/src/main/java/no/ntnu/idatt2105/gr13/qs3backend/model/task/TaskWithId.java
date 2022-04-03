@@ -24,8 +24,4 @@ public class TaskWithId extends Task {
         this.taskId = taskId;
     }
 
-    @Override
-    public String toString() {
-        return "TaskWithId{}" + getDescription() +" "+ getTaskId();
-    }
 }
