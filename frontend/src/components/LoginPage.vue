@@ -47,8 +47,8 @@ export default {
   data() {
     return {
       userLogin: {
-        email: "oflarsen@stud.ntnu.no",
-        password: "l8Nv*x+$AWkF>sN",
+        email: "williagt@stud.ntnu.no",
+        password: "@&(7rOH9Id#v_{T",
       },
       error: "",
     };

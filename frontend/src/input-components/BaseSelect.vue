@@ -13,11 +13,11 @@
   >
     <option
       v-for="option in options"
-      :value="option"
-      :key="option"
+      :value="option.id"
+      :key="option.id"
       :selected="option === modelValue"
     >
-      {{ option }}
+      {{ option.name }}
     </option>
   </select>
   <BaseErrorMessage v-if="error" :id="`${label}-error`" class="error">
@@ -36,8 +36,8 @@ export default {
       default: "",
     },
     modelValue: {
-      type: [String, Number],
-      default: "",
+      type: Object,
+      default: undefined,
     },
     options: {
       type: Array,
