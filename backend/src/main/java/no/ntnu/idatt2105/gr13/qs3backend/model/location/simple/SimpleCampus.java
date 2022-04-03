@@ -20,8 +20,8 @@ public class SimpleCampus {
     @Override
     public String toString() {
         return "SimpleCampus{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                "id=" + campusId +
+                ", name='" + campusName + '\'' +
                 '}';
     }
 }
