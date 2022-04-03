@@ -52,16 +52,25 @@ const routes = [
     path: "/courses/:id/info",
     name: "NotFound",
     component: CourseInfo,
+    meta: {
+      requiresLogin: true,
+    },
   },
   {
     path: "/courses/:id/register",
     name: "QueueForm",
     component: QueueForm,
+    meta: {
+      requiresLogin: true,
+    },
   },
   {
     path: "/courses/:id/queue",
     name: "InsideQueue",
     component: InsideQueue,
+    meta: {
+      requiresLogin: true,
+    },
   },
   {
     path: "/:catchAll(.*)",
