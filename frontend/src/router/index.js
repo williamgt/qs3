@@ -25,6 +25,8 @@ import RegisterRoom from "@/views/admin/location/room/RegisterRoom";
 import RegisterBuilding from "@/views/admin/location/building/RegisterBuilding";
 import EditCampus from "@/views/admin/location/campus/EditCampus";
 import EditBuilding from "@/views/admin/location/building/EditBuilding";
+import RoomView from "@/views/admin/location/room/RoomView";
+import RoomEditView from "@/views/admin/location/room/RoomEditView";
 
 const routes = [
   {
@@ -278,6 +280,24 @@ const routes = [
     path: "/locations/building/:id/edit",
     name: "EditBuilding",
     component: EditBuilding,
+    meta: {
+      requiresLogin: true,
+      requiresAdmin: true,
+    },
+  },
+  {
+    path: "/locations/room/:id",
+    name: "RoomView",
+    component: RoomView,
+    meta: {
+      requiresLogin: true,
+      requiresAdmin: true,
+    },
+  },
+  {
+    path: "/locations/room/:id/edit",
+    name: "RoomEdit",
+    component: RoomEditView,
     meta: {
       requiresLogin: true,
       requiresAdmin: true,

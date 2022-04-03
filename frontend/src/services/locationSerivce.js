@@ -68,3 +68,19 @@ export function updateBuilding(building) {
     config
   );
 }
+
+export function getRoom(id) {
+  const config = {
+    headers: { Authorization: `Bearer ${store.state.auth.token}` },
+  };
+  console.log(id);
+  return axios.get("http://localhost:8085/locations/room/" + id, config);
+}
+
+export function updateRoom(room) {
+  const config = {
+    headers: { Authorization: `Bearer ${store.state.auth.token}` },
+  };
+  console.log(room);
+  return axios.put("http://localhost:8085/locations/room", room, config);
+}

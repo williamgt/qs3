@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="'/room/' + this.room.id" class="link">
+  <router-link :to="'/locations/room/' + this.room.id" class="link">
     <div class="grid-container">
       <div class="grid-item">{{ room.id }}</div>
       <div class="grid-item">{{ room.roomName }}</div>
