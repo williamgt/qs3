@@ -4,10 +4,10 @@
   </div>
   <div class="courses">
     <ul class="list">
-      <li v-for="course in courses" :key="course.code" class="element">
+      <li v-for="course in c_courses" :key="course.courseCode" class="element">
         <div class="course-info-container">
           <h4 @click="courseClicked(course, active)">
-            {{ course.title }} - {{ course.code }}
+            {{ course.courseName }} - {{ course.courseCode }}
           </h4>
           <button @click="courseTasksClicked(course, active)">Tasks</button>
           <button @click="courseQueueClicked(course, active)">Queue</button>
@@ -18,27 +18,21 @@
 </template>
 
 <script>
+import { ref } from "vue";
+import { useStore } from "vuex";
+import { getActiveCourses, getInactiveCourses } from "@/services/courseService";
+
 export default {
   name: "StudentCourses",
   emits: ["course-clicked", "course-tasks-clicked", "course-queue-clicked"],
-  /*data() {
+  data() {
     return {
-      courses: [
-        {
-          title: "Fulllstack",
-          code: "IDATT2105",
-        },
-      ],
+      courses: [],
     };
-  },*/
+  },
   props: {
     active: {
       type: Boolean,
-      required: true,
-    },
-    courses: {
-      //TODO change to Array?
-      type: Object,
       required: true,
     },
   },
@@ -56,6 +50,32 @@ export default {
     courseQueueClicked(course, active) {
       this.$emit("course-queue-clicked", { course: course, active: active });
     },
+  },
+  async setup(props) {
+    let c_courses;
+    const store = useStore();
+    if (props.active) {
+      await getActiveCourses(store.getters.getPersonLoggedIn.id)
+        .then((response) => {
+          c_courses = ref(response.data);
+          console.log(c_courses);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    } else {
+      await getInactiveCourses(store.getters.getPersonLoggedIn.id)
+        .then((response) => {
+          c_courses = ref(response.data);
+          console.log(c_courses);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+    return {
+      c_courses,
+    };
   },
 };
 </script>

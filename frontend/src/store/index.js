@@ -35,8 +35,13 @@ export default createStore({
     },
     admin: {},
     personLoggedIn: undefined,
+    inQueue: false,
   },
-  getters: {},
+  getters: {
+    getPersonLoggedIn(state) {
+      return state.personLoggedIn;
+    },
+  },
   mutations: {
     SET_TOKEN(state, token) {
       state.auth.token = token;

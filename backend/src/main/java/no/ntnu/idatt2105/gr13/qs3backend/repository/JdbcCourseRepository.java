@@ -2,6 +2,7 @@ package no.ntnu.idatt2105.gr13.qs3backend.repository;
 
 import no.ntnu.idatt2105.gr13.qs3backend.model.course.Course;
 import no.ntnu.idatt2105.gr13.qs3backend.model.course.CourseForm;
+import no.ntnu.idatt2105.gr13.qs3backend.model.course.SimpleCourseWithName;
 import no.ntnu.idatt2105.gr13.qs3backend.model.task.Task;
 import no.ntnu.idatt2105.gr13.qs3backend.model.task.TaskList;
 import no.ntnu.idatt2105.gr13.qs3backend.model.task.TaskSet;
@@ -11,11 +12,9 @@ import no.ntnu.idatt2105.gr13.qs3backend.model.user.TeacherUser;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.basics.StudentUserBasic;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.basics.TAUserBasic;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.basics.TeacherUserBasic;
-import no.ntnu.idatt2105.gr13.qs3backend.util.FileHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -33,7 +32,6 @@ public class JdbcCourseRepository {
     private String selectQueueForACourse ="SELECT *" +
             "FROM Queue WHERE courseCode = ? AND year = ? AND term =?";
 
-    //@PreAuthoriz("hasAuthority()")
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -121,6 +119,8 @@ public class JdbcCourseRepository {
     public int insertCourse(CourseForm course) {
         String insertIntoCourseString = "INSERT INTO Course (courseCode, year, term, courseName) VALUES (?,?,?,?)";
 
+        String insertIntoQueueString = "INSERT INTO Queue (courseCode, year, term) VALUES (?,?,?)";
+
         String insertIntoTasksString = "INSERT INTO Tasks (amount, courseCode, year, term) VALUES (?,?,?,?)";
         String insertIntoSetOfTasksString = "INSERT INTO TaskSet (amountMustDone, tasksId) VALUES (?,?)";
         String insertIntoTaskString = "INSERT INTO Task (description, taskSetId) VALUES (?,?)";
@@ -132,7 +132,9 @@ public class JdbcCourseRepository {
         String insertIntoStudentCourseString = "INSERT INTO StudentCourse (studentId, courseCode, year, term) VALUES (?,?,?,?)";
         String getUserIdByEmail = "SELECT id FROM User WHERE email=?";
 
+
         int insertIntoCourseInt = 0;
+        int insertIntoQueueInt = 0;
         int insertIntoTasksInt = 0;
         int insertIntoSetOfTasksInt = 0;
         int insertIntoTaskInt = 0;
@@ -144,6 +146,10 @@ public class JdbcCourseRepository {
         //Inserting info into Course table
         insertIntoCourseInt = jdbcTemplate.update(insertIntoCourseString,
                 new Object[] {course.getCourseCode(), course.getYear(), course.getTerm(), course.getCourseName()});
+
+        //Insertion related to Queue
+        insertIntoQueueInt = jdbcTemplate.update(insertIntoQueueString,
+                new Object[] {course.getCourseCode(), course.getYear(), course.getTerm()});
 
         //Insertions related to Tasks
         //Inserting info into Tasks table
@@ -163,12 +169,12 @@ public class JdbcCourseRepository {
         List<Integer> taskSetIds = jdbcTemplate.query(getTaskSetIdString, (rs, rowNum) ->
                 Integer.valueOf(
                         rs.getInt("taskSetId")
-                ), tasksId); //TODO this might fail
+                ), tasksId);
 
         for(int i = 0; i < taskSetIds.size(); i++) {
             for(int j = 0; j < course.getTasksInEachSet().get(i).size(); j++) {
                 insertIntoTaskInt += jdbcTemplate.update(insertIntoTaskString,
-                        new Object[] {course.getTasksInEachSet().get(i).get(j).getDescription(), taskSetIds.get(i)});
+                        new Object[] {course.getTasksInEachSet().get(i).get(j).getTask(), taskSetIds.get(i)});
             }
         }
         //Not sure if allowed:
@@ -196,7 +202,7 @@ public class JdbcCourseRepository {
                     new Object[] {id, course.getCourseCode(), course.getYear(), course.getTerm()});
         }
 
-        int totalRowsAffected = insertIntoCourseInt + insertIntoTasksInt + insertIntoSetOfTasksInt + insertIntoTaskInt + insertIntoTeacherCourseInt + insertIntoTACourseInt + insertIntoUserCourseInt;
+        int totalRowsAffected = insertIntoCourseInt + insertIntoQueueInt + insertIntoTasksInt + insertIntoSetOfTasksInt + insertIntoTaskInt + insertIntoTeacherCourseInt + insertIntoTACourseInt + insertIntoUserCourseInt;
         logger.info("Inserted new course and related info without any exceptions. Rows affected: " + totalRowsAffected);
         return totalRowsAffected;
     }
@@ -249,5 +255,19 @@ public class JdbcCourseRepository {
             }
         }
         return 0;
+    }
+
+    public List<SimpleCourseWithName> getActiveOrInactiveCoursesByUserId(int id, boolean active) {
+        int activeInt = active ? 1 : 0;
+
+        String coursesQuery = "SELECT Course.courseCode, Course.year, Course.term, Course.courseName, Course.hashId FROM Course " +
+                "INNER JOIN Queue ON Course.courseCode=Queue.courseCode AND Course.year=Queue.year AND Course.term=Queue.term " +
+                "INNER JOIN StudentCourse ON Course.courseCode=StudentCourse.courseCode AND Course.year=StudentCourse.year AND Course.term=StudentCourse.term " +
+                "WHERE Queue.active=? AND StudentCourse.studentId=? ";
+
+        List<SimpleCourseWithName> courses = jdbcTemplate.query(coursesQuery,
+                BeanPropertyRowMapper.newInstance(SimpleCourseWithName.class), activeInt, id);
+
+        return courses;
     }
 }

@@ -1,19 +1,19 @@
 package no.ntnu.idatt2105.gr13.qs3backend.model.location.simple;
 
 public class SimpleBuilding {
-    int id;
-    String name;
+    private String buildingName;
+    private int buildingId;
 
-    public SimpleBuilding(int id, String name) {
-        this.id = id;
-        this.name = name;
+    public SimpleBuilding(String buildingName, int buildingId) {
+        this.buildingName = buildingName;
+        this.buildingId = buildingId;
     }
 
     public int getId() {
-        return id;
+        return buildingId;
     }
 
     public String getName() {
-        return name;
+        return bulidingName;
     }
 }

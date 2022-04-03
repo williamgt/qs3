@@ -9,6 +9,7 @@ import no.ntnu.idatt2105.gr13.qs3backend.model.user.User;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.basics.StudentUserBasic;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.basics.TAUserBasic;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.basics.TeacherUserBasic;
+import no.ntnu.idatt2105.gr13.qs3backend.model.course.SimpleCourseWithName;
 import no.ntnu.idatt2105.gr13.qs3backend.repository.JdbcCourseRepository;
 import no.ntnu.idatt2105.gr13.qs3backend.repository.JdbcUserRepository;
 import no.ntnu.idatt2105.gr13.qs3backend.service.mail.MailServiceImpl;
@@ -160,5 +161,13 @@ public class CourseService {
         }catch (Exception e){
             return -1;
         }
+    }
+
+    public List<SimpleCourseWithName> getActiveCourses(int id) {
+        return courseRepo.getActiveOrInactiveCoursesByUserId(id, true);
+    }
+
+    public List<SimpleCourseWithName> getInactiveCourses(int id) {
+        return courseRepo.getActiveOrInactiveCoursesByUserId(id, false);
     }
 }

@@ -2,14 +2,15 @@
   <div class="title">
     <h2>Courses</h2>
   </div>
-  <div class="courses">
-    <StudentCourses :courses="activeCourses" :active="true" v-on="handlers" />
-    <StudentCourses
-      :courses="inactiveCourses"
-      :active="false"
-      v-on="handlers"
-    />
-  </div>
+  <Suspense>
+    <template #default>
+      <div class="courses">
+        <StudentCourses :active="true" v-on="handlers" />
+        <StudentCourses :active="false" v-on="handlers" />
+      </div>
+    </template>
+    <template #fallback>Loading...</template>
+  </Suspense>
 </template>
 
 <script>
@@ -24,14 +25,16 @@ export default {
     return {
       activeCourses: [
         {
-          title: "Fulllstack",
-          code: "IDATT2105",
+          courseName: "Fulllstack",
+          courseCode: "IDATT2105",
+          id: 1,
         },
       ],
       inactiveCourses: [
         {
-          title: "kcatslluF",
-          code: "5012TTADI",
+          courseName: "kcatslluF",
+          courseCode: "5012TTADI",
+          id: 2,
         },
       ],
       handlers: {
@@ -43,21 +46,35 @@ export default {
   },
   methods: {
     courseClicked(payload) {
-      console.log("Course clicked: " + payload.course.code);
+      console.log("Course clicked: " + payload.course.courseCode);
+      this.$router.push({ path: `/courses/${payload.course.hashId}` });
     },
     courseTasksClicked(payload) {
-      console.log("Course tasks clicked: " + payload.course.code);
+      console.log("Course tasks clicked: " + payload.course.courseCode);
+      this.$router.push({ path: `/courses/${payload.course.hashId}` });
     },
     courseQueueClicked(payload) {
       if (payload.active) {
         console.log(
-          "Clicked on active course, you can queue up " + payload.course.code
+          "Clicked on active course, you can queue up " +
+            payload.course.courseCode
         );
+        if (this.$store.state.inQueue) {
+          console.log("Redirect directly to queue view.");
+          this.$router.push({
+            path: `/courses/${payload.course.hashId}/queue`,
+          });
+        } else {
+          console.log("Redirect to registering queue view.");
+          this.$router.push({
+            path: `/courses/${payload.course.hashId}/register`,
+          });
+        }
       }
       if (!payload.active) {
         console.log(
           "Clicked on inactive course, you can't queue up " +
-            payload.course.code
+            payload.course.courseCode
         );
       }
     },
