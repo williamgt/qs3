@@ -24,7 +24,7 @@ public class QueueController {
 
     /**
      * Returns all information regarding a queue related to a given course.
-     * @param courseHashId hashed ID of course
+     * @param courseHashId hashed ID for course
      * @return queue
      */
     @RequestMapping("/course/{hashId}") //localhost:8085/queue/course?course=code,year,term

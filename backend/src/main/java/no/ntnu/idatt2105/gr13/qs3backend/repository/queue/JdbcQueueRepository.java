@@ -39,9 +39,10 @@ public class JdbcQueueRepository {
         String courseGivenCourseHashQuery = "SELECT courseCode, year, term FROM Course WHERE hashId=?";
         String queueGivenCourseInfoQuery = "SELECT queueId, description, active FROM Queue WHERE courseCode=? AND year=? AND term=?"; //Put into Queue obj, then convert to SimpleQueue after
         String queueInfoGivenQueueIdQuery = "SELECT * FROM QueueInfo WHERE queueId=? AND active=1"; //Put into SimpleQueueInfo
-        String studentRelatedToQueueInfo = "SELECT User.firstname, User.lastname, User.email, QueueInfo.queueInfoId FROM User" +
-                "INNER JOIN StudentQueueInfo ON User.id=StudentQueueInfo.studentId" +
-                "INNER JOIN QueueInfo ON StudentQueueInfo.queueInfoId=QueueInfo.queueInfoId";
+        String studentRelatedToQueueInfo = "SELECT User.firstname, User.lastname, User.email, QueueInfo.queueInfoId FROM User " +
+                "INNER JOIN StudentQueueInfo ON User.id=StudentQueueInfo.studentId " +
+                "INNER JOIN QueueInfo ON StudentQueueInfo.queueInfoId=QueueInfo.queueInfoId " +
+                "WHERE QueueInfo.queueInfoId=?";
 
         String studentHomeQuery = "SELECT home FROM QueueInfo " +
                 "INNER JOIN Location ON QueueInfo.locationId=Location.locationId " +
@@ -50,16 +51,16 @@ public class JdbcQueueRepository {
         String studentLocationIfNotHomeQuery = "SELECT Location.locationId, Room.roomName, Room.roomId, QueueInfo.table, " +
                 "Room.floor, Building.buildingName, Building.buildingId, Campus.campusName, Campus.campusId " +
                 "FROM QueueInfo " +
-                "INNER JOIN Location ON QueueInfo.locationId=Location.locationId" +
-                "INNER JOIN Room ON Location.roomId=Room.roomId" +
-                "INNER JOIN Building ON Room.buildingId=Building.buildingId" +
-                "INNER JOIN Campus ON Building.campusId=Campus.campusId" +
+                "INNER JOIN Location ON QueueInfo.locationId=Location.locationId " +
+                "INNER JOIN Room ON Location.roomId=Room.roomId " +
+                "INNER JOIN Building ON Room.buildingId=Building.buildingId " +
+                "INNER JOIN Campus ON Building.campusId=Campus.campusId " +
                 "WHERE QueueInfo.queueInfoId=?";
 
-        String tasksForStudentInQueueQuery = "SELECT Task.description FROM Task" +
-                "INNER JOIN TaskQueueInfo ON Task.taskId=TaskQueueInfo.taskId" +
-                "INNER JOIN QueueInfo ON TaskQueueInfo.queueInfoId=QueueInfo.queueInfoId" +
-                "WHERE queueInfoId=?";
+        String tasksForStudentInQueueQuery = "SELECT Task.description FROM Task " +
+                "INNER JOIN TaskQueueInfo ON Task.taskId=TaskQueueInfo.taskId " +
+                "INNER JOIN QueueInfo ON TaskQueueInfo.queueInfoId=QueueInfo.queueInfoId " +
+                "WHERE QueueInfo.queueInfoId=?";
 
         //Finding course
         SimpleCourse course;
@@ -116,6 +117,7 @@ public class JdbcQueueRepository {
         List<StudentQueueInfo> studentQueueInfoList = new ArrayList<>();
         for(int i = 0; i < simpleQueueInfoList.size(); i++){
             //Setting student
+            studentQueueInfoList.add(new StudentQueueInfo());
             studentQueueInfoList.get(i).setUser(new StudentUser(
                     simpleStudentQueueInfoList.get(i).getEmail(),
                     simpleStudentQueueInfoList.get(i).getFirstname(),
