@@ -179,8 +179,19 @@ public class JdbcQueueRepository {
                 new Object[]{req.getHashId()});
         logger.info("got id");
 
-        int locationId = 1; //locationId is always 1 for home
-        int table = 0; //No table if home
+        int locationId;
+        int table;
+        boolean home = true;
+        //Student is home
+        //if(home) {
+            locationId = 1; //locationId is always 1 for home
+            table = 0; //No table if home
+        //}
+        //Student is not home
+        //else {
+
+        //}
+
         int validate = req.isVali() ? 1 : 0; //Setting validate int based on given boolean
 
         KeyHolder queueInfoKeyHolder = new GeneratedKeyHolder(); //Saving auto generated id here
