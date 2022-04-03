@@ -1,13 +1,9 @@
-<template>
-
-</template>
+<template><h1>s</h1></template>
 
 <script>
 export default {
-  name: "RoomView"
-}
+  name: "RoomView",
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
