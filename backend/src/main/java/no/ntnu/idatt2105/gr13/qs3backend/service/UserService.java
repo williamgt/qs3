@@ -48,6 +48,7 @@ public class UserService {
     }
 
     public Boolean updateUser(User user){
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.updateUser(user);
     }
 
