@@ -1,9 +1,9 @@
 package no.ntnu.idatt2105.gr13.qs3backend.model.user;
 
 public class User {
-    private String email;
     private String firstname;
     private String lastname;
+    private String email;
     private String password; //TODO need to look close on how to handle pswd
     private int id;
 

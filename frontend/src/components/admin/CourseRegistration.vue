@@ -450,7 +450,7 @@ export default {
     async registerCourse() {
       if (this.validateEverything()) {
         this.insertChosenTasksInArray();
-
+        console.log(this.csvFile);
         let students;
         await getStudentsFromFile(this.csvFile)
           .then((response) => {
@@ -458,7 +458,7 @@ export default {
             console.log(students);
           })
           .catch((e) => {
-            console.log(e);
+            console.log(e.response);
           });
         console.log(students);
         if (!this.studentCheck(students)) return;

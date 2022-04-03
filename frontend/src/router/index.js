@@ -27,6 +27,8 @@ import EditCampus from "@/views/admin/location/campus/EditCampus";
 import EditBuilding from "@/views/admin/location/building/EditBuilding";
 import RoomView from "@/views/admin/location/room/RoomView";
 import RoomEditView from "@/views/admin/location/room/RoomEditView";
+import CourseInfo from "@/components/admin/course/info/CourseInfo";
+import InsideQueue from "@/components/queue/InsideQueue";
 
 const routes = [
   {
@@ -47,16 +49,19 @@ const routes = [
       import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
   },
   {
-    path: "/courses/:id",
+    path: "/courses/:id/info",
     name: "NotFound",
-    component: NotFound,
-    children: [
-      {
-        path: "register",
-        name: "QueueForm",
-        component: QueueForm,
-      },
-    ],
+    component: CourseInfo,
+  },
+  {
+    path: "/courses/:id/register",
+    name: "QueueForm",
+    component: QueueForm,
+  },
+  {
+    path: "/courses/:id/queue",
+    name: "InsideQueue",
+    component: InsideQueue,
   },
   {
     path: "/:catchAll(.*)",
@@ -128,7 +133,7 @@ const routes = [
     },
   },
   {
-    path: "/course-info",
+    path: "/courses/:id",
     name: "CourseInfo",
     component: StudentCourseInfo,
     meta: {

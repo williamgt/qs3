@@ -3,6 +3,7 @@ package no.ntnu.idatt2105.gr13.qs3backend.controller.course;
 
 import no.ntnu.idatt2105.gr13.qs3backend.model.course.Course;
 import no.ntnu.idatt2105.gr13.qs3backend.model.course.CourseForm;
+import no.ntnu.idatt2105.gr13.qs3backend.model.course.SimpleCourseWithName;
 import no.ntnu.idatt2105.gr13.qs3backend.service.CourseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/course")
@@ -31,6 +34,34 @@ public class CourseController {
             logger.info("Returning course with code " + courseCode + ".");
         }
         return course;
+    }
+
+    @GetMapping("/active-courses/{id}")
+    public List<SimpleCourseWithName> getActiveCoursesByUserId(@PathVariable("id") int id) {
+        logger.info("User with id " + id + " requested active courses.");
+        List<SimpleCourseWithName> courses = courseService.getActiveCourses(id);
+        if(courses == null) {
+            logger.info("Active courses found for user with id " + id + " returned null.");
+        }else if(courses.isEmpty()) {
+            logger.info("No active courses found for user with id " + id);
+        } else {
+            logger.info("Returning " + courses.size() + " active courses to user with id " + id);
+        }
+        return courses;
+    }
+
+    @GetMapping("/inactive-courses/{id}")
+    public List<SimpleCourseWithName> getInactiveCoursesByUserId(@PathVariable("id") int id) {
+        logger.info("User with id " + id + " requested inactive courses.");
+        List<SimpleCourseWithName> courses = courseService.getInactiveCourses(id);
+        if(courses == null) {
+            logger.info("Inactive courses found for user with id " + id + " returned null.");
+        }else if(courses.isEmpty()) {
+            logger.info("No inactive courses found for user with id " + id);
+        } else {
+            logger.info("Returning " + courses.size() + " inactive courses to user with id " + id);
+        }
+        return courses;
     }
 
     @PostMapping("/register")

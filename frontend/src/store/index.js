@@ -11,7 +11,7 @@ export default createStore({
         ],
       },
       admin: [
-        { name: "Courses", path: "/courses" },
+        { name: "Courses", path: "/course-registration" },
         { name: "All Users", path: "/users" },
         { name: "Locations", path: "/locations/campus" },
         { name: "Settings", path: "/settings" },
@@ -35,8 +35,13 @@ export default createStore({
     },
     admin: {},
     personLoggedIn: undefined,
+    inQueue: false,
   },
-  getters: {},
+  getters: {
+    getPersonLoggedIn(state) {
+      return state.personLoggedIn;
+    },
+  },
   mutations: {
     SET_TOKEN(state, token) {
       state.auth.token = token;

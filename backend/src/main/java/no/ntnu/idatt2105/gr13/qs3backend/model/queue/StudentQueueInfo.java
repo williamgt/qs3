@@ -1,10 +1,11 @@
-package no.ntnu.idatt2105.gr13.qs3backend.model;
+package no.ntnu.idatt2105.gr13.qs3backend.model.queue;
 
-import no.ntnu.idatt2105.gr13.qs3backend.model.location.Location;
+import no.ntnu.idatt2105.gr13.qs3backend.model.Need;
+import no.ntnu.idatt2105.gr13.qs3backend.model.location.simple.SimpleLocation;
 import no.ntnu.idatt2105.gr13.qs3backend.model.task.Task;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.StudentUser;
 
-import java.time.LocalDateTime;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -12,11 +13,11 @@ import java.util.List;
  */
 public class StudentQueueInfo {
     private StudentUser user;
-    private Location location;
+    private SimpleLocation location;
     private List<Task> tasks;
     private String comment;
     private Need helpOrValidate;
-    private LocalDateTime timeRegisteredInQueue;
+    private Date timeRegisteredInQueue;
 
     public StudentQueueInfo(){}
 
@@ -24,7 +25,7 @@ public class StudentQueueInfo {
         return user;
     }
 
-    public Location getLocation() {
+    public SimpleLocation getLocation() {
         return location;
     }
 
@@ -36,7 +37,7 @@ public class StudentQueueInfo {
         return helpOrValidate;
     }
 
-    public LocalDateTime getTimeRegisteredInQueue() {
+    public Date getTimeRegisteredInQueue() {
         return timeRegisteredInQueue;
     }
 
@@ -52,7 +53,7 @@ public class StudentQueueInfo {
         this.user = user;
     }
 
-    public void setLocation(Location location) {
+    public void setLocation(SimpleLocation location) {
         this.location = location;
     }
 
@@ -64,7 +65,7 @@ public class StudentQueueInfo {
         this.helpOrValidate = helpOrValidate;
     }
 
-    public void setTimeRegisteredInQueue(LocalDateTime timeRegisteredInQueue) {
+    public void setTimeRegisteredInQueue(Date timeRegisteredInQueue) {
         this.timeRegisteredInQueue = timeRegisteredInQueue;
     }
 }

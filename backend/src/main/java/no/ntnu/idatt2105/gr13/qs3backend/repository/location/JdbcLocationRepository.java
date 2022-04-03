@@ -61,8 +61,8 @@ public class JdbcLocationRepository implements LocationRepository{
 
         List<SimpleCampus> campuses = jdbcTemplate.query("SELECT * from Campus", (rs, rowNum) ->
                 new SimpleCampus(
-                        rs.getInt("campusId"),
-                        rs.getString("campusName")
+                        rs.getString("campusName"),
+                        rs.getInt("campusId")
                 ));
 
         return campuses;
@@ -79,8 +79,8 @@ public class JdbcLocationRepository implements LocationRepository{
         List<SimpleBuilding> buildings = (jdbcTemplate.query("SELECT * from Campus, Building where" +
                 " Campus.campusId = Building.campusId and Campus.campusId = ?", (rs, rowNum) ->
                 new SimpleBuilding(
-                        rs.getInt("buildingId"),
-                        rs.getString("buildingName")
+                        rs.getString("buildingName"),
+                        rs.getInt("buildingId")
                 ), campus.getId()));
 
         campus.addBuildings((ArrayList<SimpleBuilding>) buildings);

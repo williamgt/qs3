@@ -1,6 +1,6 @@
 package no.ntnu.idatt2105.gr13.qs3backend.model.course;
 
-import no.ntnu.idatt2105.gr13.qs3backend.model.task.Task;
+import no.ntnu.idatt2105.gr13.qs3backend.model.task.TaskFromForm;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.basics.StudentUserBasic;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.basics.TAUserBasic;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.basics.TeacherUserBasic;
@@ -17,7 +17,7 @@ public class CourseForm {
     private List<StudentUserBasic> students;
     private int obligatoryTaskAmount;
     private int setOfTasks;
-    private List<List<Task>> tasksInEachSet;
+    private List<List<TaskFromForm>> tasksInEachSet;
     private List<Integer> obligatoryPerSet;
 
     public CourseForm() {
@@ -96,11 +96,11 @@ public class CourseForm {
         this.setOfTasks = setOfTasks;
     }
 
-    public List<List<Task>> getTasksInEachSet() {
+    public List<List<TaskFromForm>> getTasksInEachSet() {
         return tasksInEachSet;
     }
 
-    public void setTasksInEachSet(List<List<Task>> tasksInEachSet) {
+    public void setTasksInEachSet(List<List<TaskFromForm>> tasksInEachSet) {
         this.tasksInEachSet = tasksInEachSet;
     }
 
@@ -124,7 +124,7 @@ public class CourseForm {
                 ", students=" + students +
                 ", obligatoryTaskAmount=" + obligatoryTaskAmount +
                 ", setOfTasks=" + setOfTasks +
-                ", tasksInEachSet=" + tasksInEachSet +
+                ", tasksInEachSet=" + tasksInEachSet.toString() +
                 ", obligatoryPerSet=" + obligatoryPerSet +
                 '}';
     }
