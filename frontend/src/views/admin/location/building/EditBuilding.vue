@@ -62,24 +62,25 @@ export default {
       return true;
     },
     cancel() {
-      this.$router.push("/locations/campus");
+      this.$router.push("/locations/building/" + this.campus.building.id);
     },
     submit() {
       if (this.validateInput()) {
+        console.log(this.campus);
         const building = {
-          id: this.campus.building.id,
-          name: this.campus.building.name,
+          buildingId: this.campus.building.id,
+          buildingName: this.campus.building.name,
         };
         updateBuilding(building)
           .then(() => {
             this.GStore.flashMessage = "building Edited!";
-            this.$router.push("/locations/building/" + building.id);
+            this.$router.push("/locations/building/" + building.buildingId);
           })
           .catch((err) => {
             console.log(err.response);
             this.error = err;
             this.GStore.flashMessage = "Problems Editing building";
-            this.$router.push("/locations/building/" + building.id);
+            this.$router.push("/locations/building/" + building.buildingId);
           });
       }
     },

@@ -58,11 +58,12 @@ export default {
       return true;
     },
     cancel() {
-      this.$router.push("/locations/campus");
+      this.$router.push("/locations/campus/" + this.campus.id);
     },
     submit() {
       if (this.validateInput()) {
-        updateCampus(this.campus)
+        const camp = { campusId: this.campus.id, campusName: this.campus.name };
+        updateCampus(camp)
           .then(() => {
             this.GStore.flashMessage = "Campus Edited!";
             this.$router.push("/locations/campus/" + this.campus.id);
