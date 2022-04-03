@@ -16,4 +16,12 @@ public class SimpleCampus {
     public String getName() {
         return name;
     }
+
+    @Override
+    public String toString() {
+        return "SimpleCampus{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

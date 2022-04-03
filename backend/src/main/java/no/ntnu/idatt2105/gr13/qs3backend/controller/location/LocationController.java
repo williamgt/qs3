@@ -2,10 +2,7 @@ package no.ntnu.idatt2105.gr13.qs3backend.controller.location;
 
 import no.ntnu.idatt2105.gr13.qs3backend.model.location.Campus;
 import no.ntnu.idatt2105.gr13.qs3backend.model.location.register.RegisterRoom;
-import no.ntnu.idatt2105.gr13.qs3backend.model.location.simple.SimpleBuilding;
-import no.ntnu.idatt2105.gr13.qs3backend.model.location.simple.SimpleCampus;
-import no.ntnu.idatt2105.gr13.qs3backend.model.location.simple.SimpleCampusBuilding;
-import no.ntnu.idatt2105.gr13.qs3backend.model.location.simple.SimpleCampusBuildingRoom;
+import no.ntnu.idatt2105.gr13.qs3backend.model.location.simple.*;
 import no.ntnu.idatt2105.gr13.qs3backend.service.LocationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +40,13 @@ public class LocationController {
         SimpleCampusBuilding c = locationService.getCampus((int) id);
         logger.info("Retrieved all info from campus: " + c.toString());
         return c;
+    }
+
+    @GetMapping("/room/{id}")
+    public SimpleRoomWBC getRoom(@PathVariable("id") long id){
+        SimpleRoomWBC room = locationService.getRoom((int) id);
+        logger.info("Retrieved all info from room: " + room.toString());
+        return room;
     }
 
     @GetMapping("/building/{id}")
@@ -83,5 +87,38 @@ public class LocationController {
         }
         logger.error("Failed to register building: " + building);
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
+
+    @PutMapping("/campus")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity updateCampus(@RequestBody SimpleCampus campus){
+        if(locationService.editCampus(campus)){
+            logger.info("Updating Successful: " + campus);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        logger.info("Updating Failed: " + campus);
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    @PutMapping("/building")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity updateBuilding(@RequestBody SimpleBuilding building){
+        if(locationService.editBuilding(building)){
+            logger.info("Updating Successful: " + building);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        logger.info("Updating Failed: " + building);
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    @PutMapping("/room")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity updateCampus(@RequestBody SimpleRoom room){
+        if(locationService.editRoom(room)){
+            logger.info("Updating Successful: " + room);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        logger.info("Updating Failed: " + room);
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 }

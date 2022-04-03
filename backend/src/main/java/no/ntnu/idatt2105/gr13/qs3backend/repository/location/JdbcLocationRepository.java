@@ -158,4 +158,59 @@ public class JdbcLocationRepository implements LocationRepository{
             return false;
         }
     }
+
+    @Override
+    public int editCampus(SimpleCampus campus) {
+        try{
+            String sql = "UPDATE Campus set Campus.campusName = ? where campusId = ?";
+            Object[] args = {campus.getName(), campus.getId()};
+            int rows = jdbcTemplate.update(sql, args);
+            return rows;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return -1;
+        }
+    }
+
+    @Override
+    public int editBuilding(SimpleBuilding building) {
+        try{
+            String sql = "UPDATE Building set Building.buildingName = ? where buildingId = ?";
+            Object[] args = {building.getName(), building.getId()};
+            int rows = jdbcTemplate.update(sql, args);
+            return rows;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return -1;
+        }
+    }
+
+    @Override
+    public int editRoom(SimpleRoom room) {
+        try{
+            String sql = "UPDATE Room set Room.roomName = ?, Room.tables = ?, Room.floor = ? where roomId = ?";
+            Object[] args = {room.getRoomName(), room.getTables(), room.getFloors(), room.getId()};
+            int rows = jdbcTemplate.update(sql, args);
+            return rows;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return -1;
+        }
+    }
+
+    @Override
+    public SimpleRoomWBC getRoom(int id) {
+        SimpleRoomWBC room = jdbcTemplate.queryForObject("SELECT * from Room, Building, Campus where" +
+                " Room.buildingId = Building.buildingId and Building.campusId = Campus.campusId and Room.roomId = ?", (rs, rowNum) ->
+                new SimpleRoomWBC(
+                        rs.getInt("roomId"),
+                        rs.getInt("tables"),
+                        rs.getString("roomName"),
+                        rs.getInt("floor"),
+                        rs.getString("campusName"),
+                        rs.getString("buildingName")
+                ), id);
+
+        return room;
+    }
 }

@@ -2,10 +2,7 @@ package no.ntnu.idatt2105.gr13.qs3backend.service;
 
 import no.ntnu.idatt2105.gr13.qs3backend.model.location.Campus;
 import no.ntnu.idatt2105.gr13.qs3backend.model.location.register.RegisterRoom;
-import no.ntnu.idatt2105.gr13.qs3backend.model.location.simple.SimpleBuilding;
-import no.ntnu.idatt2105.gr13.qs3backend.model.location.simple.SimpleCampus;
-import no.ntnu.idatt2105.gr13.qs3backend.model.location.simple.SimpleCampusBuilding;
-import no.ntnu.idatt2105.gr13.qs3backend.model.location.simple.SimpleCampusBuildingRoom;
+import no.ntnu.idatt2105.gr13.qs3backend.model.location.simple.*;
 import no.ntnu.idatt2105.gr13.qs3backend.repository.location.JdbcLocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +30,11 @@ public class LocationService {
         return campus;
     }
 
+    public SimpleRoomWBC getRoom(int id){
+        SimpleRoomWBC room = locationRepository.getRoom(id);
+        return room;
+    }
+
     public SimpleCampusBuildingRoom getBuilding(int id){
         return locationRepository.getBuilding(id);
     }
@@ -47,5 +49,17 @@ public class LocationService {
 
     public Boolean registerBuilding(SimpleBuilding building){
         return locationRepository.registerBuilding(building);
+    }
+
+    public boolean editCampus(SimpleCampus campus){
+        return locationRepository.editCampus(campus) == 1;
+    }
+
+    public boolean editBuilding(SimpleBuilding building){
+        return locationRepository.editBuilding(building) == 1;
+    }
+
+    public boolean editRoom(SimpleRoom room){
+        return locationRepository.editRoom(room) == 1;
     }
 }
