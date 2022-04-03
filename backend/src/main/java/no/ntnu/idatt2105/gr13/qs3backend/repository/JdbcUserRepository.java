@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.IncorrectResultSetColumnCountException;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,8 +22,20 @@ public class JdbcUserRepository implements UserRepository {
 
 
     @Override
-    public User findByUsername(String username) {
-        return null;
+    public int getID(String email) {
+        try{
+            String query = "SELECT * from User where User.email = ?";
+            UserPerson user = jdbcTemplate.queryForObject(query, (rs, rowNum) ->
+                    new UserPerson(
+                            rs.getString("email"),
+                            rs.getString("firstname"),
+                            rs.getString("lastname"),
+                            rs.getInt("id")
+                    ), email);
+            return user.getId();
+        }catch (IncorrectResultSetColumnCountException e){
+            return -1;
+        }
     }
 
     @Override
@@ -79,6 +90,23 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
+    public Boolean isUser(String email) {
+        try{
+            String query = "SELECT * from User where User.email = ?";
+            UserPerson user = jdbcTemplate.queryForObject(query, (rs, rowNum) ->
+                    new UserPerson(
+                            rs.getString("email"),
+                            rs.getString("firstname"),
+                            rs.getString("lastname"),
+                            rs.getInt("id")
+                    ), email);
+            return true;
+        }catch (IncorrectResultSetColumnCountException e){
+            return false;
+        }
+    }
+
+    @Override
     public User findByIdAdmin(long id) {
         try{
             String query = "SELECT * from User where User.id = ?";
@@ -98,118 +126,84 @@ public class JdbcUserRepository implements UserRepository {
 
     @Transactional
     @Override
-    public int registerUsers(List<UserBasic> users) { //Implementation is not optimal, will get much slower over time and with large users list
+    public int registerUser(User user) { //Implementation is not optimal, will get much slower over time and with large users list
         String getIdWithMail = "SELECT id from User WHERE email=?";
         String insertUser = "INSERT INTO User (firstname, lastname, email, password) VALUES(?,?,?,?)";
         Integer id;
         int rowsAffected = 0;
 
-        for(int i = 0; i < users.size(); i++) {
-            try{
-                id = jdbcTemplate.queryForObject(getIdWithMail, Integer.class, users.get(i).getEmail()); //Throws exception if no user has given mail
-            }catch (EmptyResultDataAccessException e){
-                //Guaranteed no user is registered with given mail
-                rowsAffected += jdbcTemplate.update(insertUser,
-                        new Object[] {users.get(i).getFirstname(), users.get(i).getLastname(), users.get(i).getEmail(), FileHandler.getRandomPassword()});
-            }
+        try{
+            id = jdbcTemplate.queryForObject(getIdWithMail, Integer.class, user.getEmail()); //Throws exception if no user has given mail
+        }catch (EmptyResultDataAccessException e){
+            //Guaranteed no user is registered with given mail
+            rowsAffected += jdbcTemplate.update(insertUser,
+                    new Object[] {user.getFirstname(), user.getLastname(), user.getEmail(), user.getPassword()});
+            id = jdbcTemplate.queryForObject(getIdWithMail, Integer.class, user.getEmail());
         }
         logger.info(rowsAffected + " rows were affected by insertions into User.");
+        if(id ==null){
+            return -1;
+        }
+        return id;
+    }
+
+    @Transactional
+    @Override
+    public int makeTA(int taID) { //Implementation is not optimal, will get much slower over time and with large users list
+
+        String insertTAUser = "INSERT IGNORE INTO TAUser (id) VALUES (?)";
+        int rowsAffected = 0;
+        try {
+            rowsAffected += jdbcTemplate.update(insertTAUser, taID);
+        }catch (Exception e){
+            logger.error(e.getMessage());
+        }
+        logger.info(rowsAffected + " rows were affected by insertions into TAUser.");
         return rowsAffected;
     }
 
     @Transactional
-    public int registerTeacherUsers(List<TeacherUserBasic> teacherUsers) { //Implementation is not optimal, will get much slower over time and with large users list
-        String getIdWithMail = "SELECT id from User WHERE email=?";
-        String insertUser = "INSERT INTO User (firstname, lastname, email, password) VALUES (?,?,?,?)";
+    @Override
+    public int makeTeacher(int teacherID) { //Implementation is not optimal, will get much slower over time and with large users list
+
         String insertTeacherUser = "INSERT IGNORE INTO TeacherUser (id) VALUES (?)";
-        Integer id;
         int rowsAffected = 0;
-
-        for(int i = 0; i < teacherUsers.size(); i++) {
-            try{
-                id = jdbcTemplate.queryForObject(getIdWithMail, Integer.class, teacherUsers.get(i).getEmail()); //Throws exception if no user has given mail
-                rowsAffected += jdbcTemplate.update(insertTeacherUser, id);
-            }catch (EmptyResultDataAccessException e){
-                //Guaranteed no user is registered with given mail, adding to both user and teacher
-                rowsAffected += jdbcTemplate.update(insertUser,
-                        new Object[] {teacherUsers.get(i).getFirstname(), teacherUsers.get(i).getLastname(), teacherUsers.get(i).getEmail(), FileHandler.getRandomPassword()});
-                id = jdbcTemplate.queryForObject(getIdWithMail, Integer.class, teacherUsers.get(i).getEmail());
-                rowsAffected += jdbcTemplate.update(insertTeacherUser, id);
-            }
+        try {
+            rowsAffected += jdbcTemplate.update(insertTeacherUser, teacherID);
+        }catch (Exception e){
+            logger.error(e.getMessage());
         }
-        logger.info(rowsAffected + " rows were affected by insertions into User and TeacherUser.");
+        logger.info(rowsAffected + " rows were affected by insertions into TeacherUser.");
         return rowsAffected;
     }
 
     @Transactional
-    public int registerTAUsers(List<TAUserBasic> tAUsers) { //Implementation is not optimal, will get much slower over time and with large users list
-        String getIdWithMail = "SELECT id from User WHERE email=?";
-        String insertUser = "INSERT INTO User (firstname, lastname, email, password) VALUES (?,?,?,?)";
-        String insertTeacherUser = "INSERT IGNORE INTO TAUser (id) VALUES (?)";
-        Integer id;
-        int rowsAffected = 0;
+    @Override
+    public int makeStudent(int studentID) { //Implementation is not optimal, will get much slower over time and with large users list
 
-        for(int i = 0; i < tAUsers.size(); i++) {
-            try{
-                id = jdbcTemplate.queryForObject(getIdWithMail, Integer.class, tAUsers.get(i).getEmail()); //Throws exception if no user has given mail
-                rowsAffected += jdbcTemplate.update(insertTeacherUser, id);
-            }catch (EmptyResultDataAccessException e){
-                //Guaranteed no user is registered with given mail, adding to both user and teacher
-                rowsAffected += jdbcTemplate.update(insertUser,
-                        new Object[] {tAUsers.get(i).getFirstname(), tAUsers.get(i).getLastname(), tAUsers.get(i).getEmail(), FileHandler.getRandomPassword()});
-                id = jdbcTemplate.queryForObject(getIdWithMail, Integer.class, tAUsers.get(i).getEmail());
-                rowsAffected += jdbcTemplate.update(insertTeacherUser, id);
-            }
+        String insertStudentUser = "INSERT IGNORE INTO StudentUser (id) VALUES (?)";
+        int rowsAffected = 0;
+        try {
+            rowsAffected += jdbcTemplate.update(insertStudentUser, studentID);
+        }catch (Exception e){
+            logger.error(e.getMessage());
         }
-        logger.info(rowsAffected + " rows were affected by insertions into User and TAUser.");
+        logger.info(rowsAffected + " rows were affected by insertions into StudentUser.");
         return rowsAffected;
     }
 
     @Transactional
-    public int registerStudentUsers(List<StudentUserBasic> studentUsers) { //Implementation is not optimal, will get much slower over time and with large users list
-        String getIdWithMail = "SELECT id from User WHERE email=?";
-        String insertUser = "INSERT INTO User (firstname, lastname, email, password) VALUES (?,?,?,?)";
-        String insertTeacherUser = "INSERT IGNORE INTO StudentUser (id) VALUES (?)";
-        Integer id;
+    @Override
+    public int makeAdmin(int adminID) { //Implementation is not optimal, will get much slower over time and with large users list
+
+        String insertStudentUser = "INSERT IGNORE INTO AdminUser (id) VALUES (?)";
         int rowsAffected = 0;
-
-        for(int i = 0; i < studentUsers.size(); i++) {
-            try{
-                id = jdbcTemplate.queryForObject(getIdWithMail, Integer.class, studentUsers.get(i).getEmail()); //Throws exception if no user has given mail
-                rowsAffected += jdbcTemplate.update(insertTeacherUser, id);
-            }catch (EmptyResultDataAccessException e){
-                //Guaranteed no user is registered with given mail, adding to both user and teacher
-                rowsAffected += jdbcTemplate.update(insertUser,
-                        new Object[] {studentUsers.get(i).getFirstname(), studentUsers.get(i).getLastname(), studentUsers.get(i).getEmail(), FileHandler.getRandomPassword()});
-                id = jdbcTemplate.queryForObject(getIdWithMail, Integer.class, studentUsers.get(i).getEmail());
-                rowsAffected += jdbcTemplate.update(insertTeacherUser, id);
-            }
+        try {
+            rowsAffected += jdbcTemplate.update(insertStudentUser, adminID);
+        }catch (Exception e){
+            logger.error(e.getMessage());
         }
-        logger.info(rowsAffected + " rows were affected by insertions into User and StudentUser.");
-        return rowsAffected;
-    }
-
-    @Transactional
-    public int registerAdminUsers(List<AdminUserBasic> adminUsers) { //Implementation is not optimal, will get much slower over time and with large users list
-        String getIdWithMail = "SELECT id from User WHERE email=?";
-        String insertUser = "INSERT INTO User (firstname, lastname, email, password) VALUES (?,?,?,?)";
-        String insertTeacherUser = "INSERT IGNORE INTO AdminUser (id) VALUES (?)";
-        Integer id;
-        int rowsAffected = 0;
-
-        for(int i = 0; i < adminUsers.size(); i++) {
-            try{
-                id = jdbcTemplate.queryForObject(getIdWithMail, Integer.class, adminUsers.get(i).getEmail()); //Throws exception if no user has given mail
-                rowsAffected += jdbcTemplate.update(insertTeacherUser, id);
-            }catch (EmptyResultDataAccessException e){
-                //Guaranteed no user is registered with given mail, adding to both user and teacher
-                rowsAffected += jdbcTemplate.update(insertUser,
-                        new Object[] {adminUsers.get(i).getFirstname(), adminUsers.get(i).getLastname(), adminUsers.get(i).getEmail(), FileHandler.getRandomPassword()});
-                id = jdbcTemplate.queryForObject(getIdWithMail, Integer.class, adminUsers.get(i).getEmail());
-                rowsAffected += jdbcTemplate.update(insertTeacherUser, id);
-            }
-        }
-        logger.info(rowsAffected + " rows were affected by insertions into User and AdminUser.");
+        logger.info(rowsAffected + " rows were affected by insertions into AdminUser.");
         return rowsAffected;
     }
 
