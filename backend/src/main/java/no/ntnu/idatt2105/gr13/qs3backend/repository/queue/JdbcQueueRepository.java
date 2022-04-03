@@ -128,7 +128,7 @@ public class JdbcQueueRepository {
                 SimpleLocationParts loc = (SimpleLocationParts) bareBoneLocationList.get(i);
                 SimpleCampus c = new SimpleCampus(loc.getCampusName(), loc.getCampusId());
                 SimpleBuilding b = new SimpleBuilding(loc.getBuildingName(), loc.getBuildingId());
-                SimpleRoom r = new SimpleRoom(loc.getRoomName(), loc.getRoomId(), loc.getTable(), loc.getFloor());
+                SimpleRoom r = new SimpleRoom(loc.getRoomId(), loc.getTable(), loc.getRoomName(), loc.getFloor());
                 studentQueueInfoList.get(i).setLocation(new SimpleLocation(c, b, r, false));
             }
             //Setting tasks

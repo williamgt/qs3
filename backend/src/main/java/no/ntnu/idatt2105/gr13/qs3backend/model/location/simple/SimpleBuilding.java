@@ -14,6 +14,6 @@ public class SimpleBuilding {
     }
 
     public String getName() {
-        return bulidingName;
+        return buildingName;
     }
 }
