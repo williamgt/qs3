@@ -1,5 +1,7 @@
 <template>
-  <h1 class="header">{{ campus.name }}</h1>
+  <router-link to="/locations/campus">
+    <h1 class="header">{{ campus.name }}</h1>
+  </router-link>
   <div class="table-container">
     <element-header :element="header"></element-header>
     <element-to-list
@@ -10,7 +12,7 @@
     ></element-to-list>
   </div>
   <div class="button-container">
-    <button>Edit Campus</button>
+    <button @click="toEditCampus">Edit Campus</button>
     <button @click="toRegisterBuilding">Register Building</button>
   </div>
 </template>
@@ -42,6 +44,9 @@ export default {
         "/locations/campus/" + this.$route.params.id + "/register"
       );
     },
+    toEditCampus() {
+      this.$router.push("/locations/campus/" + this.$route.params.id + "/edit");
+    },
   },
 };
 </script>
@@ -61,5 +66,12 @@ export default {
 button {
   margin-left: 10px;
   margin-right: 10px;
+}
+a:link,
+a:visited,
+a:hover,
+a:active {
+  text-decoration: none;
+  color: black;
 }
 </style>

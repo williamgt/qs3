@@ -5,7 +5,6 @@
       <div class="grid-item">{{ user.email }}</div>
       <div class="grid-item">{{ user.firstname }}</div>
       <div class="grid-item">{{ user.lastname }}</div>
-      <div class="grid-item">{{ user.password }}</div>
     </div>
   </router-link>
 </template>
@@ -50,7 +49,7 @@ link {
 }
 .grid-container {
   display: grid;
-  grid-template-columns: 20% 20% 20% 20% 20%;
+  grid-template-columns: 25% 25% 25% 25%;
   width: 100%;
 }
 .grid-item {

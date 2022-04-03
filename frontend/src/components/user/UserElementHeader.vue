@@ -4,7 +4,6 @@
     <div class="grid-item">Email</div>
     <div class="grid-item">First name</div>
     <div class="grid-item">Last name</div>
-    <div class="grid-item">Password</div>
   </div>
 </template>
 
@@ -17,7 +16,7 @@ export default {
 <style scoped>
 .grid-container {
   display: grid;
-  grid-template-columns: 20% 20% 20% 20% 20%;
+  grid-template-columns: 25% 25% 25% 25%;
   background-color: grey;
   width: 100%;
 }

@@ -1,10 +1,10 @@
 <template>
-  <base-display label="ID" :message="campus.id"></base-display>
+  <base-display label="ID" :message="this.campus.building.id"></base-display>
   <base-edit-display
-    label="Campus name"
+    label="Building name"
     v-model="this.name"
     :message="this.name"
-    :holder="this.campus.name"
+    :holder="this.campus.building.name"
   ></base-edit-display>
   <div class="submit-button">
     <br v-if="error === ''" />
@@ -17,17 +17,20 @@
 
 <script>
 import BaseDisplay from "@/input-components/BaseDisplay";
-import { getCampus, updateCampus } from "@/services/locationSerivce";
+import { getBuilding, updateBuilding } from "@/services/locationSerivce";
 import BaseButton from "@/input-components/BaseButton";
 import BaseEditDisplay from "@/input-components/BaseEditDisplay";
 
 export default {
-  name: "EditCampus",
+  name: "EditBuilding",
   components: { BaseEditDisplay, BaseButton, BaseDisplay },
   data() {
     return {
       campus: {
         type: Object,
+        building: {
+          id: -1,
+        },
       },
       error: "",
       name: "",
@@ -35,10 +38,11 @@ export default {
   },
   inject: ["GStore"],
   async created() {
-    await getCampus(this.$route.params.id)
+    await getBuilding(this.$route.params.id)
       .then((response) => {
+        console.log(response.data);
         this.campus = response.data;
-        this.name = this.campus.name;
+        this.name = this.campus.building.name;
       })
       .catch((err) => {
         console.log(err.response);
@@ -46,15 +50,15 @@ export default {
   },
   methods: {
     validateInput() {
-      if (this.campus.name.length === 0) {
+      if (this.campus.building.name.length === 0) {
         this.error = "Name can't be empty";
         return false;
       }
-      if (this.campus.name === this.name) {
+      if (this.campus.building.name === this.name) {
         this.error = "Can't update to same name";
         return false;
       }
-      this.campus.name = this.name;
+      this.campus.building.name = this.name;
       return true;
     },
     cancel() {
@@ -62,16 +66,20 @@ export default {
     },
     submit() {
       if (this.validateInput()) {
-        updateCampus(this.campus)
+        const building = {
+          id: this.campus.building.id,
+          name: this.campus.building.name,
+        };
+        updateBuilding(building)
           .then(() => {
-            this.GStore.flashMessage = "Campus Edited!";
-            this.$router.push("/locations/campus/" + this.campus.id);
+            this.GStore.flashMessage = "building Edited!";
+            this.$router.push("/locations/building/" + building.id);
           })
           .catch((err) => {
             console.log(err.response);
             this.error = err;
-            this.GStore.flashMessage = "Problems Editing campus";
-            this.$router.push("/locations/campus/" + this.campus.id);
+            this.GStore.flashMessage = "Problems Editing building";
+            this.$router.push("/locations/building/" + building.id);
           });
       }
     },

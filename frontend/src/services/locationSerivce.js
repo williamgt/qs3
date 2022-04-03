@@ -48,3 +48,23 @@ export function registerBuilding(building) {
     config
   );
 }
+
+export function updateCampus(campus) {
+  const config = {
+    headers: { Authorization: `Bearer ${store.state.auth.token}` },
+  };
+  console.log(campus);
+  return axios.put("http://localhost:8085/locations/campus", campus, config);
+}
+
+export function updateBuilding(building) {
+  const config = {
+    headers: { Authorization: `Bearer ${store.state.auth.token}` },
+  };
+  console.log(building);
+  return axios.put(
+    "http://localhost:8085/locations/building",
+    building,
+    config
+  );
+}

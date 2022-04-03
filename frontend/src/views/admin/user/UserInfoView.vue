@@ -1,7 +1,9 @@
 <template>
   <user-info :user="user"></user-info>
-  <button @click="deleteUser">Delete</button>
-  <button @click="toEdit">Edit</button>
+  <div class="button-container">
+    <button @click="deleteUser">Delete</button>
+    <button @click="toEdit">Edit</button>
+  </div>
 </template>
 
 <script>
@@ -43,4 +45,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.button-container {
+  text-align: center;
+}
+</style>

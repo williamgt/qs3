@@ -34,7 +34,7 @@ export default {
       return true;
     },
     cancel() {
-      this.$router.push("/locations/campus/" + this.$route.params.id);
+      this.$router.push("/locations/campus");
     },
     submit() {
       if (this.validateInput()) {
