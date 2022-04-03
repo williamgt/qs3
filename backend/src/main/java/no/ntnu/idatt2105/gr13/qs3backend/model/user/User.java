@@ -28,7 +28,7 @@ public class User {
         this.lastname = lastName;
     }
 
-    public User(String firstname, String lastname, String email, int id) {
+    public User(String email, String firstname, String lastname, int id) {
         this.email = email;
         this.firstname = firstname;
         this.lastname = lastname;

@@ -2,6 +2,7 @@ package no.ntnu.idatt2105.gr13.qs3backend.repository;
 
 import no.ntnu.idatt2105.gr13.qs3backend.model.course.Course;
 import no.ntnu.idatt2105.gr13.qs3backend.model.course.CourseForm;
+import no.ntnu.idatt2105.gr13.qs3backend.model.course.SimpleCourseWithName;
 import no.ntnu.idatt2105.gr13.qs3backend.model.task.Task;
 import no.ntnu.idatt2105.gr13.qs3backend.model.task.TaskList;
 import no.ntnu.idatt2105.gr13.qs3backend.model.task.TaskSet;
@@ -11,11 +12,9 @@ import no.ntnu.idatt2105.gr13.qs3backend.model.user.TeacherUser;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.basics.StudentUserBasic;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.basics.TAUserBasic;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.basics.TeacherUserBasic;
-import no.ntnu.idatt2105.gr13.qs3backend.util.FileHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -170,12 +169,12 @@ public class JdbcCourseRepository {
         List<Integer> taskSetIds = jdbcTemplate.query(getTaskSetIdString, (rs, rowNum) ->
                 Integer.valueOf(
                         rs.getInt("taskSetId")
-                ), tasksId); //TODO this might fail
+                ), tasksId);
 
         for(int i = 0; i < taskSetIds.size(); i++) {
             for(int j = 0; j < course.getTasksInEachSet().get(i).size(); j++) {
                 insertIntoTaskInt += jdbcTemplate.update(insertIntoTaskString,
-                        new Object[] {course.getTasksInEachSet().get(i).get(j).getDescription(), taskSetIds.get(i)});
+                        new Object[] {course.getTasksInEachSet().get(i).get(j).getTask(), taskSetIds.get(i)});
             }
         }
         //Not sure if allowed:
@@ -256,5 +255,19 @@ public class JdbcCourseRepository {
             }
         }
         return 0;
+    }
+
+    public List<SimpleCourseWithName> getActiveOrInactiveCoursesByUserId(int id, boolean active) {
+        int activeInt = active ? 1 : 0;
+
+        String coursesQuery = "SELECT Course.courseCode, Course.year, Course.term, Course.courseName, Course.hashId FROM Course " +
+                "INNER JOIN Queue ON Course.courseCode=Queue.courseCode AND Course.year=Queue.year AND Course.term=Queue.term " +
+                "INNER JOIN StudentCourse ON Course.courseCode=StudentCourse.courseCode AND Course.year=StudentCourse.year AND Course.term=StudentCourse.term " +
+                "WHERE Queue.active=? AND StudentCourse.studentId=? ";
+
+        List<SimpleCourseWithName> courses = jdbcTemplate.query(coursesQuery,
+                BeanPropertyRowMapper.newInstance(SimpleCourseWithName.class), activeInt, id);
+
+        return courses;
     }
 }

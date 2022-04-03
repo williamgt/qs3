@@ -1,21 +1,49 @@
 package no.ntnu.idatt2105.gr13.qs3backend.model.queue;
 
-import no.ntnu.idatt2105.gr13.qs3backend.model.task.Task;
+import no.ntnu.idatt2105.gr13.qs3backend.model.task.TaskWithNums;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.User;
+import no.ntnu.idatt2105.gr13.qs3backend.model.user.basics.UserBasicWithId;
 
 import java.util.List;
 
 public class QueueRequest {
+    private String hashId;
+    private UserBasicWithId user;
     private String message;
     private boolean home;
     private String campus;
+    private String building;
     private int table;
     private String room;
     private boolean vali;
     private List<User> group;
-    private List<Task> task;
+    private List<TaskWithNums> task;
 
     public QueueRequest() {
+    }
+
+    public String getBuilding() {
+        return building;
+    }
+
+    public void setBuilding(String building) {
+        this.building = building;
+    }
+
+    public String getHashId() {
+        return hashId;
+    }
+
+    public void setHashId(String hashId) {
+        this.hashId = hashId;
+    }
+
+    public UserBasicWithId getUser() {
+        return user;
+    }
+
+    public void setUser(UserBasicWithId user) {
+        this.user = user;
     }
 
     public String getMessage() {
@@ -74,11 +102,27 @@ public class QueueRequest {
         this.group = group;
     }
 
-    public List<Task> getTask() {
+    public List<TaskWithNums> getTask() {
         return task;
     }
 
-    public void setTask(List<Task> task) {
+    public void setTask(List<TaskWithNums> task) {
         this.task = task;
+    }
+
+    @Override
+    public String toString() {
+        return "QueueRequest{" +
+                "hashId="+hashId+
+                "user="+user.getFirstname()+user.getLastname()+user.getEmail()+user.getId()+ '\'' +
+                "message='" + message + '\'' +
+                ", home=" + home +
+                ", campus='" + campus + '\'' +
+                ", table=" + table +
+                ", room='" + room + '\'' +
+                ", vali=" + vali +
+                ", group=" + group +
+                ", task=" + task +
+                '}';
     }
 }

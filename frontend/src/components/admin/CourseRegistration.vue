@@ -367,9 +367,10 @@ export default {
       this.obligatoryError = "";
       return true;
     },
-    studentCheck(students){
-      if(typeof students === "undefined") {
-        this.csvFileError = "Something went wrong when extracting student info from file.";
+    studentCheck(students) {
+      if (typeof students === "undefined") {
+        this.csvFileError =
+          "Something went wrong when extracting student info from file.";
         return false;
       } else {
         this.csvFileError = "";
@@ -460,7 +461,7 @@ export default {
             console.log(e);
           });
         console.log(students);
-        if(!this.studentCheck(students)) return;
+        if (!this.studentCheck(students)) return;
 
         let course = {
           year: this.year,

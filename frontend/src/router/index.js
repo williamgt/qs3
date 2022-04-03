@@ -20,6 +20,7 @@ import Test from "@/views/admin/Test";
 import UserInfoView from "@/views/admin/UserInfoView";
 import SettingsView from "@/views/user/SettingsView";
 import hasAdminAccess from "@/api/AuthAPI";
+import InsideQueue from "@/components/queue/InsideQueue";
 
 const routes = [
   {
@@ -41,9 +42,9 @@ const routes = [
   },
   {
     path: "/courses/:id",
-    name: "NotFound",
-    component: NotFound,
-   /* children: [
+    name: "StudentCourseInfo",
+    component: StudentCourseInfo,
+    /*children: [
       {
         path: "register",
         name: "QueueForm",
@@ -52,9 +53,20 @@ const routes = [
     ],*/
   },
   {
-    path: "/temp",
+    path: "/courses",
+    name: "StudentCourseView",
+    component: StudentCoursesView,
+  },
+  {
+    //Not as cool as children, but it works
+    path: "/courses/:id/register",
     name: "QueueForm",
     component: QueueForm,
+  },
+  {
+    path: "/courses/:id/queue",
+    name: "InsideQueue",
+    component: InsideQueue,
   },
   {
     path: "/:catchAll(.*)",

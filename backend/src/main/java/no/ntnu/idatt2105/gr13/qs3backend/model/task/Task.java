@@ -6,6 +6,10 @@ public class Task {
     public Task() {
     }
 
+    public Task(String description) {
+        this.description = description;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }

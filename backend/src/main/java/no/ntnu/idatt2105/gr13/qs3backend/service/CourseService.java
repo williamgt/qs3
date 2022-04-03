@@ -2,12 +2,15 @@ package no.ntnu.idatt2105.gr13.qs3backend.service;
 
 import no.ntnu.idatt2105.gr13.qs3backend.model.course.Course;
 import no.ntnu.idatt2105.gr13.qs3backend.model.course.CourseForm;
+import no.ntnu.idatt2105.gr13.qs3backend.model.course.SimpleCourseWithName;
 import no.ntnu.idatt2105.gr13.qs3backend.repository.JdbcCourseRepository;
 import no.ntnu.idatt2105.gr13.qs3backend.repository.JdbcUserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CourseService {
@@ -51,5 +54,13 @@ public class CourseService {
 
     public Course getCourseByCourseCode(String courseCode) {
         return courseRepo.getCourseByCode(courseCode);
+    }
+
+    public List<SimpleCourseWithName> getActiveCourses(int id) {
+        return courseRepo.getActiveOrInactiveCoursesByUserId(id, true);
+    }
+
+    public List<SimpleCourseWithName> getInactiveCourses(int id) {
+        return courseRepo.getActiveOrInactiveCoursesByUserId(id, false);
     }
 }

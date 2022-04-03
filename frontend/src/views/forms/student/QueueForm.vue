@@ -99,7 +99,7 @@ import BaseTextArea from "@/input-components/BaseTextArea";
 import Multiselect from "@vueform/multiselect";
 import { ref } from "vue";
 import MultCheck from "@/input-components/mult-check";
-import queueUp from "@/services/queueServices";
+import { queueUp } from "@/services/queueServices";
 export default {
   name: "QueueForm",
   components: {
@@ -221,7 +221,7 @@ export default {
   },
   methods: {
     async submit() {
-/*      console.log(this.message);
+      /*      console.log(this.message);
       console.log(this.home);
       console.log(this.campus);
       console.log(this.table);
@@ -231,24 +231,38 @@ export default {
       console.log(this.task);*/
 
       let queueInfo = {
+        hashId: this.$route.params.id,
+        user: this.$store.state.personLoggedIn,
         message: this.message,
         home: this.home,
         campus: this.campus,
+        building: this.building,
         table: this.table,
         room: this.room,
         vali: this.vali,
         group: this.group,
-        task: this.task
-      }
-
+        task: this.task,
+      };
       console.log(queueInfo);
+      console.log(queueInfo.task);
+      let httpStatus = undefined;
       await queueUp(queueInfo)
-          .then(response => {
-            console.log(response);
-          })
-          .catch(e => {
-            console.log(e);
-          })
+        .then((response) => {
+          console.log(response);
+          httpStatus = response.status;
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+      //Successfully registered in queue, route to somewhere else
+      if (httpStatus === 201) {
+        this.$store.state.inQueue = true;
+        this.$router.push({
+          path: `/courses/${this.$route.params.id}/queue`,
+        });
+      } else {
+        alert("Something went wrong when registering in queue");
+      }
     },
   },
 };
