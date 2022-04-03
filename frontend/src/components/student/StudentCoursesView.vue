@@ -53,7 +53,7 @@ export default {
         } else {
           console.log("Redirect to registering queue view.");
           this.$router.push({
-            path: `/courses/${payload.course.hashId}/register`,
+            path: `/courses/${payload.course.hashId}/queue`, //TODO CHANGE BACK
           });
         }
       }

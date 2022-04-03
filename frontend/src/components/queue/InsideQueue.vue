@@ -6,7 +6,9 @@
     <div class="queue-container">
       <Suspense>
         <template #default>
-          <InsideQueueComponent></InsideQueueComponent>
+          <div class="queue-container">
+            <InsideQueueComponent></InsideQueueComponent>
+          </div>
         </template>
         <template #fallback> Loading... </template>
       </Suspense>
@@ -34,4 +36,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.queue-container {
+  margin-right: 5%;
+  margin-left: 5%;
+}
+</style>
