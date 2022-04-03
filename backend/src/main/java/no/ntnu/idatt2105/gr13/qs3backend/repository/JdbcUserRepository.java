@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.IncorrectResultSetColumnCountException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -101,7 +102,8 @@ public class JdbcUserRepository implements UserRepository {
                             rs.getInt("id")
                     ), email);
             return true;
-        }catch (IncorrectResultSetColumnCountException e){
+        }catch (IncorrectResultSetColumnCountException | IncorrectResultSizeDataAccessException e){
+            logger.info(email + " not registered yet");
             return false;
         }
     }
@@ -134,14 +136,16 @@ public class JdbcUserRepository implements UserRepository {
 
         try{
             id = jdbcTemplate.queryForObject(getIdWithMail, Integer.class, user.getEmail()); //Throws exception if no user has given mail
+            logger.info("Gained id1: " + id);
         }catch (EmptyResultDataAccessException e){
             //Guaranteed no user is registered with given mail
             rowsAffected += jdbcTemplate.update(insertUser,
                     new Object[] {user.getFirstname(), user.getLastname(), user.getEmail(), user.getPassword()});
             id = jdbcTemplate.queryForObject(getIdWithMail, Integer.class, user.getEmail());
+            logger.info("Gained id2: " + id);
         }
         logger.info(rowsAffected + " rows were affected by insertions into User.");
-        if(id ==null){
+        if(id == null){
             return -1;
         }
         return id;

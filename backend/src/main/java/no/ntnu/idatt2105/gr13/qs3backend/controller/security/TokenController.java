@@ -3,9 +3,13 @@ package no.ntnu.idatt2105.gr13.qs3backend.controller.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import no.ntnu.idatt2105.gr13.qs3backend.controller.UserController;
 import no.ntnu.idatt2105.gr13.qs3backend.model.security.Role;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.User;
+import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserLogin;
 import no.ntnu.idatt2105.gr13.qs3backend.service.security.AuthService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpStatus;
@@ -14,6 +18,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -31,25 +36,26 @@ public class TokenController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
-
+    Logger logger = LoggerFactory.getLogger(TokenController.class);
     @Autowired
     AuthService service;
     public static String keyStr = "testsecrettestsecrettestsecrettestsecrettestsecret";
+
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @PostMapping(value = "")
     @ResponseStatus(value = HttpStatus.CREATED)
     public String generateToken(@RequestParam("username") final String username, @RequestParam("password") final String password) throws Exception {
         try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            username,
-                            password
-                    )
-            );
-            System.out.println("Past authManager");
+            String psw = service.authUser(new UserLogin(username, password));
+            logger.info("User authorized once");
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, psw));
+            logger.info("User auth twice");
             Role role = service.getRole(new no.ntnu.idatt2105.gr13.qs3backend.model.user.User(username, password));
+            logger.info(role.role);
             return generateToken1(username, role.role);
         } catch (BadCredentialsException e) {
+
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect username or password");
         }
     }

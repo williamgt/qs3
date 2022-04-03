@@ -67,12 +67,15 @@ public class UserService {
                 if(id == -1){
                     return -1;
                 };
-                if(sendMail)
+                if(!sendMail){
+                    logger.info("Sending mail to: " + u.getEmail());
                     sendMail(new Mail(u.getEmail(), psw));
+                }
                 rows++;
             }
             return rows;
         }catch (Exception e){
+            logger.info(e.getMessage());
             return -1;
         }
     }
@@ -93,8 +96,10 @@ public class UserService {
                 }
                 rows += userRepository.makeTeacher(id);
 
-                if(sendMail)
+                if(!sendMail){
+                    logger.info("Sending mail to: " + t.getEmail());
                     sendMail(new Mail(t.getEmail(), psw));
+                }
             }
             return rows;
         }catch (Exception e){
@@ -117,8 +122,10 @@ public class UserService {
                     return -1;
                 }
                 rows += userRepository.makeTA(id);
-                if(sendMail)
+                if(!sendMail){
+                    logger.info("Sending mail to: " + t.getEmail());
                     sendMail(new Mail(t.getEmail(), psw));
+                }
 
             }
             return rows;
@@ -142,8 +149,10 @@ public class UserService {
                     return -1;
                 }
                 rows += userRepository.makeStudent(id);
-                if(sendMail)
+                if(!sendMail){
+                    logger.info("Sending mail to: " + s.getEmail());
                     sendMail(new Mail(s.getEmail(), psw));
+                }
 
             }
             return rows;
@@ -167,8 +176,10 @@ public class UserService {
                     return -1;
                 }
                 rows += userRepository.makeAdmin(id);
-                if(sendMail)
+                if(!sendMail){
+                    logger.info("Sending mail to: " + a.getEmail());
                     sendMail(new Mail(a.getEmail(), psw));
+                }
 
             }
             return rows;

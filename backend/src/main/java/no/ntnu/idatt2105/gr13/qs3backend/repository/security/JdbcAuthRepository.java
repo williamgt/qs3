@@ -3,10 +3,12 @@ package no.ntnu.idatt2105.gr13.qs3backend.repository.security;
 import no.ntnu.idatt2105.gr13.qs3backend.model.security.Role;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.User;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserDB;
+import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.IncorrectResultSetColumnCountException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -123,6 +125,21 @@ public class JdbcAuthRepository implements AuthRepository{
             return userdb;
         }catch (Exception e){
             return null;
+        }
+    }
+
+    @Override
+    public UserLogin authUser(UserLogin user){
+        try{
+            String query = "SELECT * from User where User.email=?";
+            UserLogin userdb = jdbcTemplate.queryForObject(query, (rs, rowNum) -> new UserLogin(
+                            rs.getString("email"),
+                            rs.getString("password")
+                    )
+                    , user.getEmail());
+            return userdb;
+        }catch (Exception e){
+            throw new BadCredentialsException("Wrong email or password");
         }
     }
 }

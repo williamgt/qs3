@@ -97,8 +97,10 @@ public class CourseService {
                 }
                 rows += userRepo.makeTeacher(id);
 
-                if(sendMail)
+                if(!sendMail){
+                    logger.info("Sending mail to: " + t.getEmail());
                     sendMail(new Mail(t.getEmail(), psw));
+                }
             }
             return rows;
         }catch (Exception e){
@@ -122,8 +124,10 @@ public class CourseService {
                 }
                 rows += userRepo.makeTA(id);
 
-                if(sendMail)
+                if(!sendMail){
+                    logger.info("Sending mail to: " + t.getEmail());
                     sendMail(new Mail(t.getEmail(), psw));
+                }
             }
             return rows;
         }catch (Exception e){
@@ -146,8 +150,10 @@ public class CourseService {
                     return -1;
                 }
                 rows += userRepo.makeStudent(id);
-                if(sendMail)
+                if(!sendMail){
+                    logger.info("Sending mail to: " + s.getEmail());
                     sendMail(new Mail(s.getEmail(), psw));
+                }
 
             }
             return rows;
