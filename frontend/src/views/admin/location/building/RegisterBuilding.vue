@@ -1,6 +1,9 @@
 <template>
   <h1 class="header">Register Building</h1>
-  <base-input label="Building name" v-model="building.name"></base-input>
+  <base-input
+    label="Building name"
+    v-model="building.buildingName"
+  ></base-input>
   <div class="submit-button">
     <br v-if="error === ''" />
     <br v-if="error === ''" />
@@ -21,15 +24,15 @@ export default {
   data() {
     return {
       building: {
-        id: Number,
-        name: "",
+        buildingId: Number,
+        buildingName: "",
       },
       error: "",
     };
   },
   methods: {
     validateInput() {
-      if (this.building.name.length === 0) {
+      if (this.building.buildingName.length === 0) {
         this.error = "Name can't be empty";
         return false;
       }
@@ -40,14 +43,14 @@ export default {
     },
     submit() {
       if (this.validateInput()) {
-        this.building.id = this.$route.params.id;
+        this.building.buildingId = this.$route.params.id;
         registerBuilding(this.building)
           .then(() => {
             this.GStore.flashMessage = "Building registered!";
             setTimeout(() => {
               this.GStore.flashMessage = "";
             }, 3000);
-            this.$router.push("/locations/campus/" + this.building.id);
+            this.$router.push("/locations/campus/" + this.building.buildingId);
           })
           .catch((err) => {
             console.log(err.response);
@@ -55,7 +58,7 @@ export default {
             setTimeout(() => {
               this.GStore.flashMessage = "";
             }, 3000);
-            this.$router.push("/locations/campus/" + this.building.id);
+            this.$router.push("/locations/campus/" + this.building.buildingId);
           });
       }
     },

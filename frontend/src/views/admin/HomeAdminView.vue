@@ -1,27 +1,11 @@
 <template>
-  <home-admin :courses="courses"></home-admin>
+  <h1>Welcome {{ this.$store.state.personLoggedIn.firstname }}</h1>
 </template>
 
 <script>
-import HomeAdmin from "@/components/admin/home/HomeAdmin";
 export default {
   name: "HomeAdminView",
-  components: { HomeAdmin },
-  data() {
-    return {
-      courses: [
-        {
-          id: "IDATT2002",
-        },
-        {
-          id: "IDATT2222",
-        },
-        {
-          id: "IDATT2032",
-        },
-      ],
-    };
-  },
+  data() {},
 };
 </script>
 

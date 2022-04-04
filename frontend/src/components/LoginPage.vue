@@ -20,7 +20,7 @@
           <br v-if="error === ''" />
           <br v-if="error === ''" />
           <p class="error">{{ this.error }}</p>
-          <base-button type="submit">Log in</base-button>
+          <base-button id="submit-button" type="submit">Log in</base-button>
         </div>
 
         <div class="general-info">
@@ -47,8 +47,8 @@ export default {
   data() {
     return {
       userLogin: {
-        email: "ta@ta.ntnu.no",
-        password: "123",
+        email: "",
+        password: "",
       },
       error: "",
     };
