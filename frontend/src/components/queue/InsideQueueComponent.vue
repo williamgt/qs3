@@ -1,5 +1,5 @@
 <template>
-  <div class="button-container">
+  <div class="button-container" v-if="this.isStudent">
     <button @click="routeToRegister">Register in queue</button>
   </div>
   <queue-header></queue-header>
@@ -20,6 +20,8 @@ import { ref } from "vue";
 import { getQueueInfoFromHashId } from "@/services/queueServices";
 import QueueHeader from "@/components/queue/QueueHeader";
 import QueueElement from "@/components/queue/QueueElement";
+import { hasTAAccess } from "@/api/AuthAPI";
+import {useStore} from "vuex";
 
 export default {
   name: "InsideQueueComponent",
@@ -59,6 +61,8 @@ export default {
   async setup() {
     let c_queue;
     const route = useRoute();
+    const store = useStore();
+    let isStudent = !hasTAAccess(store.state.auth.role);
     //const store = useStore();
     console.log(route.params); //Course hash
 
@@ -72,6 +76,7 @@ export default {
       });
     return {
       c_queue,
+      isStudent,
     };
   },
 };
@@ -80,5 +85,6 @@ export default {
 <style scoped>
 .button-container {
   text-align: center;
+  margin-bottom: 10px;
 }
 </style>

@@ -1,4 +1,4 @@
-export default function hasAdminAccess(role) {
+export function hasAdminAccess(role) {
   return role === "ADMIN";
 }
 // eslint-disable-next-line no-unused-vars

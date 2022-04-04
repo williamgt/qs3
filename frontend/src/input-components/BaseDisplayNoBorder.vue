@@ -33,6 +33,7 @@ export default {
   border-bottom-color: black;
   border-bottom: solid;
   width: 80%;
+  overflow: hidden;
 }
 .display-container {
   clear: both;
@@ -40,6 +41,7 @@ export default {
   display: grid;
   grid-template-columns: auto auto;
   padding: 10px;
+  overflow: hidden;
 }
 .label-display {
   padding: 20px;
@@ -48,5 +50,6 @@ export default {
   font-weight: bold;
   border-bottom-color: black;
   border-bottom: solid;
+  overflow: hidden;
 }
 </style>

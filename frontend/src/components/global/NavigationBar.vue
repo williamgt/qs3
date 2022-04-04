@@ -8,8 +8,10 @@
           </router-link>
           <div class="dropdown">
             <button class="dropbtn">
-              <img :src="hamb" width="80" height="63" />
               <i class="fa fa-caret-down"></i>
+              <div class="img-container">
+                <img :src="hamb" width="80" height="63" />
+              </div>
             </button>
             <div
               class="dropdown-content"
@@ -58,7 +60,6 @@ export default {
 }
 .dropdown {
   float: right;
-  overflow: hidden;
   /*background: url("src/assets/hamburger-bar.png");*/
   background-color: darkblue;
 }
@@ -88,19 +89,21 @@ export default {
   display: none;
   position: absolute;
   background-color: #f9f9f9;
-  min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
+  overflow: hidden;
 }
 
 .dropdown-content a {
   float: none;
+  font-size: 17px;
   color: black;
   padding: 12px 16px;
   text-decoration: none;
   display: block;
   text-align: left;
   width: 100%;
+  overflow: hidden;
 }
 
 .dropdown-content a:hover {
@@ -122,5 +125,8 @@ nav a {
 
 nav a.router-link-exact-active {
   color: #42b983;
+}
+.img-container {
+  text-align: center;
 }
 </style>

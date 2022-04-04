@@ -32,6 +32,7 @@ export default {
   text-align: center;
   border-bottom-color: black;
   border-bottom: solid;
+  overflow: hidden;
 }
 .display-container {
   font-size: 24px;
@@ -39,6 +40,7 @@ export default {
   display: grid;
   grid-template-columns: 50% 50%;
   padding: 10px;
+  overflow: hidden;
 }
 .label-display {
   padding: 20px;
@@ -46,5 +48,6 @@ export default {
   text-align: left;
   border-bottom-color: black;
   border-bottom: solid;
+  overflow: hidden;
 }
 </style>

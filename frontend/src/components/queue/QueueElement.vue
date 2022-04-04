@@ -3,7 +3,6 @@
     class="grid-container"
     @click="$emit('update:modelValue', this.studInfo)"
   >
-    <div class="grid-item">{{ index }}</div>
     <div class="grid-item">{{ studInfo.user.lastname }}</div>
     <div class="grid-item">
       {{ studInfo.location.home ? "Home" : studInfo.location.room.roomName }}
@@ -14,7 +13,6 @@
         {{ task.description }} -
       </span>
     </div>
-    <div class="grid-item">{{ studInfo.comment }}</div>
   </div>
 </template>
 
@@ -69,15 +67,15 @@ export default {
 }
 .grid-container {
   display: grid;
-  grid-template-columns: 16.6% 16.6% 16.6% 16.6% 16.6% 16.6%;
+  grid-template-columns: 25% 25% 25% 25%;
   width: 100%;
 }
 .grid-item {
   background-color: rgba(255, 255, 255, 0.8);
   border: 1px solid rgba(0, 0, 0, 0.8);
-  padding-bottom: 20px;
-  padding-top: 20px;
-  font-size: 24px;
+  padding-bottom: 25px;
+  padding-top: 25px;
+  font-size: 20px;
   text-align: center;
   overflow: hidden;
   max-width: 100%;
