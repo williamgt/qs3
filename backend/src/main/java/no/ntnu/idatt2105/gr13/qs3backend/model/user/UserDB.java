@@ -15,11 +15,17 @@ public class UserDB extends User{
 
     public UserDB(String email, String password, int id) {
         super(email, password);
+        if(id < 0){
+            throw new IllegalArgumentException("Id can't be less than 0");
+        }
         this.id = id;
     }
 
     public UserDB(String email, int id) {
         super(email);
+        if(id < 0){
+            throw new IllegalArgumentException("Id can't be less than 0");
+        }
         this.id = id;
     }
 

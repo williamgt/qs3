@@ -11,28 +11,31 @@ public class User {
     private int id;
 
     private boolean check(String email, String password, String firstName, String lastName){
-//        if(email == null){
-//            throw new IllegalArgumentException("Email can't be null");
-//        }
-//        if(password == null || password.equals("")){
-//            throw new IllegalArgumentException("Password can't be null or empty");
-//        }
-//        if(firstName == null || firstName.equals("")){
-//            throw new IllegalArgumentException("firstName can't be null or empty");
-//        }
-//        if(lastName == null || lastName.equals("")){
-//            throw new IllegalArgumentException("lastName can't be null or empty");
-//        }
-//        Pattern pattern = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}");
-//        Matcher mat = pattern.matcher(email);
-//        if(!mat.matches() || !(email.contains(".no") || email.contains(".com"))){
-//            throw new IllegalArgumentException("This is not a valid email");
-//        }
-        //TODO uncomment
+        if(email == null){
+            throw new IllegalArgumentException("Email can't be null");
+        }
+        if(password == null || password.equals("")){
+            throw new IllegalArgumentException("Password can't be null or empty");
+        }
+        if(firstName == null || firstName.equals("")){
+            throw new IllegalArgumentException("firstName can't be null or empty");
+        }
+        if(lastName == null || lastName.equals("")){
+            throw new IllegalArgumentException("lastName can't be null or empty");
+        }
+        Pattern pattern = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}");
+        Matcher mat = pattern.matcher(email);
+        if(!mat.matches() || !(email.contains(".no") || email.contains(".com"))){
+            throw new IllegalArgumentException("This is not a valid email");
+        }
+
         return true;
     }
 
     public User(String email, String password, String firstName, String lastName, int id) {
+        if(id < 0){
+            throw new IllegalArgumentException("Id can't be less than 0");
+        }
         check(email, password, firstName, lastName);
         this.email = email;
         this.password = password;
@@ -42,6 +45,7 @@ public class User {
     }
 
     public User(String email, String password, String firstName, String lastName) {
+        check(email, password, firstName, lastName);
         this.email = email;
         this.password = password;
         this.firstname = firstName;
@@ -49,12 +53,38 @@ public class User {
     }
 
     public User(String email, String firstName, String lastName) {
+        if(firstName == null || firstName.equals("")){
+            throw new IllegalArgumentException("firstName can't be null or empty");
+        }
+        if(lastName == null || lastName.equals("")){
+            throw new IllegalArgumentException("lastName can't be null or empty");
+        }
+        Pattern pattern = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}");
+        Matcher mat = pattern.matcher(email);
+        if(!mat.matches() || !(email.contains(".no") || email.contains(".com"))){
+            throw new IllegalArgumentException("This is not a valid email");
+        }
+
         this.email = email;
         this.firstname = firstName;
         this.lastname = lastName;
     }
 
     public User(String email,String firstname, String lastname, int id) {
+        if(id < 0){
+            throw new IllegalArgumentException("Id can't be less than 0");
+        }
+        if(firstname == null || firstname.equals("")){
+            throw new IllegalArgumentException("firstName can't be null or empty");
+        }
+        if(lastname == null || lastname.equals("")){
+            throw new IllegalArgumentException("lastName can't be null or empty");
+        }
+        Pattern pattern = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}");
+        Matcher mat = pattern.matcher(email);
+        if(!mat.matches() || !(email.contains(".no") || email.contains(".com"))){
+            throw new IllegalArgumentException("This is not a valid email");
+        }
         this.email = email;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -86,11 +116,24 @@ public class User {
     }
 
     public User(String email, String password) {
+        Pattern pattern = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}");
+        Matcher mat = pattern.matcher(email);
+        if(!mat.matches() || !(email.contains(".no") || email.contains(".com"))){
+            throw new IllegalArgumentException("This is not a valid email");
+        }
+        if(password == null || password.equals("")){
+            throw new IllegalArgumentException("Password can't be null or empty");
+        }
         this.email = email;
         this.password = password;
     }
 
     public User(String email) {
+        Pattern pattern = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}");
+        Matcher mat = pattern.matcher(email);
+        if(!mat.matches() || !(email.contains(".no") || email.contains(".com"))){
+            throw new IllegalArgumentException("This is not a valid email");
+        }
         this.email = email;
     }
 
@@ -108,6 +151,11 @@ public class User {
     }
 
     public void setEmail(String email) {
+        Pattern pattern = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}");
+        Matcher mat = pattern.matcher(email);
+        if(!mat.matches() || !(email.contains(".no") || email.contains(".com"))){
+            throw new IllegalArgumentException("This is not a valid email");
+        }
         this.email = email;
     }
 

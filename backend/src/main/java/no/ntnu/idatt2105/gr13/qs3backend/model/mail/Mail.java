@@ -27,7 +27,7 @@ public class Mail {
         mailFrom = "qs3Real@outlook.com";
         mailSubject = "QS3 - Registration!";
         mailContent = "Congratulations! You are now registered in QS3!\n" +
-                "Use the mail this is sent to as email to log in.\n" +
+                "The mail you received this message from is your sign in mail\n" +
                 "Your password is: " + password +
                 "\nMake sure to change this after first log in";
 
