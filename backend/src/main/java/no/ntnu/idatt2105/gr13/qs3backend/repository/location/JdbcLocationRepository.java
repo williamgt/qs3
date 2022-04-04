@@ -126,75 +126,101 @@ public class JdbcLocationRepository implements LocationRepository{
 
     @Override
     public Boolean registerCampus(String name) {
-        int rows = jdbcTemplate.update("INSERT INTO Campus(campusName) values (?)", name);
-        System.out.println(rows);
+        try {
+            SimpleCampus campus = getCampus(name);
+            return false;
+        }catch (Exception e){
+            try{
+                int rows = jdbcTemplate.update("INSERT INTO Campus(campusName) values (?)", name);
+            }catch (Exception er){
+                return false;
+            }
+        }
         return true;
     }
 
     @Override
     public Boolean registerRoom(RegisterRoom room) {
         try {
-            String sql = "INSERT INTO Room(buildingId, roomName, tables, floor) VALUES (?,?,?,?)";
-            Object[] args = {room.getBuildingId(), room.getRoomName(), room.getTables(), room.getFloors()};
-            int rows = jdbcTemplate.update(sql, args);
-
-            return true;
-        }catch (Exception e){
-            System.out.println(e.getMessage());
+            getRoom(room.getRoomName(), room.getBuildingId());
             return false;
+        }catch (Exception e){
+            try{
+                String sql = "INSERT INTO Room(buildingId, roomName, tables, floor) VALUES (?,?,?,?)";
+                Object[] args = {room.getBuildingId(), room.getRoomName(), room.getTables(), room.getFloors()};
+                int rows = jdbcTemplate.update(sql, args);
+                return true;
+            }catch (Exception er){
+                return false;
+            }
         }
     }
 
     @Override
     public Boolean registerBuilding(SimpleBuilding building) {
         try {
-            String sql = "INSERT INTO Building(campusId, buildingName) VALUES (?,?)";
-            Object[] args = {building.getId(), building.getName()};
-            int rows = jdbcTemplate.update(sql, args);
-
-            return true;
-        }catch (Exception e){
-            System.out.println(e.getMessage());
+            getBuilding(building.getName(), building.getId());
             return false;
+        }catch (Exception e){
+            try{
+                String sql = "INSERT INTO Building(campusId, buildingName) VALUES (?,?)";
+                Object[] args = {building.getId(), building.getName()};
+                int rows = jdbcTemplate.update(sql, args);
+                return true;
+            }catch (Exception er){
+                return false;
+            }
         }
     }
 
     @Override
     public int editCampus(SimpleCampus campus) {
         try{
-            String sql = "UPDATE Campus set Campus.campusName = ? where campusId = ?";
-            Object[] args = {campus.getName(), campus.getId()};
-            int rows = jdbcTemplate.update(sql, args);
-            return rows;
-        }catch (Exception e){
-            System.out.println(e.getMessage());
+            getCampus(campus.getName());
             return -1;
+        }catch (Exception e){
+            try{
+                String sql = "UPDATE Campus set Campus.campusName = ? where campusId = ?";
+                Object[] args = {campus.getName(), campus.getId()};
+                int rows = jdbcTemplate.update(sql, args);
+                return rows;
+            }catch (Exception er){
+                return -1;
+            }
         }
     }
 
     @Override
     public int editBuilding(SimpleBuilding building) {
         try{
-            String sql = "UPDATE Building set Building.buildingName = ? where buildingId = ?";
-            Object[] args = {building.getName(), building.getId()};
-            int rows = jdbcTemplate.update(sql, args);
-            return rows;
-        }catch (Exception e){
-            System.out.println(e.getMessage());
+            getBuilding(building.getName(), building.getId());
             return -1;
+        }catch (Exception e){
+            try{
+                String sql = "UPDATE Building set Building.buildingName = ? where buildingId = ?";
+                Object[] args = {building.getName(), building.getId()};
+                int rows = jdbcTemplate.update(sql, args);
+                return rows;
+            }catch (Exception er){
+                return -1;
+            }
         }
     }
 
     @Override
     public int editRoom(SimpleRoom room) {
         try{
-            String sql = "UPDATE Room set Room.roomName = ?, Room.tables = ?, Room.floor = ? where roomId = ?";
-            Object[] args = {room.getRoomName(), room.getTables(), room.getFloors(), room.getId()};
-            int rows = jdbcTemplate.update(sql, args);
-            return rows;
-        }catch (Exception e){
-            System.out.println(e.getMessage());
+            getRoom(room.getRoomName(), room.getId());
             return -1;
+        }catch (Exception e){
+            try{
+                String sql = "UPDATE Room set Room.roomName = ?, Room.tables = ?, Room.floor = ? where roomId = ?";
+                Object[] args = {room.getRoomName(), room.getTables(), room.getFloors(), room.getId()};
+                int rows = jdbcTemplate.update(sql, args);
+                return rows;
+            }catch (Exception er){
+                return -1;
+            }
         }
     }
 
@@ -212,5 +238,36 @@ public class JdbcLocationRepository implements LocationRepository{
                 ), id);
 
         return room;
+    }
+
+    private SimpleCampus getCampus(String name){
+        SimpleCampus campusCheck = jdbcTemplate.queryForObject("SELECT * from Campus where campusName=?", (rs, rowNum) ->
+                new SimpleCampus(
+                        rs.getString("campusName"),
+                        rs.getInt("campusId")
+                ), name);
+        return campusCheck;
+    }
+
+    private SimpleBuilding getBuilding(String name, int campusId){
+        Object[] args1 = {name, campusId};
+        SimpleBuilding buildingCheck = jdbcTemplate.queryForObject("SELECT * from Building where buildingName=? and campusId=?", (rs, rowNum) ->
+                new SimpleBuilding(
+                        rs.getString("buildingName"),
+                        rs.getInt("buildingId")
+                ), args1);
+        return buildingCheck;
+    }
+
+    private RegisterRoom getRoom(String roomName, int buildingId){
+        Object[] args1 = {roomName, buildingId};
+        RegisterRoom roomCheck = jdbcTemplate.queryForObject("SELECT * from Room where roomName=? and buildingId=?", (rs, rowNum) ->
+                new RegisterRoom(
+                        rs.getInt("buildingId"),
+                        rs.getString("roomName"),
+                        rs.getInt("floor"),
+                        rs.getInt("tables")
+                ), args1);
+        return roomCheck;
     }
 }

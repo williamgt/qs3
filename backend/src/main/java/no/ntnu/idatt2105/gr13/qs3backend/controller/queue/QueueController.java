@@ -43,6 +43,14 @@ public class QueueController {
         return q;
     }
 
+    /**
+     * Method for activating / deactivating a queue
+     * Returns OK if successful
+     * Returns BAD_REQUEST if course hash is not in table
+     * Returns NOT_MODIFIED if queue wasn't updated
+     * @param courseHash
+     * @return
+     */
     @PutMapping("/activate-or-deactivate/{course-hash}")
     public ResponseEntity<String> activateOrDeactivateQueue(@PathVariable("course-hash") String courseHash) {
         logger.info("TA wants to activate or deactivate a queue.");
@@ -56,6 +64,13 @@ public class QueueController {
         }
     }
 
+    /**
+     * Returns list of active queues for given tAId.
+     * Must at least have TA authority
+     * @param tAId
+     * @return
+     */
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/ta-active-queue/{ta-id}")
     public List<SimpleQueueWithCourseInfo> taGetActiveQueues(@PathVariable("ta-id") String tAId) {
         logger.info("TA with user id " + tAId + " requested active queues.");
@@ -68,6 +83,13 @@ public class QueueController {
         return qs;
     }
 
+    /**
+     * Returns a list of inactive queues for given TaID
+     * Must at least have TA authority
+     * @param tAId
+     * @return
+     */
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/ta-inactive-queue/{ta-id}")
     public List<SimpleQueueWithCourseInfo> taGetInactiveQueues(@PathVariable("ta-id") String tAId) {
         logger.info("TA with user id " + tAId + " requested inactive queues.");
@@ -85,6 +107,15 @@ public class QueueController {
         return 0;
     }
 
+
+    /**
+     * Checks if student with given id is in a queue. If student is, they shouldn't be able to queue up again
+     * or in another queue.
+     * @param hashId
+     * @param studentId
+     * @return
+     */
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @GetMapping("register-status/{hashId}/{studentId}")
     public boolean isInQueue(@PathVariable("hashId") String hashId, @PathVariable("studentId") int studentId) {
         logger.info("Checking if student with id " + studentId + " is in queue or not for course with hash " + hashId);
@@ -97,6 +128,14 @@ public class QueueController {
         return inQueue;
     }
 
+    /**
+     * Method for student to queue up in a specific course
+     * If already in queue returns NOT_MODIFIED
+     * If successfully in queue return CREATED
+     * If none of the above INTERNAL_SERVER_ERROR
+     * @param req
+     * @return
+     */
     @PostMapping("/queue-up")
     public ResponseEntity<String> queueUp(@RequestBody QueueRequest req) {
         logger.info("Received queue request from user");

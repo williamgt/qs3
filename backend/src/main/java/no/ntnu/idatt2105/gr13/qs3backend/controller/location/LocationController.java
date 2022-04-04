@@ -23,18 +23,31 @@ public class LocationController {
     @Autowired
     private LocationService locationService;
 
+    /**
+     * Method for retrieving all campuses with buildings and rooms
+     * @return
+     */
     @GetMapping("")
     public ArrayList<Campus> getLocations(){
         logger.info("Retrieved all locations");
         return locationService.getLocations();
     }
 
+    /**
+     * Method for retrieving all campuses (Not buildings and rooms)
+     * @return
+     */
     @GetMapping("/campus")
     public ArrayList<SimpleCampus> getCampuses(){
         logger.info("Retrieved all campuses");
         return locationService.getCampuses();
     }
 
+    /**
+     * Method for retrieving a spesific campus (id) with buildings
+     * @param id
+     * @return
+     */
     @GetMapping("/campus/{id}")
     public SimpleCampusBuilding getCampus(@PathVariable("id") long id){
         SimpleCampusBuilding c = locationService.getCampus((int) id);
@@ -42,6 +55,11 @@ public class LocationController {
         return c;
     }
 
+    /**
+     * Method for retrieving a specific room (id) with Campus and building info
+     * @param id
+     * @return
+     */
     @GetMapping("/room/{id}")
     public SimpleRoomWBC getRoom(@PathVariable("id") long id){
         SimpleRoomWBC room = locationService.getRoom((int) id);
@@ -49,6 +67,11 @@ public class LocationController {
         return room;
     }
 
+    /**
+     * Method for retrieving a specific building (id) with rooms
+     * @param id
+     * @return
+     */
     @GetMapping("/building/{id}")
     public SimpleCampusBuildingRoom getBuilding(@PathVariable("id") long id){
         SimpleCampusBuildingRoom c = locationService.getBuilding((int) id);
@@ -56,39 +79,63 @@ public class LocationController {
         return c;
     }
 
+    /**
+     * Method for registering a new campus with name. If name already exists return INTERNAL_SERVER_ERROR
+     * Admin only
+     * @param name
+     * @return
+     */
     @PostMapping("/campus")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity registerCampus(@RequestBody String name){
+    public ResponseEntity<String> registerCampus(@RequestBody String name){
         if(locationService.registerCampus(name)){
             logger.info("Registered campus: " +name);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>("Campus registered",HttpStatus.CREATED);
         }
         logger.info("Failed to register campus: " + name);
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>("Failed to register Campus (already exists)",HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    /**
+     * Method for registering room. If room with same name already exists in building
+     * It returns INTERNAL_SERVER_ERROR with message
+     * @param room
+     * @return
+     */
     @PostMapping("/room")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity registerRoom(@RequestBody RegisterRoom room){
+    public ResponseEntity<String> registerRoom(@RequestBody RegisterRoom room){
         if(locationService.registerRoom(room)){
             logger.info("Registered room: " + room);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>("Registered room!",HttpStatus.CREATED);
         }
         logger.warn("Failed to register room: " + room);
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>("Failed to register Room (already exists) in building",HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    /**
+     * Method for registering a building in a campus
+     * @param building
+     * @return
+     */
     @PostMapping("/building")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity registerBuilding(@RequestBody SimpleBuilding building){
         if(locationService.registerBuilding(building)){
             logger.info("Registered building: " + building);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>("Building registered",HttpStatus.CREATED);
         }
         logger.warn("Failed to register building: " + building);
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>("Failed to register Room (already exists) in building",HttpStatus.UNAUTHORIZED);
     }
 
+    /**
+     * Method for Editing campus
+     * Also checks if trying to edit to already existing campus
+     * Fails if so
+     * @param campus
+     * @return
+     */
     @PutMapping("/campus")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity updateCampus(@RequestBody SimpleCampus campus){
@@ -100,6 +147,13 @@ public class LocationController {
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Method for Editing Building
+     * Also checks if trying to edit to already existing building in current campus
+     * Fails if so
+     * @param building
+     * @return
+     */
     @PutMapping("/building")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity updateBuilding(@RequestBody SimpleBuilding building){
@@ -111,6 +165,13 @@ public class LocationController {
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Method for Editing Room
+     * Also checks if trying to edit to already existing Room in current building
+     * Fails if so
+     * @param room
+     * @return
+     */
     @PutMapping("/room")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity updateCampus(@RequestBody SimpleRoom room){
