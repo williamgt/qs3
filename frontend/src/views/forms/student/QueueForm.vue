@@ -1,15 +1,14 @@
 <template>
   <form @submit.prevent="onSubmit">
     <h2>Lokasjon</h2>
-    <base-checkbox label="Jobber hjemme" v-model="home"></base-checkbox>
+    <base-checkbox label="Jobber hjemme" v-model="this.home"></base-checkbox>
     <div class="base-select-container">
       <div class="base-select-item">
         <base-select
           :disabled="this.home"
           label="Campus"
           :options="this.location.campus"
-          v-model="campus"
-          :error="campusError"
+          v-model="campusId"
         ></base-select>
       </div>
       <div class="base-select-item">
@@ -17,8 +16,7 @@
           :disabled="this.home"
           label="Building"
           :options="this.location.building"
-          v-model="building"
-          :error="buildingError"
+          v-model="buildingId"
         ></base-select>
       </div>
       <div class="base-select-item">
@@ -26,8 +24,7 @@
           :disabled="this.home"
           label="Room"
           :options="this.location.rooms"
-          v-model="room"
-          :error="roomError"
+          v-model="roomId"
         ></base-select>
       </div>
       <div class="base-select-item">
@@ -35,11 +32,12 @@
           :disabled="this.home"
           label="Table"
           :options="this.location.table"
-          v-model="table"
+          v-model="this.table"
           :error="tableError"
         ></base-select>
       </div>
     </div>
+    <button @click="a"></button>
     <div>
       <h1>Tasks</h1>
       <mult-check :options="tasks.toChoose" v-model:value="task"></mult-check>
@@ -59,16 +57,6 @@
         :options="validation.toChoose"
         name="Type"
       ></base-radio-group>
-    </div>
-    <div class="base-select">
-      <Multiselect
-        v-model="group"
-        mode="tags"
-        :close-on-select="false"
-        :searchable="true"
-        :create-option="true"
-        :options="groups.toChoose"
-      />
     </div>
     <div>
       <base-text-area
@@ -96,15 +84,19 @@ import BaseButton from "@/input-components/BaseButton";
 import BaseCheckboxGroup from "@/input-components/BaseCheckboxGroup";
 import BaseRadioGroup from "@/input-components/BaseRadioGroup";
 import BaseTextArea from "@/input-components/BaseTextArea";
-import Multiselect from "@vueform/multiselect";
 import { ref } from "vue";
 import MultCheck from "@/input-components/mult-check";
 import { queueUp } from "@/services/queueServices";
+import {
+  getBuilding,
+  getCampus,
+  getCampuses,
+} from "@/services/locationSerivce";
+
 export default {
   name: "QueueForm",
   components: {
     MultCheck,
-    Multiselect,
     BaseTextArea,
     BaseRadioGroup,
     // eslint-disable-next-line vue/no-unused-components
@@ -113,14 +105,35 @@ export default {
     BaseCheckbox,
     BaseSelect,
   },
+  watch: {
+    campusId(newCampus, oldCampus) {
+      if (newCampus !== oldCampus) {
+        this.updateBuildings();
+      }
+    },
+    buildingId(newBuild, oldBuild) {
+      if (newBuild !== oldBuild) {
+        this.updateRooms();
+      }
+    },
+    roomId(newBuild, oldBuild) {
+      if (newBuild !== oldBuild) {
+        this.updateTables();
+      }
+    },
+  },
   data() {
     return {
       location: {
-        campus: ["Gløshaugen", "Dragvoll", "Kalvskinnet"],
-        building: ["Realfagsbygget"],
-        rooms: ["A4-112", "Thildekontoret", "S7"],
-        table: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        campus: [],
+        building: [],
+        rooms: [],
+        table: [],
       },
+      campusId: undefined,
+      buildingId: undefined,
+      roomId: undefined,
+      table: 0,
       tasks: {
         toChoose: [
           { name: "Task 1", id: 1 },
@@ -140,13 +153,6 @@ export default {
           { label: "Help", value: false },
         ],
       },
-      groups: {
-        toChoose: [
-          { label: "Ola Norman", value: "Olav Norman" },
-          { label: "Hans Hansen", value: "Hans Hansen" },
-          { label: "Lars Larsen", value: "Lars Larsen" },
-        ],
-      },
     };
   },
   setup() {
@@ -156,11 +162,7 @@ export default {
 
     const validations = {
       home: (value) => {
-        if (
-          value === undefined &&
-          (table.value === undefined || table.value === null)
-        )
-          return "It is required to tell your location";
+        if (value === undefined) return "It is required to tell your location";
         return true;
       },
       vali: () => {
@@ -190,25 +192,17 @@ export default {
       handleChange,
     } = useField("message");
     const { value: home, errorMessage: homeError } = useField("home");
-    const { value: campus, errorMessage: campusError } = useField("campus");
-    const { value: building, errorMessage: buildingError } =
-      useField("building");
-    const { value: room, errorMessage: roomError } = useField("room");
-    const { value: table, errorMessage: tableError } = useField("table");
+    //const { value: campus, errorMessage: campusError } = useField("campus");
+    //const { value: building, errorMessage: buildingError } =
+    //  useField("building");
+    //const { value: room, errorMessage: roomError } = useField("room");
+    //const { value: table, errorMessage: tableError } = useField("table");
     const { value: vali, errorMessage: valiError } = useField("validation");
     const { value: group, errorMessage: groupError } = useField("group");
     return {
       onSubmit,
       home,
       homeError,
-      campus,
-      campusError,
-      building,
-      buildingError,
-      room,
-      roomError,
-      table,
-      tableError,
       vali,
       valiError,
       message,
@@ -264,6 +258,64 @@ export default {
         alert("Something went wrong when registering in queue");
       }
     },
+    async updateBuildings() {
+      this.location.table = undefined;
+      this.location.rooms = undefined;
+      this.location.building = undefined;
+      this.buildingId = undefined;
+      this.roomId = undefined;
+      this.table = undefined;
+      await getCampus(this.campusId)
+        .then((response) => {
+          console.log(response.data);
+          this.location.building = response.data.buildings;
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
+    },
+    async updateRooms() {
+      this.location.table = undefined;
+      this.location.rooms = undefined;
+      this.roomId = undefined;
+      this.table = undefined;
+      if (this.buildingId === undefined) return;
+      await getBuilding(this.buildingId)
+        .then((response) => {
+          this.location.rooms = response.data.building.rooms;
+          for (let i = 0; i < this.location.rooms.length; i++) {
+            this.location.rooms[i].name = this.location.rooms[i].roomName;
+          }
+          console.log(response.data.building.rooms);
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
+    },
+    updateTables() {
+      console.log(this.roomId);
+      this.location.table = [];
+      this.table = undefined;
+      if (this.location.rooms === undefined) return;
+      let room = this.location.rooms.find((obj) => {
+        return obj.id == this.roomId;
+      });
+      console.log(room);
+      for (let i = 1; i < room.tables; i++) {
+        this.location.table.push({ name: i, id: i });
+      }
+      console.log(this.location.table);
+    },
+  },
+  async created() {
+    await getCampuses()
+      .then((response) => {
+        console.log(response.data);
+        this.location.campus = response.data;
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
   },
 };
 </script>

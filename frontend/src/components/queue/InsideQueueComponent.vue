@@ -1,12 +1,22 @@
 <template>
-  <div v-for="(studInfo, index) in queueInfo" :key="studInfo.user.email">
-    {{ index + 1 }} - {{ studInfo.user.firstname }}
-    {{ studInfo.user.lastname }}, {{ hOrV(studInfo.helpOrValidate) }}:
-    <div v-for="(task, index) in studInfo.tasks" :key="index">
-      {{ task.description }}
-    </div>
-    <div v-if="studInfo.comment">{{ studInfo.comment }}</div>
+  <div class="button-container">
+    <button>Register in queue</button>
   </div>
+  <queue-header></queue-header>
+  <queue-element
+    v-for="(studInfo, index) in queueInfo"
+    :key="studInfo.user.email"
+    :stud-info="studInfo"
+    :index="index"
+  ></queue-element>
+  <!--  <div v-for="(studInfo, index) in queueInfo" :key="studInfo.user.email">-->
+  <!--    {{ index + 1 }} - {{ studInfo.user.firstname }}-->
+  <!--    {{ studInfo.user.lastname }}, {{ hOrV(studInfo.helpOrValidate) }}:-->
+  <!--    <div v-for="(task, index) in studInfo.tasks" :key="index">-->
+  <!--      {{ task.description }}-->
+  <!--    </div>-->
+  <!--    <div v-if="studInfo.comment">{{ studInfo.comment }}</div>-->
+  <!--  </div>-->
 </template>
 
 <script>
@@ -14,9 +24,12 @@ import { useRoute } from "vue-router";
 //import useStore from "vuex/dist/vuex.mjs";
 import { ref } from "vue";
 import { getQueueInfoFromHashId } from "@/services/queueServices";
+import QueueHeader from "@/components/queue/QueueHeader";
+import QueueElement from "@/components/queue/QueueElement";
 
 export default {
   name: "InsideQueueComponent",
+  components: { QueueElement, QueueHeader },
   data() {
     return {
       queueInfo: this.c_queue.studsInQueue,
@@ -54,4 +67,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.button-container {
+  text-align: center;
+}
+</style>
