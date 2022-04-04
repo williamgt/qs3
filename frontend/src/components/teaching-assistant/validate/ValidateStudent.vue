@@ -55,7 +55,7 @@ export default {
         required: true,
       },
       tasks: {
-        type: Array,
+        type: [],
       },
       info: {
         type: Object,
@@ -82,7 +82,13 @@ export default {
     this.info.comment = this.$store.state.validateStud.comment;
     this.info.helpOrValidate = this.$store.state.validateStud.helpOrValidate;
     this.info.date = this.$store.state.validateStud.date;
-    this.tasks = this.$store.state.validateStud.tasks;
+    this.tasks = Array(this.$store.state.validateStud.tasks.length);
+    console.log(this.$store.state.validateStud.tasks);
+    console.log(this.tasks);
+    for (let i = 0; i < this.$store.state.validateStud.tasks.length; i++) {
+      this.tasks[i] = { name: undefined, done: false };
+      this.tasks[i].name = this.$store.state.validateStud.tasks[i].description;
+    }
   },
   setup(params) {
     function onSubmit() {

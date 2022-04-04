@@ -2,8 +2,8 @@
   <task-bar-header :header="header" v-model="dropdown"></task-bar-header>
   <task-bar
     :dropdown="dropdown"
-    v-for="opt in tasks"
-    :key="opt.id"
+    v-for="(opt, i) in tasks"
+    :key="i"
     :task="opt"
     :enabled="checkbox"
     v-model="opt.done"
@@ -27,6 +27,9 @@ export default {
     checkbox: {
       type: Boolean,
       default: true,
+    },
+    modelValue: {
+      type: Array,
     },
   },
   data() {
