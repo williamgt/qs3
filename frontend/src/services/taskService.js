@@ -5,8 +5,9 @@ export function validateTasksForQueueInfoId(queueInfoId, tasks) {
   const config = {
     headers: { Authorization: `Bearer ${store.state.auth.token}` },
   };
+  console.log(tasks);
   return axios.put(
-    "http://localhost:8085/tasks//validate/" + queueInfoId,
+    "http://localhost:8085/tasks/validate/" + queueInfoId,
     tasks,
     config
   );
