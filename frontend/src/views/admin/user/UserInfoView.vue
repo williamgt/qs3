@@ -1,7 +1,6 @@
 <template>
   <user-info :user="user"></user-info>
   <div class="button-container">
-    <button @click="deleteUser">Delete</button>
     <button @click="toEdit">Edit</button>
   </div>
 </template>

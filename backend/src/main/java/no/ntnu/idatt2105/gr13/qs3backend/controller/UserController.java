@@ -117,6 +117,12 @@ public class UserController {
 //        }
 //    }
 
+    /**
+     * Creates a user with assigned role. Only accessible by admin. Returns bad request wiht message if exception is thrown
+     * Could be user already created etc...
+     * @param userRole
+     * @return
+     */
     @PostMapping("/user/register")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> createUser(@RequestBody UserRoleString userRole) {
@@ -212,6 +218,12 @@ public class UserController {
         }
     }
 
+    /**
+     * Method for admin or currently logged-in user to view info about user
+     * @param id
+     * @param user
+     * @return
+     */
     @PutMapping("/user/{id}")
     @PreAuthorize("hasRole('ADMIN') or @methodSecService.isTargetUser(#id)")
     public ResponseEntity<Boolean> updateUser(@PathVariable("id") long id, @RequestBody User user){
@@ -223,6 +235,12 @@ public class UserController {
         return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Method for deleting User. Only use if user is not connected to a role. Should be further improved or deprecated in
+     * next version
+     * @param id
+     * @return
+     */
     @DeleteMapping("/user/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Boolean> deleteUser(@PathVariable("id") long id){

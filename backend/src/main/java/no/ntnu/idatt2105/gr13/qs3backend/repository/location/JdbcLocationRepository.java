@@ -155,7 +155,16 @@ public class JdbcLocationRepository implements LocationRepository{
      */
     @Override
     public Boolean registerCampus(String name) {
-        int rows = jdbcTemplate.update("INSERT INTO Campus(campusName) values (?)", name);
+        try {
+            SimpleCampus campus = getCampus(name);
+            return false;
+        }catch (Exception e){
+            try{
+                int rows = jdbcTemplate.update("INSERT INTO Campus(campusName) values (?)", name);
+            }catch (Exception er){
+                return false;
+            }
+        }
         return true;
     }
 
@@ -167,14 +176,18 @@ public class JdbcLocationRepository implements LocationRepository{
     @Override
     public Boolean registerRoom(RegisterRoom room) {
         try {
-            String sql = "INSERT INTO Room(buildingId, roomName, tables, floor) VALUES (?,?,?,?)";
-            Object[] args = {room.getBuildingId(), room.getRoomName(), room.getTables(), room.getFloors()};
-            int rows = jdbcTemplate.update(sql, args);
-
-            return true;
-        }catch (Exception e){
-            logger.info("Something went wrong when registering a room: " + e.getMessage());
+            getRoom(room.getRoomName(), room.getBuildingId());
             return false;
+        }catch (Exception e){
+            try{
+                String sql = "INSERT INTO Room(buildingId, roomName, tables, floor) VALUES (?,?,?,?)";
+                Object[] args = {room.getBuildingId(), room.getRoomName(), room.getTables(), room.getFloors()};
+                int rows = jdbcTemplate.update(sql, args);
+                return true;
+            }catch (Exception er){
+                logger.info("Something went wrong when registering a room: " + er.getMessage());
+                return false;
+            }
         }
     }
 
@@ -186,14 +199,18 @@ public class JdbcLocationRepository implements LocationRepository{
     @Override
     public Boolean registerBuilding(SimpleBuilding building) {
         try {
-            String sql = "INSERT INTO Building(campusId, buildingName) VALUES (?,?)";
-            Object[] args = {building.getId(), building.getName()};
-            int rows = jdbcTemplate.update(sql, args);
-
-            return true;
-        }catch (Exception e){
-            logger.info("Something went wrong when registering a building: " + e.getMessage());
+            getBuilding(building.getName(), building.getId());
             return false;
+        }catch (Exception e){
+            try{
+                String sql = "INSERT INTO Building(campusId, buildingName) VALUES (?,?)";
+                Object[] args = {building.getId(), building.getName()};
+                int rows = jdbcTemplate.update(sql, args);
+                return true;
+            }catch (Exception er){
+                logger.info("Something went wrong when registering a building: " + er.getMessage());
+                return false;
+            }
         }
     }
 
@@ -205,13 +222,18 @@ public class JdbcLocationRepository implements LocationRepository{
     @Override
     public int editCampus(SimpleCampus campus) {
         try{
-            String sql = "UPDATE Campus set Campus.campusName = ? where campusId = ?";
-            Object[] args = {campus.getName(), campus.getId()};
-            int rows = jdbcTemplate.update(sql, args);
-            return rows;
-        }catch (Exception e){
-            logger.info("Something went wrong when editing a campus: " + e.getMessage());
+            getCampus(campus.getName());
             return -1;
+        }catch (Exception e){
+            try{
+                String sql = "UPDATE Campus set Campus.campusName = ? where campusId = ?";
+                Object[] args = {campus.getName(), campus.getId()};
+                int rows = jdbcTemplate.update(sql, args);
+                return rows;
+            }catch (Exception er){
+                logger.info("Something went wrong when editing a campus: " + er.getMessage());
+                return -1;
+            }
         }
     }
 
@@ -223,13 +245,18 @@ public class JdbcLocationRepository implements LocationRepository{
     @Override
     public int editBuilding(SimpleBuilding building) {
         try{
-            String sql = "UPDATE Building set Building.buildingName = ? where buildingId = ?";
-            Object[] args = {building.getName(), building.getId()};
-            int rows = jdbcTemplate.update(sql, args);
-            return rows;
-        }catch (Exception e){
-            logger.info("Something went wrong when editing a building: " + e.getMessage());
+            getBuilding(building.getName(), building.getId());
             return -1;
+        }catch (Exception e){
+            try{
+                String sql = "UPDATE Building set Building.buildingName = ? where buildingId = ?";
+                Object[] args = {building.getName(), building.getId()};
+                int rows = jdbcTemplate.update(sql, args);
+                return rows;
+            }catch (Exception er){
+                logger.info("Something went wrong when editing a building: " + er.getMessage());
+                return -1;
+            }
         }
     }
 
@@ -241,13 +268,18 @@ public class JdbcLocationRepository implements LocationRepository{
     @Override
     public int editRoom(SimpleRoom room) {
         try{
-            String sql = "UPDATE Room set Room.roomName = ?, Room.tables = ?, Room.floor = ? where roomId = ?";
-            Object[] args = {room.getRoomName(), room.getTables(), room.getFloors(), room.getId()};
-            int rows = jdbcTemplate.update(sql, args);
-            return rows;
-        }catch (Exception e){
-            logger.info("Something went wrong when editing a room: " + e.getMessage());
+            getRoom(room.getRoomName(), room.getId());
             return -1;
+        }catch (Exception e){
+            try{
+                String sql = "UPDATE Room set Room.roomName = ?, Room.tables = ?, Room.floor = ? where roomId = ?";
+                Object[] args = {room.getRoomName(), room.getTables(), room.getFloors(), room.getId()};
+                int rows = jdbcTemplate.update(sql, args);
+                return rows;
+            }catch (Exception er){
+                logger.info("Something went wrong when editing a room: " + er.getMessage());
+                return -1;
+            }
         }
     }
 
@@ -268,6 +300,55 @@ public class JdbcLocationRepository implements LocationRepository{
                         rs.getString("campusName"),
                         rs.getString("buildingName")
                 ), id);
+
         return room;
+    }
+
+    /**
+     * Gets a campus given campus name.
+     * @param name campus name
+     * @return corresponding campus
+     */
+    private SimpleCampus getCampus(String name){
+        SimpleCampus campusCheck = jdbcTemplate.queryForObject("SELECT * from Campus where campusName=?", (rs, rowNum) ->
+                new SimpleCampus(
+                        rs.getString("campusName"),
+                        rs.getInt("campusId")
+                ), name);
+        return campusCheck;
+    }
+
+    /**
+     * Gets a building given its name and a campus ID.
+     * @param name building name
+     * @param campusId campus ID
+     * @return corresponding building
+     */
+    private SimpleBuilding getBuilding(String name, int campusId){
+        Object[] args1 = {name, campusId};
+        SimpleBuilding buildingCheck = jdbcTemplate.queryForObject("SELECT * from Building where buildingName=? and campusId=?", (rs, rowNum) ->
+                new SimpleBuilding(
+                        rs.getString("buildingName"),
+                        rs.getInt("buildingId")
+                ), args1);
+        return buildingCheck;
+    }
+
+    /**
+     * Gets a room given its name and a building ID.
+     * @param roomName room name
+     * @param buildingId building ID
+     * @return corresponding room
+     */
+    private RegisterRoom getRoom(String roomName, int buildingId){
+        Object[] args1 = {roomName, buildingId};
+        RegisterRoom roomCheck = jdbcTemplate.queryForObject("SELECT * from Room where roomName=? and buildingId=?", (rs, rowNum) ->
+                new RegisterRoom(
+                        rs.getInt("buildingId"),
+                        rs.getString("roomName"),
+                        rs.getInt("floor"),
+                        rs.getInt("tables")
+                ), args1);
+        return roomCheck;
     }
 }

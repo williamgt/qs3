@@ -1,7 +1,10 @@
 <template>
-  <HomeAdminView v-if="this.admin"></HomeAdminView>
-  <t-a-courses-view v-if="this.teacher || this.ta"></t-a-courses-view>
-  <student-courses-view v-if="this.student"></student-courses-view>
+  <HomeAdminView id="admin" v-if="this.admin"></HomeAdminView>
+  <t-a-courses-view
+    id="teacher-ta"
+    v-if="this.teacher || this.ta"
+  ></t-a-courses-view>
+  <student-courses-view id="student" v-if="this.student"></student-courses-view>
 </template>
 
 <script>
