@@ -6,10 +6,10 @@ public class TaskWithId extends Task {
     public TaskWithId() {
     }
 
-    public TaskWithId(int taskId) {
+  /*  public TaskWithId(int taskId) {
         this.taskId = taskId;
         setDescription("Task " + taskId);
-    }
+    }*/
 
     public TaskWithId(String description, int taskId){
         super(description);
