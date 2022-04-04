@@ -24,17 +24,24 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Repository used for communicating with the DB regarding courses
+ */
 @Repository
 public class JdbcCourseRepository implements CourseRepository{
     Logger logger = LoggerFactory.getLogger(JdbcCourseRepository.class);
 
-
-    private String selectQueueForACourse ="SELECT *" +
-            "FROM Queue WHERE courseCode = ? AND year = ? AND term =?";
-
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    /**
+     * Gets a course and related information such as students, teaching assistants and teachers in the course,
+     * with a given course code. Notable weakness: will fail if more courses with the same course code
+     * is registered in the database. For a better implementation, future iterations could fix this by either adding
+     * year and term or only use the course's hashed ID for the query.
+     * @param courseCode the course code
+     * @return Course with all it's related information
+     */
     @Override
     public Course getCourseByCode(String courseCode) {
         try {
@@ -73,10 +80,6 @@ public class JdbcCourseRepository implements CourseRepository{
             TaskList tasksList = jdbcTemplate.queryForObject(selectTasksGivenBasicCourseInfo,
                     BeanPropertyRowMapper.newInstance(TaskList.class), course.getCourseCode(), course.getYear(), course.getTerm());
 
-            //No join
-            String selectTasksIdGivenBasicCourseInfo = "SELECT tasksId FROM Tasks WHERE courseCode=? AND year=? AND term=?";
-            String selectTaskSetWithTasksIdGivenBasicCourseInfo = "SELECT * FROM TaskSet WHERE tasksId = ("+selectTasksIdGivenBasicCourseInfo+")";
-            //Join
             logger.info("Getting task sets...");
             String selectTaskSetsRelatedToTasks = "SELECT TaskSet.amountMustDone, TaskSet.taskSetId FROM TaskSet INNER JOIN Tasks ON TaskSet.tasksId=Tasks.tasksId WHERE Tasks.courseCode=? AND Tasks.year=? AND Tasks.term=?";
             List<TaskSet> taskSets = jdbcTemplate.query(selectTaskSetsRelatedToTasks, BeanPropertyRowMapper.newInstance(TaskSet.class), course.getCourseCode(), course.getYear(), course.getTerm());
@@ -115,6 +118,14 @@ public class JdbcCourseRepository implements CourseRepository{
             return null;
         }
     }
+
+    /**
+     * Registers a course in the DB based on information given in the form sent in. The insertion of rows into the DB
+     * is transactional, and will rollback if an exception is thrown. An exception is thrown if one tries to register an
+     * already registered course. Users are NOT added to the db here, the given users are assumed put in the DB already.
+     * @param course the course form
+     * @return the number of rows affected
+     */
     @Override
     @Transactional
     public int insertCourse(CourseForm course) {
@@ -178,9 +189,6 @@ public class JdbcCourseRepository implements CourseRepository{
                         new Object[] {course.getTasksInEachSet().get(i).get(j).getTask(), taskSetIds.get(i)});
             }
         }
-        //Not sure if allowed:
-        //String getTaskSetsString = "SELECT * FROM TaskSet WHERE tasksId=?";
-        //List<TaskSet> taskSets = jdbcTemplate.query(getTaskSetsString, new BeanPropertyRowMapper<>(TaskSet.class));
 
         //TODO this part assumes everything in the person and user related tables are taken care of
         //Insertions related to Users NB into UserTypeCourse tables
@@ -192,13 +200,13 @@ public class JdbcCourseRepository implements CourseRepository{
         }
 
         for(TAUserBasic ta : course.getTas()){
-            id = jdbcTemplate.queryForObject(getUserIdByEmail, new Object[] {ta.getEmail()}, Integer.class);
+            id = jdbcTemplate.queryForObject(getUserIdByEmail, Integer.class, new Object[] {ta.getEmail()});
             insertIntoTACourseInt += jdbcTemplate.update(insertIntoTACourseString,
                     new Object[] {id, course.getCourseCode(), course.getYear(), course.getTerm()});
         }
 
         for(StudentUserBasic s : course.getStudents()){
-            id = jdbcTemplate.queryForObject(getUserIdByEmail, new Object[] {s.getEmail()}, Integer.class);
+            id = jdbcTemplate.queryForObject(getUserIdByEmail, Integer.class, new Object[] {s.getEmail()});
             insertIntoUserCourseInt += jdbcTemplate.update(insertIntoStudentCourseString,
                     new Object[] {id, course.getCourseCode(), course.getYear(), course.getTerm()});
         }
@@ -208,6 +216,13 @@ public class JdbcCourseRepository implements CourseRepository{
         return totalRowsAffected;
     }
 
+    /**
+     * Unfinished and broken implementation of a way to update a course. Is transactional since there are many rows that has
+     * to be updated, and will rollback if an exception is thrown.
+     * @param courseCode the course code
+     * @param course     the course
+     * @return
+     */
     @Override
     @Transactional
     public int updateCourse(String courseCode, Course course) { //Returns the number of rows affected
@@ -258,6 +273,12 @@ public class JdbcCourseRepository implements CourseRepository{
         return 0;
     }
 
+    /**
+     * Gets all inactive or active courses that a student is registered in.
+     * @param id     the id of the student in question
+     * @param active whether one wants the active or inactive courses
+     * @return
+     */
     @Override
     public List<SimpleCourseWithName> getActiveOrInactiveCoursesByUserId(int id, boolean active) {
         int activeInt = active ? 1 : 0;

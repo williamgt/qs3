@@ -19,7 +19,11 @@ public class JdbcUserRepository implements UserRepository {
 
     Logger logger = LoggerFactory.getLogger(JdbcUserRepository.class);
 
-
+    /**
+     * Gets id og user with given email.
+     * @param email the email
+     * @return the id of user with given mail. -1 if no user with given mail is found.
+     */
     @Override
     public int getID(String email) {
         try{
@@ -38,6 +42,10 @@ public class JdbcUserRepository implements UserRepository {
         }
     }
 
+    /**
+     * Gets all the registered users.
+     * @return all users in DB
+     */
     @Override
     public List<UserProtected> findAll() {
         return jdbcTemplate.query("SELECT * from User", (rs, rowNum) ->
@@ -48,9 +56,13 @@ public class JdbcUserRepository implements UserRepository {
                 ));
     }
 
+    /**
+     * Gets more details about a user.
+     * @param user the user
+     * @return a detailed user
+     */
     @Override
     public User getUserDetails(UserLogin user){
-        System.out.println(user.getEmail());
         return jdbcTemplate.queryForObject("SELECT * from User where User.email = ?", (rs, rowNum) ->
                 new User(
                         rs.getString("email"),
@@ -60,6 +72,10 @@ public class JdbcUserRepository implements UserRepository {
                 ),user.getEmail());
     }
 
+    /**
+     * Returns a list of all the users in the DB with all their information.
+     * @return detailed user list
+     */
     @Override
     public List<User> findAllDetails() {
         return jdbcTemplate.query("SELECT * from User", (rs, rowNum) ->
@@ -72,6 +88,11 @@ public class JdbcUserRepository implements UserRepository {
                 ));
     }
 
+    /**
+     * Finds a user given an id.
+     * @param id the user id
+     * @return user related to the id, or null if none were found
+     */
     @Override
     public UserPerson findById(long id) {
         try{
@@ -89,6 +110,11 @@ public class JdbcUserRepository implements UserRepository {
         }
     }
 
+    /**
+     * Checks whether any user is registered with a given mail.
+     * @param email the email
+     * @return true if user exists in DB, false if not
+     */
     @Override
     public Boolean isUser(String email) {
         try{
@@ -107,6 +133,11 @@ public class JdbcUserRepository implements UserRepository {
         }
     }
 
+    /**
+     * Finds an admin user with given id
+     * @param id the id
+     * @return a user if admin exists, null if not
+     */
     @Override
     public User findByIdAdmin(long id) {
         try{
@@ -125,6 +156,12 @@ public class JdbcUserRepository implements UserRepository {
         }
     }
 
+    /**
+     * Registers a user in the DB. Is transactional to assure all changes are committed at once, and they are rolled back
+     * if something goes wrong.
+     * @param user the user to be registered
+     * @return teh amount of rows affected after the transaction.
+     */
     @Transactional
     @Override
     public int registerUser(User user) { //Implementation is not optimal, will get much slower over time and with large users list
@@ -149,6 +186,11 @@ public class JdbcUserRepository implements UserRepository {
         return id;
     }
 
+    /**
+     * Registers a user as a teaching assistant. Is transactional and will roll back changes if something goes wrong.
+     * @param taID the id of the teaching assistant
+     * @return rows affected by insertion
+     */
     @Transactional
     @Override
     public int makeTA(int taID) { //Implementation is not optimal, will get much slower over time and with large users list
@@ -164,6 +206,11 @@ public class JdbcUserRepository implements UserRepository {
         return rowsAffected;
     }
 
+    /**
+     * Registers a user as a teacher. Is transactional and will roll back changes if something goes wrong.
+     * @param teacherID the teacher id
+     * @return rows affected by insertion
+     */
     @Transactional
     @Override
     public int makeTeacher(int teacherID) { //Implementation is not optimal, will get much slower over time and with large users list
@@ -179,6 +226,11 @@ public class JdbcUserRepository implements UserRepository {
         return rowsAffected;
     }
 
+    /**
+     * Registers a user as a student. Is transactional and will roll back changes if something goes wrong.
+     * @param studentID the student id
+     * @return rows affected by insertion
+     */
     @Transactional
     @Override
     public int makeStudent(int studentID) { //Implementation is not optimal, will get much slower over time and with large users list
@@ -194,6 +246,11 @@ public class JdbcUserRepository implements UserRepository {
         return rowsAffected;
     }
 
+    /**
+     * Registers a user as an admin. Is transactional and will roll back changes if something goes wrong.
+     * @param adminID the admin id
+     * @return rows affected by insertion
+     */
     @Transactional
     @Override
     public int makeAdmin(int adminID) { //Implementation is not optimal, will get much slower over time and with large users list
@@ -209,7 +266,11 @@ public class JdbcUserRepository implements UserRepository {
         return rowsAffected;
     }
 
-
+    /**
+     * Updates information about a user. Is transactional and will roll back changes if something goes wrong.
+     * @param user the user
+     * @return true if update successful, false if not
+     */
     @Transactional
     @Override
     public Boolean updateUser(User user) {
@@ -220,14 +281,19 @@ public class JdbcUserRepository implements UserRepository {
             if(rowsAffected == 1){
                 return true;
             }
-            System.out.println(rowsAffected);
+            logger.info("No rows were affected when updating user with id " + user.getId());
             return false;
         }catch (Exception e){
-            System.out.println(e.getMessage());
+            logger.info("Something went wrong when updating user with id " + user.getId() + ": " + e.getMessage());
             return false;
         }
     }
 
+    /**
+     * Deletes a user with a given id. Is transactional and will roll back changes if something goes wrong.
+     * @param id the id
+     * @return true if delete successful, false if not
+     */
     @Transactional
     @Override
     public Boolean deleteUser(int id) {
@@ -238,10 +304,10 @@ public class JdbcUserRepository implements UserRepository {
             if(rowsAffected == 1){
                 return true;
             }
-            System.out.println(rowsAffected);
+            logger.info("No rows were affected when deleting user with id " + id);
             return false;
         }catch (Exception e){
-            System.out.println(e.getMessage());
+            logger.info("Something went wrong when updating user with id " + id + ": " + e.getMessage());
             return false;
         }
     }

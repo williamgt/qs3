@@ -7,7 +7,10 @@ import no.ntnu.idatt2105.gr13.qs3backend.model.user.basics.UserBasicWithId;
 import java.util.List;
 
 /**
- * Models a request sent from a StudentUser that wants to queue up
+ * Models a request sent from a StudentUser that wants to queue up. Contains which course queue (in the form of the
+ * course hashId) the user is queueing up for, which user is queueing up, their message, whether they are home or not,
+ * information related to their location if they are not home, whether they need help or validation, their potential group
+ * (group is deprecated) and which tasks they are queueing up for validation/help.
  */
 public class QueueRequest {
     private String hashId;

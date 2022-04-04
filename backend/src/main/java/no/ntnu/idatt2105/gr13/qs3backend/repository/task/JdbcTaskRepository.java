@@ -19,6 +19,12 @@ public class JdbcTaskRepository implements TaskRepository{
 
     Logger logger = LoggerFactory.getLogger(JdbcTaskRepository.class);
 
+    /**
+     * Unfinished method for getting all tasks that are not done by a given user for a given course.
+     * @param courseHashId the course hash id of course in question
+     * @param userId       the user id of user whose tasks are not validated
+     * @return a list of still unvalidated tasks
+     */
     @Override
     public List<TaskWithId> getTaskFromCourseHashId(String courseHashId, int userId) {
         String selectAllTasksNotFinishedQuery = "SELECT Task.taskId, Task.description FROM Task " +
@@ -99,6 +105,13 @@ public class JdbcTaskRepository implements TaskRepository{
         return tasks;
     }
 
+    /**
+     * Method used by teaching assistant to validate some tasks that a student has queued up for validation.
+     * Is transactional such that if something goes wrong when inserting, every change is rolled back.
+     * @param queueInfoId the id of the queue instance related to student needing validation
+     * @param tasks       the tasks that are validated
+     * @return amount of rows affected.
+     */
     @Override
     @Transactional
     public int validateStudentTasks(int queueInfoId, List<Task> tasks) {

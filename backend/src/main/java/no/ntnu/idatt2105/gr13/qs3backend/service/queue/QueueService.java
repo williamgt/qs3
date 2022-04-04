@@ -12,17 +12,33 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * The type Queue service.
+ */
 @Service
 public class QueueService {
 
     @Autowired
     private JdbcQueueRepository qRepo;
 
+    /**
+     * Gets queue of a course with given hash ID.
+     *
+     * @param courseHashId the course hash id
+     * @return the queue related to the course
+     */
     public Queue getQueueByCourse(String courseHashId) {
         return qRepo.getQueueByCourse(courseHashId);
     }
 
 
+    /**
+     * Queues up a student.
+     *
+     * @param req the queue request
+     * @return the amount of rows affected
+     * @throws Exception iif not course is given
+     */
     public int queueUp(QueueRequest req) throws Exception {
         if(req.getMessage() == null){
             req.setMessage("");
@@ -38,18 +54,43 @@ public class QueueService {
 
     }
 
+    /**
+     * Activates or deactivates a queue for course with given hash ID.
+     *
+     * @param courseHash the course hash
+     * @return the int
+     */
     public int activateOrDeactivateQueue(String courseHash) {
         return qRepo.activateOrDeactivate(courseHash);
     }
 
+    /**
+     * Method for teaching assistants to get active queues they are registered in.
+     *
+     * @param tAId the teaching assistant id
+     * @return the active queues
+     */
     public List<SimpleQueueWithCourseInfo> taGetActiveQueue(String tAId) {
         return qRepo.taGetCourses(tAId, true);
     }
 
+    /**
+     * Method for teaching assistants to get inactive queues they are registered in.
+     *
+     * @param tAId the teaching assistant id
+     * @return the inactive queues
+     */
     public List<SimpleQueueWithCourseInfo> taGetInactiveQueue(String tAId) {
         return qRepo.taGetCourses(tAId, false);
     }
 
+    /**
+     * Checks whether a student is in a queue.
+     *
+     * @param hashId    the hash id of the course the queue is related to
+     * @param studentId the student id
+     * @return true if already in queue, false if not
+     */
     public boolean studentIsInQueue(String hashId, int studentId) {
         if( qRepo.checkIfInQueue(hashId, studentId) > 1) {
             //Already in queue, can't queue up again

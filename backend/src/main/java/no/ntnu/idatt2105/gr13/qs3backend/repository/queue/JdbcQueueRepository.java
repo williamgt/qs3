@@ -27,11 +27,16 @@ import java.util.List;
 
 @Repository
 public class JdbcQueueRepository implements QueueRepository{
+    Logger logger = LoggerFactory.getLogger(JdbcQueueRepository.class);
 
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    Logger logger = LoggerFactory.getLogger(JdbcQueueRepository.class);
+    /**
+     * Returns a queue and all of it's related information based on the hash ID of a course.
+     * @param courseHashId the course hash id
+     * @return queue related to course
+     */
     @Override
     public Queue getQueueByCourse(String courseHashId) {
         String courseGivenCourseHashQuery = "SELECT courseCode, year, term FROM Course WHERE hashId=?";
@@ -169,6 +174,17 @@ public class JdbcQueueRepository implements QueueRepository{
 
         return returnQ;
     }
+
+    /**
+     * Method for letting a student queue up in some queue that is found in the request. The request contains all the
+     * information related to the queueing up action, such as who the student is, which course they are queueing up for
+     * which tasks they want validated etc. See javadoc in QueueRequest for more info. Home boolean decides whether
+     * the student is home or not. Method is transactional such that any changes is rolled back if something goes wrong
+     * during the insertion.
+     * @param req  the request
+     * @param home whether the student is home or not
+     * @return amount of rows affected
+     */
     @Override
     @Transactional
     public int queueUp(QueueRequest req, boolean home) {
@@ -284,6 +300,14 @@ public class JdbcQueueRepository implements QueueRepository{
 
         return totalRowsAffected;
     }
+
+    /**
+     * Either activates or deactivates a course's queue based on a course's given hash ID. Will only update one row,
+     * and is therefore not transactional.
+     * @param courseHash the course hash ID for the queue to activate/deactivate
+     * @return 1 if everything went ok and queue is activated/deactivated, -1 if no course or queue was found. 0 If no
+     *              rows were affected
+     */
     @Override
     public int activateOrDeactivate(String courseHash) {
         String selectCourseQuery = "SELECT courseCode, year, term FROM Course WHERE hashId=?";
@@ -317,6 +341,13 @@ public class JdbcQueueRepository implements QueueRepository{
         }
         return rowsAffected;
     }
+
+    /**
+     * Gets all courses that a teaching assistant is linked to, with either active or inactive queue.
+     * @param tAId   the teaching assistants id
+     * @param active boolean deciding if courses with active or inactive queues are returned
+     * @return list of simple queues that are either active or inactive with related course info
+     */
     @Override
     public List<SimpleQueueWithCourseInfo> taGetCourses(String tAId, boolean active) {
         String selectCourseQuery = "SELECT Queue.queueId, Queue.description, Queue.courseCode, Queue.year, Queue.term, Queue.active, Course.hashId, Course.courseName " +
@@ -331,6 +362,12 @@ public class JdbcQueueRepository implements QueueRepository{
         return qs;
     }
 
+    /**
+     * Checks if a student is already in a queue of some course with given hash ID.
+     * @param hashId    the course hash id
+     * @param studentId the student id
+     * @return the count of instances where a student is in a queue for a given course. Expected max 1 for in queue, 0 if not in queue.
+     */
     @Override
     public int checkIfInQueue(String hashId, int studentId) {
         String countActiveQuery = "SELECT COUNT(QueueInfo.active) FROM Course " +

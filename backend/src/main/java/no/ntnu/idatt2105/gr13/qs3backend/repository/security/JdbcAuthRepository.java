@@ -17,6 +17,12 @@ public class JdbcAuthRepository implements AuthRepository{
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    /**
+     * DEPRECATED.
+     * Previous method for authorizing users when logging in. Replaced by better ways of authorizing logins.
+     * @param user the user
+     * @return role of user logging in
+     */
     @Override
     public Role getUserWithRole(User user) {
         try{
@@ -40,11 +46,15 @@ public class JdbcAuthRepository implements AuthRepository{
             }
             return Role.UNDEFINED;
         }catch (IncorrectResultSetColumnCountException  | EmptyResultDataAccessException e){
-            System.out.println("HERE");
             return Role.UNDEFINED;
         }
     }
 
+    /**
+     * Gets the role of a given user.
+     * @param user the user
+     * @return the users role
+     */
     @Override
     public Role getRoleOfUser(User user) {
         try{
@@ -63,11 +73,15 @@ public class JdbcAuthRepository implements AuthRepository{
             }
             return Role.UNDEFINED;
         }catch (IncorrectResultSetColumnCountException  | EmptyResultDataAccessException e){
-            System.out.println("HERE");
             return Role.UNDEFINED;
         }
     }
 
+    /**
+     * Helper method that checks whether a user is an admin or not.
+     * @param user user to be checked
+     * @return the user if it is an admin, null if not
+     */
     private UserDB isAdmin(User user) {
         try{
             String query = "SELECT * from User, AdminUser where User.id = AdminUser.id and User.email =?";
@@ -83,6 +97,11 @@ public class JdbcAuthRepository implements AuthRepository{
         }
     }
 
+    /**
+     * Helper method that checks whether a user is a teaching assistant or not.
+     * @param user user to be checked
+     * @return the user if it is a teaching assistant, null if not
+     */
     private UserDB isTA(User user) {
         try{
             String query = "SELECT * from User, TAUser where User.id = TAUser.id and User.email =?";
@@ -98,6 +117,11 @@ public class JdbcAuthRepository implements AuthRepository{
         }
     }
 
+    /**
+     * Helper method that checks whether a user is a teacher or not.
+     * @param user user to be checked
+     * @return the user if it is a teacher, null if not
+     */
     private UserDB isTeacher(User user) {
         try{
             String query = "SELECT * from User, TeacherUser where User.id = TeacherUser.id and User.email =?";
@@ -113,6 +137,11 @@ public class JdbcAuthRepository implements AuthRepository{
         }
     }
 
+    /**
+     * Helper method that checks whether a user is a student or not.
+     * @param user to be checked if student
+     * @return the user if it is a student, null if not
+     */
     private UserDB isStudent(User user) {
         try{
             String query = "SELECT * from User, StudentUser where User.id = StudentUser.id and User.email =?";
@@ -128,6 +157,11 @@ public class JdbcAuthRepository implements AuthRepository{
         }
     }
 
+    /**
+     * Authorizes a user that tries to log in. Throws BadCredentialsException if wrong email or password.
+     * @param user the user that tries to log in
+     * @return A user from the DB
+     */
     @Override
     public UserLogin authUser(UserLogin user){
         try{
