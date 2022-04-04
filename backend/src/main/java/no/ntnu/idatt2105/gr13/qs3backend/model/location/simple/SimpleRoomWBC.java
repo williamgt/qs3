@@ -1,6 +1,10 @@
 package no.ntnu.idatt2105.gr13.qs3backend.model.location.simple;
 
-public class SimpleRoomWBC {
+/**
+ * Model for a simple room with info about campus and building ids
+ * For Json simplicity
+ */
+public class SimpleRoomWBC{
 
     private int id;
     private int tables;
@@ -8,13 +12,6 @@ public class SimpleRoomWBC {
     private int floors;
     private String campusName;
     private String buildingName;
-
-    public SimpleRoomWBC(int id, int tables, String roomName, int floors) {
-        this.id = id;
-        this.tables = tables;
-        this.roomName = roomName;
-        this.floors = floors;
-    }
 
     public SimpleRoomWBC(int id, int tables, String roomName, int floors, String campusName, String buildingName) {
         this.id = id;

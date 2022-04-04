@@ -1,4 +1,4 @@
-package no.ntnu.idatt2105.gr13.qs3backend.repository;
+package no.ntnu.idatt2105.gr13.qs3backend.repository.course;
 
 import no.ntnu.idatt2105.gr13.qs3backend.model.course.Course;
 import no.ntnu.idatt2105.gr13.qs3backend.model.course.CourseForm;
@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public class JdbcCourseRepository {
+public class JdbcCourseRepository implements CourseRepository{
     Logger logger = LoggerFactory.getLogger(JdbcCourseRepository.class);
 
 
@@ -35,6 +35,7 @@ public class JdbcCourseRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Override
     public Course getCourseByCode(String courseCode) {
         try {
             logger.info("Getting course...");
@@ -91,7 +92,7 @@ public class JdbcCourseRepository {
             List<Task> tasks =  jdbcTemplate.query(selectRelatedTasks, BeanPropertyRowMapper.newInstance(Task.class), course.getCourseCode(), course.getYear(), course.getTerm());*/
 
             String selectTasksRelatedToSet = "SELECT Task.description, Task.taskSetId FROM " +
-                    "Task INNER JOIN TaskSet ON Task.taskSetId=TaskSet.taskSetId" +
+                    "Task INNER JOIN TaskSet ON Task.taskSetId=TaskSet.taskSetId " +
                     "TaskSet INNER JOIN Tasks ON TaskSet.tasksId=Tasks.tasksId WHERE Tasks.courseCode=? AND Tasks.year=? AND Tasks.term=? AND TaskSet.taskSetId=?";
             int obligatoryTaskAmount = 0;
             List tasksInEach = null; //TODO might throw null pointer exception
@@ -114,7 +115,7 @@ public class JdbcCourseRepository {
             return null;
         }
     }
-
+    @Override
     @Transactional
     public int insertCourse(CourseForm course) {
         String insertIntoCourseString = "INSERT INTO Course (courseCode, year, term, courseName) VALUES (?,?,?,?)";
@@ -207,14 +208,14 @@ public class JdbcCourseRepository {
         return totalRowsAffected;
     }
 
-    //THIS DOES NOT WORK!!!!!!!!!!!!!!!
+    @Override
     @Transactional
     public int updateCourse(String courseCode, Course course) { //Returns the number of rows affected
         String updateCourseString = "UPDATE Course SET year=?, term=?, courseCode=?, courseName=? WHERE courseCode=";
         String updateTasksString = "UPDATE Tasks SET amount=? WHERE courseCode=? AND year=? AND term=?";
         String updateTaskSetString = "UPDATE TaskSet SET amountMustDone=? WHERE tasksID=?";
         String updateTaskString = "UPDATE Task SET description=? WHERE ";
-        String getTasksId = "Select taskId FROM Tasks WHERE courseCode=? AND year=? AND term=?";
+        String getTasksId = "Select tasksId FROM Tasks WHERE courseCode=? AND year=? AND term=?";
         String getTaskSetIds = "Select taskSetId FROM TaskSet WHERE tasksId=?";
 
         int updatedInCourse;
@@ -257,6 +258,7 @@ public class JdbcCourseRepository {
         return 0;
     }
 
+    @Override
     public List<SimpleCourseWithName> getActiveOrInactiveCoursesByUserId(int id, boolean active) {
         int activeInt = active ? 1 : 0;
 

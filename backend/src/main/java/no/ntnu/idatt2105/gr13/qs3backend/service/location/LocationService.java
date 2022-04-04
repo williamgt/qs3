@@ -1,4 +1,4 @@
-package no.ntnu.idatt2105.gr13.qs3backend.service;
+package no.ntnu.idatt2105.gr13.qs3backend.service.location;
 
 import no.ntnu.idatt2105.gr13.qs3backend.model.location.Campus;
 import no.ntnu.idatt2105.gr13.qs3backend.model.location.register.RegisterRoom;

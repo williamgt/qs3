@@ -38,9 +38,6 @@ public class FileHandler { //TODO csv file of new students to be registered
         if(file.isEmpty()){
             throw new IllegalArgumentException("File can't be empty");
         }
-        /*if(hasCSVFormat(file)){
-            throw new IllegalArgumentException("Must be an CSV or txt file");
-        }*/
 
         ArrayList<RegisterStudent> students = new ArrayList<>();
         InputStream is = file.getInputStream();

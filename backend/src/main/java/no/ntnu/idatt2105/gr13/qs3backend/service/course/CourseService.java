@@ -1,17 +1,15 @@
-package no.ntnu.idatt2105.gr13.qs3backend.service;
+package no.ntnu.idatt2105.gr13.qs3backend.service.course;
 
 import no.ntnu.idatt2105.gr13.qs3backend.model.course.Course;
 import no.ntnu.idatt2105.gr13.qs3backend.model.course.CourseForm;
 import no.ntnu.idatt2105.gr13.qs3backend.model.mail.Mail;
-import no.ntnu.idatt2105.gr13.qs3backend.model.user.TAUser;
-import no.ntnu.idatt2105.gr13.qs3backend.model.user.TeacherUser;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.User;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.basics.StudentUserBasic;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.basics.TAUserBasic;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.basics.TeacherUserBasic;
 import no.ntnu.idatt2105.gr13.qs3backend.model.course.SimpleCourseWithName;
-import no.ntnu.idatt2105.gr13.qs3backend.repository.JdbcCourseRepository;
-import no.ntnu.idatt2105.gr13.qs3backend.repository.JdbcUserRepository;
+import no.ntnu.idatt2105.gr13.qs3backend.repository.course.JdbcCourseRepository;
+import no.ntnu.idatt2105.gr13.qs3backend.repository.user.JdbcUserRepository;
 import no.ntnu.idatt2105.gr13.qs3backend.service.mail.MailServiceImpl;
 import no.ntnu.idatt2105.gr13.qs3backend.util.FileHandler;
 import org.slf4j.Logger;

@@ -2,7 +2,6 @@ package no.ntnu.idatt2105.gr13.qs3backend.repository.task;
 
 import no.ntnu.idatt2105.gr13.qs3backend.model.task.Task;
 import no.ntnu.idatt2105.gr13.qs3backend.model.task.TaskWithId;
-import no.ntnu.idatt2105.gr13.qs3backend.model.task.ValidatedTasks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public class JdbcTaskRepository {
+public class JdbcTaskRepository implements TaskRepository{
     @Autowired
     JdbcTemplate jdbcTemplate;
 
     Logger logger = LoggerFactory.getLogger(JdbcTaskRepository.class);
 
+    @Override
     public List<TaskWithId> getTaskFromCourseHashId(String courseHashId, int userId) {
         String selectAllTasksNotFinishedQuery = "SELECT Task.taskId, Task.description FROM Task " +
                 "INNER JOIN TaskSet ON Task.taskSetId=TaskSet.taskSetId " +
@@ -99,6 +99,7 @@ public class JdbcTaskRepository {
         return tasks;
     }
 
+    @Override
     @Transactional
     public int validateStudentTasks(int queueInfoId, List<Task> tasks) {
         String selectAllTasksFromGivenQueueInfoIdQuery = "SELECT Task.taskId, Task.description FROM Task " +

@@ -5,7 +5,7 @@ import no.ntnu.idatt2105.gr13.qs3backend.model.user.*;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.basics.*;
 import no.ntnu.idatt2105.gr13.qs3backend.util.FileHandler;
 import no.ntnu.idatt2105.gr13.qs3backend.model.filehandler.RegisterStudent;
-import no.ntnu.idatt2105.gr13.qs3backend.service.UserService;
+import no.ntnu.idatt2105.gr13.qs3backend.service.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

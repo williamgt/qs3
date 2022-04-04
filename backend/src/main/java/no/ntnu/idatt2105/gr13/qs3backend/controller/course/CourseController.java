@@ -4,7 +4,7 @@ package no.ntnu.idatt2105.gr13.qs3backend.controller.course;
 import no.ntnu.idatt2105.gr13.qs3backend.model.course.Course;
 import no.ntnu.idatt2105.gr13.qs3backend.model.course.CourseForm;
 import no.ntnu.idatt2105.gr13.qs3backend.model.course.SimpleCourseWithName;
-import no.ntnu.idatt2105.gr13.qs3backend.service.CourseService;
+import no.ntnu.idatt2105.gr13.qs3backend.service.course.CourseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

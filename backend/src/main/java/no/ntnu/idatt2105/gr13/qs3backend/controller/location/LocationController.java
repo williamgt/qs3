@@ -3,7 +3,7 @@ package no.ntnu.idatt2105.gr13.qs3backend.controller.location;
 import no.ntnu.idatt2105.gr13.qs3backend.model.location.Campus;
 import no.ntnu.idatt2105.gr13.qs3backend.model.location.register.RegisterRoom;
 import no.ntnu.idatt2105.gr13.qs3backend.model.location.simple.*;
-import no.ntnu.idatt2105.gr13.qs3backend.service.LocationService;
+import no.ntnu.idatt2105.gr13.qs3backend.service.location.LocationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package no.ntnu.idatt2105.gr13.qs3backend.repository;
+package no.ntnu.idatt2105.gr13.qs3backend.repository.user;
 
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.*;
 import org.slf4j.Logger;

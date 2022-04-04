@@ -7,6 +7,6 @@ import org.springframework.mail.javamail.JavaMailSender;
  * Interface for MailServiceImpl
  */
 public interface MailService {
-    public void sendEmail(Mail mail);
+    void sendEmail(Mail mail);
     JavaMailSender getJavaMailSender();
 }

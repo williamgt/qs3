@@ -1,7 +1,6 @@
 package no.ntnu.idatt2105.gr13.qs3backend.repository.queue;
 
 import no.ntnu.idatt2105.gr13.qs3backend.model.Need;
-import no.ntnu.idatt2105.gr13.qs3backend.model.course.SimpleCourseWithName;
 import no.ntnu.idatt2105.gr13.qs3backend.model.location.*;
 import no.ntnu.idatt2105.gr13.qs3backend.model.location.simple.*;
 import no.ntnu.idatt2105.gr13.qs3backend.model.queue.*;
@@ -10,7 +9,6 @@ import no.ntnu.idatt2105.gr13.qs3backend.model.task.Task;
 import no.ntnu.idatt2105.gr13.qs3backend.model.task.TaskWithId;
 import no.ntnu.idatt2105.gr13.qs3backend.model.task.TaskWithNums;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.StudentUser;
-import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserDB;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +24,15 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 @Repository
-public class JdbcQueueRepository {
+public class JdbcQueueRepository implements QueueRepository{
 
     @Autowired
     JdbcTemplate jdbcTemplate;
 
     Logger logger = LoggerFactory.getLogger(JdbcQueueRepository.class);
-
+    @Override
     public Queue getQueueByCourse(String courseHashId) {
         String courseGivenCourseHashQuery = "SELECT courseCode, year, term FROM Course WHERE hashId=?";
         String queueGivenCourseInfoQuery = "SELECT queueId, description, active FROM Queue WHERE courseCode=? AND year=? AND term=?"; //Put into Queue obj, then convert to SimpleQueue after
@@ -172,7 +169,7 @@ public class JdbcQueueRepository {
 
         return returnQ;
     }
-
+    @Override
     @Transactional
     public int queueUp(QueueRequest req, boolean home) {
         String queueIdGivenCourseHashId = "SELECT Queue.queueId FROM Course " +
@@ -287,7 +284,7 @@ public class JdbcQueueRepository {
 
         return totalRowsAffected;
     }
-
+    @Override
     public int activateOrDeactivate(String courseHash) {
         String selectCourseQuery = "SELECT courseCode, year, term FROM Course WHERE hashId=?";
         String getStateOfQueueQuery = "SELECT active FROM Queue WHERE Queue.courseCode=? AND Queue.year=? AND Queue.term=?";
@@ -320,7 +317,7 @@ public class JdbcQueueRepository {
         }
         return rowsAffected;
     }
-
+    @Override
     public List<SimpleQueueWithCourseInfo> taGetCourses(String tAId, boolean active) {
         String selectCourseQuery = "SELECT Queue.queueId, Queue.description, Queue.courseCode, Queue.year, Queue.term, Queue.active, Course.hashId, Course.courseName " +
                 "FROM Queue " +
@@ -334,7 +331,7 @@ public class JdbcQueueRepository {
         return qs;
     }
 
-
+    @Override
     public int checkIfInQueue(String hashId, int studentId) {
         String countActiveQuery = "SELECT COUNT(QueueInfo.active) FROM Course " +
                 "INNER JOIN Queue ON Course.courseCode=Queue.courseCode AND Course.year=Queue.year AND Course.term=Queue.term " +

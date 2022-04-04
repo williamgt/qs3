@@ -1,11 +1,10 @@
-package no.ntnu.idatt2105.gr13.qs3backend.service;
+package no.ntnu.idatt2105.gr13.qs3backend.service.user;
 
 
 import no.ntnu.idatt2105.gr13.qs3backend.model.mail.Mail;
-import no.ntnu.idatt2105.gr13.qs3backend.model.security.Role;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.*;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.basics.*;
-import no.ntnu.idatt2105.gr13.qs3backend.repository.JdbcUserRepository;
+import no.ntnu.idatt2105.gr13.qs3backend.repository.user.JdbcUserRepository;
 import no.ntnu.idatt2105.gr13.qs3backend.service.mail.MailServiceImpl;
 import no.ntnu.idatt2105.gr13.qs3backend.util.FileHandler;
 import org.slf4j.Logger;
