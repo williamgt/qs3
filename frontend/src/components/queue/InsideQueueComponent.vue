@@ -11,15 +11,6 @@
     :stud-info="studInfo"
     :index="index"
   ></queue-element>
-  <!--  <div v-for="(studInfo, index) in queueInfo" :key="studInfo.user.email">-->
-  <!--    {{ index + 1 }} - {{ studInfo.user.firstname }}-->
-  <!--    {{ studInfo.user.lastname }}, {{ hOrV(studInfo.helpOrValidate) }}:-->
-  <!--    <div v-for="(task, index) in studInfo.tasks" :key="index">-->
-  <!--      {{ task.description }}-->
-  <!--    </div>-->
-  <!--    <div v-if="studInfo.comment">{{ studInfo.comment }}</div>-->
-  <!--  </div>-->
-  {{ c_queue }}
 </template>
 
 <script>

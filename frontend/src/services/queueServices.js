@@ -8,6 +8,16 @@ export function queueUp(queueInfo) {
   return axios.post("http://localhost:8085/queue/queue-up", queueInfo, config);
 }
 
+export function checkIfInQueue(hashId, studentId) {
+  const config = {
+    headers: { Authorization: `Bearer ${store.state.auth.token}` },
+  };
+  return axios.get(
+    "http://localhost:8085/queue/register-status/" + hashId + "/" + studentId,
+    config
+  );
+}
+
 export function getQueueInfoFromHashId(hashId) {
   const config = {
     headers: { Authorization: `Bearer ${store.state.auth.token}` },

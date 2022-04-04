@@ -1,8 +1,5 @@
 package no.ntnu.idatt2105.gr13.qs3backend.model.queue;
 
-import no.ntnu.idatt2105.gr13.qs3backend.model.location.simple.SimpleBuilding;
-import no.ntnu.idatt2105.gr13.qs3backend.model.location.simple.SimpleCampus;
-import no.ntnu.idatt2105.gr13.qs3backend.model.location.simple.SimpleRoom;
 import no.ntnu.idatt2105.gr13.qs3backend.model.task.TaskWithNums;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.User;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.basics.UserBasicWithId;

@@ -333,4 +333,16 @@ public class JdbcQueueRepository {
 
         return qs;
     }
+
+
+    public int checkIfInQueue(String hashId, int studentId) {
+        String countActiveQuery = "SELECT COUNT(QueueInfo.active) FROM Course " +
+                "INNER JOIN Queue ON Course.courseCode=Queue.courseCode AND Course.year=Queue.year AND Course.term=Queue.term " +
+                "INNER JOIN QueueInfo ON Queue.queueId=QueueInfo.queueId " +
+                "INNER JOIN StudentQueueInfo ON QueueInfo.queueInfoId=StudentQueueInfo.queueInfoId " +
+                "WHERE Course.hashId=? AND StudentQueueInfo.studentId=? AND QueueInfo.active=1";
+
+        //If one (or greater) already in queue, if 0 not in queue
+        return jdbcTemplate.queryForObject(countActiveQuery, Integer.class, new Object[]{hashId, studentId});
+    }
 }

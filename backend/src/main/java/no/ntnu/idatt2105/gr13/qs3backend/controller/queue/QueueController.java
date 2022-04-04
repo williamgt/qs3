@@ -85,11 +85,27 @@ public class QueueController {
         return 0;
     }
 
+    @GetMapping("register-status/{hashId}/{studentId}")
+    public boolean isInQueue(@PathVariable("hashId") String hashId, @PathVariable("studentId") int studentId) {
+        logger.info("Checking if student with id " + studentId + " is in queue or not for course with hash " + hashId);
+        boolean inQueue = queueService.studentIsInQueue(hashId, studentId);
+        if(inQueue) {
+            logger.info("Student in queue, can't queue up now.");
+        } else {
+            logger.info("Student not in queue, can queue up now.");
+        }
+        return inQueue;
+    }
+
     @PostMapping("/queue-up")
     public ResponseEntity<String> queueUp(@RequestBody QueueRequest req) {
         logger.info("Received queue request from user");
         try{
             int rowsAffected = queueService.queueUp(req);
+            if(rowsAffected == -1) {
+                logger.info("Already in queue, can't queue up again.");
+                return new ResponseEntity<>("Successfully got into queue.", HttpStatus.NOT_MODIFIED);
+            }
             logger.info("Queued up and affected rows " + rowsAffected);
             return new ResponseEntity<>("Successfully got into queue.", HttpStatus.CREATED);
         } catch (Exception e) {

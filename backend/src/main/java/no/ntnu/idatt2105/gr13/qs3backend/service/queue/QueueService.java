@@ -29,6 +29,7 @@ public class QueueService {
         } else if(req.getHashId().isBlank()){
             throw new Exception("User tried to queue up for course, but did not send in an id.");
         }
+
         if(req.isHome()) {
             return qRepo.queueUp(req, true);
         } else {
@@ -47,5 +48,13 @@ public class QueueService {
 
     public List<SimpleQueueWithCourseInfo> taGetInactiveQueue(String tAId) {
         return qRepo.taGetCourses(tAId, false);
+    }
+
+    public boolean studentIsInQueue(String hashId, int studentId) {
+        if( qRepo.checkIfInQueue(hashId, studentId) > 1) {
+            //Already in queue, can't queue up again
+            return true;
+        }
+        return false;
     }
 }
