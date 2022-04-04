@@ -58,9 +58,6 @@ export default {
       }
     },
     validatePassword() {
-      if (this.user.password === this.rePassword) {
-        return true;
-      }
       if (this.user.password === undefined) {
         this.error = "Please insert a new password";
         return false;
@@ -71,10 +68,6 @@ export default {
       }
       if (this.user.password.length < 7) {
         this.error = "Password must be longer than 7 chars";
-        return false;
-      }
-      if (this.user.password.length > 25) {
-        this.error = "Password must be shorter than 25 chars";
         return false;
       }
       if (this.user.password !== this.rePassword) {

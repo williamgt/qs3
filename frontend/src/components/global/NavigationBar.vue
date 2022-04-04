@@ -96,7 +96,7 @@ export default {
 
 .dropdown-content a {
   float: none;
-  font-size: 17px;
+  font-size: 15px;
   color: black;
   padding: 12px 16px;
   text-decoration: none;

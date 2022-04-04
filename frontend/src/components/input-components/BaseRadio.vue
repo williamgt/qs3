@@ -47,4 +47,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+input[type="radio"] {
+  transform: scale(2);
+}
+</style>
