@@ -16,12 +16,18 @@ public class SimpleLocationParts extends BareBoneLocation {
     private String campusName;
     private int campusId;
 
+    /**
+     * Empty constructor for SimpleLocationParts
+     */
     public SimpleLocationParts() {
     }
 
     /**
      * Constructor for SimpleLocationParts
-     * Has different checks to make sure location is valid
+     * Has different checks to make sure location is valid, throws IllegalArgumentException if:
+     * locationId, roomId, buildingId or campusId is less than 0,
+     * table is less than one,
+     * roomName, buildingName or campusName is an empty String or null
      * @param locationId
      * @param roomName
      * @param roomId
@@ -115,70 +121,120 @@ public class SimpleLocationParts extends BareBoneLocation {
     }
 
 
+    /**
+     * Sets room id.
+     *
+     * @param roomId the room id
+     */
     public void setRoomId(int roomId) {
         this.roomId = roomId;
     }
 
+    /**
+     * Gets table.
+     *
+     * @return the table
+     */
     public int getTable() {
         return table;
     }
 
+    /**
+     * Sets table.
+     *
+     * @param table the table
+     */
     public void setTable(int table) {
         this.table = table;
     }
 
+    /**
+     * Gets floor.
+     *
+     * @return the floor
+     */
     public int getFloor() {
         return floor;
     }
 
+    /**
+     * Sets floor.
+     *
+     * @param floor the floor
+     */
     public void setFloor(int floor) {
         this.floor = floor;
     }
 
+    /**
+     * Gets building name.
+     *
+     * @return the building name
+     */
     public String getBuildingName() {
         return buildingName;
     }
 
+    /**
+     * Sets building name.
+     *
+     * @param buildingName the building name
+     */
     public void setBuildingName(String buildingName) {
         this.buildingName = buildingName;
     }
 
+    /**
+     * Gets building id.
+     *
+     * @return the building id
+     */
     public int getBuildingId() {
         return buildingId;
     }
 
+    /**
+     * Sets building id.
+     *
+     * @param buildingId the building id
+     */
     public void setBuildingId(int buildingId) {
         this.buildingId = buildingId;
     }
 
+    /**
+     * Gets campus name.
+     *
+     * @return the campus name
+     */
     public String getCampusName() {
         return campusName;
     }
 
+    /**
+     * Sets campus name.
+     *
+     * @param campusName the campus name
+     */
     public void setCampusName(String campusName) {
         this.campusName = campusName;
     }
 
+    /**
+     * Gets campus id.
+     *
+     * @return the campus id
+     */
     public int getCampusId() {
         return campusId;
     }
 
+    /**
+     * Sets campus id.
+     *
+     * @param campusId the campus id
+     */
     public void setCampusId(int campusId) {
         this.campusId = campusId;
-    }
-
-    @Override
-    public String toString() {
-        return "SimpleLocationParts{" +
-                "locationId=" + locationId +
-                ", roomName='" + roomName + '\'' +
-                ", roomId=" + roomId +
-                ", table=" + table +
-                ", floor=" + floor +
-                ", buildingName='" + buildingName + '\'' +
-                ", buildingId=" + buildingId +
-                ", campusName='" + campusName + '\'' +
-                ", campusId=" + campusId +
-                '}';
     }
 }

@@ -63,18 +63,4 @@ public class SimpleRoom {
     public int getFloors() {
         return floors;
     }
-
-    /**
-     * ToString method
-     * @return
-     */
-    @Override
-    public String toString() {
-        return "SimpleRoom{" +
-                "id=" + id +
-                ", tables=" + tables +
-                ", roomName='" + roomName + '\'' +
-                ", floors=" + floors +
-                '}';
-    }
 }

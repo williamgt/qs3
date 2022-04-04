@@ -38,21 +38,21 @@ public class LocationController {
     @GetMapping("/campus/{id}")
     public SimpleCampusBuilding getCampus(@PathVariable("id") long id){
         SimpleCampusBuilding c = locationService.getCampus((int) id);
-        logger.info("Retrieved all info from campus: " + c.toString());
+        logger.info("Retrieved all info from campus: " + c.getId());
         return c;
     }
 
     @GetMapping("/room/{id}")
     public SimpleRoomWBC getRoom(@PathVariable("id") long id){
         SimpleRoomWBC room = locationService.getRoom((int) id);
-        logger.info("Retrieved all info from room: " + room.toString());
+        logger.info("Retrieved all info from room: " + room.getId());
         return room;
     }
 
     @GetMapping("/building/{id}")
     public SimpleCampusBuildingRoom getBuilding(@PathVariable("id") long id){
         SimpleCampusBuildingRoom c = locationService.getBuilding((int) id);
-        logger.info("Retrieved all info from building: " + c.getBuilding().toString());
+        logger.info("Retrieved all info from building: " + c.getId());
         return c;
     }
 

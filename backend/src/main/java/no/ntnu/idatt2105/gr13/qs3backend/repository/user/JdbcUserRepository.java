@@ -135,19 +135,17 @@ public class JdbcUserRepository implements UserRepository {
 
         try{
             id = jdbcTemplate.queryForObject(getIdWithMail, Integer.class, user.getEmail()); //Throws exception if no user has given mail
-            logger.info("Gained id1: " + id);
         }catch (EmptyResultDataAccessException e){
             //Guaranteed no user is registered with given mail
             rowsAffected += jdbcTemplate.update(insertUser,
                     new Object[] {user.getFirstname(), user.getLastname(), user.getEmail(), user.getPassword()});
             id = jdbcTemplate.queryForObject(getIdWithMail, Integer.class, user.getEmail());
-            logger.info("Gained id2: " + id);
         }
         logger.info(rowsAffected + " rows were affected by insertions into User.");
         if(id == null){
             return -1;
         }
-        logger.info("Created user: " + user.toString());
+        logger.info("Created user with id: " + id);
         return id;
     }
 

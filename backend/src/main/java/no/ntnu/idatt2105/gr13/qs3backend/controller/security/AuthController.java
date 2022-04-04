@@ -52,11 +52,11 @@ public class AuthController {
     @PostMapping("/getRole")
     public ResponseEntity<Role> getRole(@RequestBody User user){
         Role role = service.getRoleNotProt(user);
-        logger.info("Retrieved role: " + role + " For user: + " + user.toString());
+        logger.info("Retrieved role: " + role + " For user with id: + " + user.getId());
         if(!role.equals(Role.UNDEFINED))
             return new ResponseEntity<>(role, HttpStatus.ACCEPTED);
 
-        logger.info("Could not define role for: " + user.toString());
+        logger.info("Could not define role for user with id: " + user.getId());
         return new ResponseEntity<>(role, HttpStatus.BAD_REQUEST);
     }
 }

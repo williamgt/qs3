@@ -2,7 +2,6 @@ package no.ntnu.idatt2105.gr13.qs3backend.service.task;
 
 import no.ntnu.idatt2105.gr13.qs3backend.model.task.Task;
 import no.ntnu.idatt2105.gr13.qs3backend.model.task.TaskWithId;
-import no.ntnu.idatt2105.gr13.qs3backend.model.task.ValidatedTasks;
 import no.ntnu.idatt2105.gr13.qs3backend.repository.task.JdbcTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

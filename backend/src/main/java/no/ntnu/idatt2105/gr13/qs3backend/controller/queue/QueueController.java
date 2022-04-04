@@ -1,11 +1,8 @@
 package no.ntnu.idatt2105.gr13.qs3backend.controller.queue;
 
 import no.ntnu.idatt2105.gr13.qs3backend.model.queue.Queue;
-import no.ntnu.idatt2105.gr13.qs3backend.model.course.SimpleCourse;
-import no.ntnu.idatt2105.gr13.qs3backend.model.course.TAMessageCourse;
 import no.ntnu.idatt2105.gr13.qs3backend.model.queue.QueueRequest;
 import no.ntnu.idatt2105.gr13.qs3backend.model.queue.SimpleQueueWithCourseInfo;
-import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserDB;
 import no.ntnu.idatt2105.gr13.qs3backend.service.queue.QueueService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,10 +77,11 @@ public class QueueController {
         return qs;
     }
 
-    @PutMapping("/temp1")
+    //Method that was supposed to let the teaching assistant update the message related to a course's queue
+    /*@PutMapping("/temp1")
     public int putTAMessage(TAMessageCourse courseAndMsg) {
         return 0;
-    }
+    }*/
 
     @GetMapping("register-status/{hashId}/{studentId}")
     public boolean isInQueue(@PathVariable("hashId") String hashId, @PathVariable("studentId") int studentId) {

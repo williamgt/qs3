@@ -120,8 +120,6 @@ public class UserController {
     @PostMapping("/user/register")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> createUser(@RequestBody UserRoleString userRole) {
-        logger.info(userRole.toString());
-        logger.info(userRole.getRole());
         try {
             service.createUser(userRole);
         }catch (Exception e){
@@ -217,16 +215,11 @@ public class UserController {
     @PutMapping("/user/{id}")
     @PreAuthorize("hasRole('ADMIN') or @methodSecService.isTargetUser(#id)")
     public ResponseEntity<Boolean> updateUser(@PathVariable("id") long id, @RequestBody User user){
-        logger.info(user.getFirstname());
-        logger.info(user.getLastname());
-        logger.info(user.getPassword());
-        logger.info(user.getEmail());
-        logger.info(String.valueOf(user.getId()));
         if(service.updateUser(user)){
-            logger.info("User: " + user.toString() + " updated!");
+            logger.info("User with id: " + user.getId() + " updated!");
             return new ResponseEntity<>(true, HttpStatus.OK);
         }
-        logger.warn("Error updating user: " + user.toString());
+        logger.warn("Error updating user with id: " + user.getId());
         return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
     }
 
@@ -235,10 +228,10 @@ public class UserController {
     public ResponseEntity<Boolean> deleteUser(@PathVariable("id") long id){
         User user = service.findByIdAdmin(id);
         if(service.deleteUser((int) id)){
-            logger.info("User: " + user.toString() + " deleted");
+            logger.info("User with id: " + user.getId() + " deleted");
             return new ResponseEntity<>(true, HttpStatus.OK);
         }
-        logger.info("Error deleting user: " + user.toString());
+        logger.info("Error deleting user with id: " + user.getId());
         return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
     }
 
