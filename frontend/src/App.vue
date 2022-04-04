@@ -114,12 +114,6 @@ button.-icon-left > .icon {
 button.-icon-center {
   padding: 0 20px;
 }
-.button-accept {
-  background-color: limegreen;
-}
-.button-decline {
-  background-color: orangered;
-}
 .login-button {
   display: inline-flex;
   align-items: center;

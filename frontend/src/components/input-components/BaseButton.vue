@@ -41,4 +41,10 @@ button:disabled {
   transform: scale(1);
   box-shadow: none;
 }
+.button-accept {
+  background-color: lightblue;
+}
+.button-decline {
+  background-color: dodgerblue;
+}
 </style>

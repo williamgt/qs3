@@ -37,7 +37,6 @@
         ></base-select>
       </div>
     </div>
-    <button @click="a"></button>
     <div>
       <h1>Tasks</h1>
       <mult-check :options="tasks.toChoose" v-model:value="task"></mult-check>
@@ -427,9 +426,9 @@ button.-icon-center {
   padding: 0 20px;
 }
 .button-accept {
-  background-color: limegreen;
+  background-color: lightblue;
 }
 .button-decline {
-  background-color: orangered;
+  background-color: darkblue;
 }
 </style>

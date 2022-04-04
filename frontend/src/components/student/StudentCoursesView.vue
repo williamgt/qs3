@@ -71,7 +71,7 @@ export default {
         }
       }
       if (!payload.active) {
-        console.log(
+        alert(
           "Clicked on inactive course, you can't queue up " +
             payload.course.courseCode
         );

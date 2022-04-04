@@ -149,6 +149,7 @@ export default {
     BaseSelect,
     BaseCheckbox,
   },
+  inject: ["GStore"],
   data() {
     return {
       courseName: "",
@@ -178,8 +179,27 @@ export default {
       taskSetAmount: 0,
       taskSetAmountError: "",
       taskAlternatives: [
-        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
-        20,
+        { name: 0, id: 0 },
+        { name: 1, id: 1 },
+        { name: 2, id: 2 },
+        { name: 3, id: 3 },
+        { name: 4, id: 4 },
+        { name: 5, id: 5 },
+        { name: 6, id: 6 },
+        { name: 7, id: 7 },
+        { name: 8, id: 8 },
+        { name: 9, id: 9 },
+        { name: 10, id: 10 },
+        { name: 11, id: 11 },
+        { name: 12, id: 12 },
+        { name: 13, id: 13 },
+        { name: 14, id: 14 },
+        { name: 15, id: 15 },
+        { name: 16, id: 16 },
+        { name: 17, id: 17 },
+        { name: 18, id: 18 },
+        { name: 19, id: 19 },
+        { name: 20, id: 20 },
       ],
       taskSetAlternatives: [],
     };
@@ -450,18 +470,18 @@ export default {
     async registerCourse() {
       if (this.validateEverything()) {
         this.insertChosenTasksInArray();
-        console.log(this.csvFile);
         let students;
         await getStudentsFromFile(this.csvFile)
           .then((response) => {
             students = response.data;
-            console.log(students);
           })
           .catch((e) => {
             console.log(e.response);
           });
-        console.log(students);
-        if (!this.studentCheck(students)) return;
+        if (!this.studentCheck(students)) {
+          alert("Something went wrong when getting students!");
+          return;
+        }
 
         let course = {
           year: this.year,
@@ -476,19 +496,26 @@ export default {
           tasksInEachSet: this.taskSetsChosenTasks,
           obligatoryPerSet: this.obligatoryPerSet,
         };
-
-        console.log(course);
-        console.log("Registering course...");
         registerCourseService(course)
           .then((response) => {
-            console.log(response);
+            if (response.status === 201) {
+              this.GStore.flashMessage = "Course Added!";
+              setTimeout(() => {
+                this.GStore.flashMessage = "";
+              }, 3000);
+              this.$router.push("/");
+            }
           })
           .catch((e) => {
-            console.log(e);
+            this.GStore.flashMessage = "Something went wrong: " + e;
+            setTimeout(() => {
+              this.GStore.flashMessage = "";
+            }, 3000);
+            this.$router.push("/");
           });
         //Check every field, split teacher and ta string into arrays etc
       } else {
-        console.log("NOT TRUE");
+        alert("Something went wrong!");
       }
     },
   },
