@@ -3,7 +3,6 @@ package no.ntnu.idatt2105.gr13.qs3backend.service.security;
 import no.ntnu.idatt2105.gr13.qs3backend.model.security.Role;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.User;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserLogin;
-import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserRole;
 import no.ntnu.idatt2105.gr13.qs3backend.repository.JdbcUserRepository;
 import no.ntnu.idatt2105.gr13.qs3backend.repository.security.JdbcAuthRepository;
 import org.springframework.beans.factory.annotation.Autowired;

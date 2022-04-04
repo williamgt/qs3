@@ -1,6 +1,5 @@
 package no.ntnu.idatt2105.gr13.qs3backend.service.security;
 
-import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserDBDetailsAuth;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserPerson;
 import no.ntnu.idatt2105.gr13.qs3backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,5 +1,6 @@
 package no.ntnu.idatt2105.gr13.qs3backend.repository.task;
 
+import no.ntnu.idatt2105.gr13.qs3backend.model.task.Task;
 import no.ntnu.idatt2105.gr13.qs3backend.model.task.TaskWithId;
 import no.ntnu.idatt2105.gr13.qs3backend.model.task.ValidatedTasks;
 import org.slf4j.Logger;
@@ -67,15 +68,15 @@ public class JdbcTaskRepository {
                 "INNER JOIN TaskQueueInfo ON TaskQueueInfo.queueInfoId=QueueInfo.queueInfoId AND Task.taskId=TaskQueueInfo.taskId" +
                 "WHERE StudentCourse.studentId=? AND Course.hashId=? AND TaskQueueInfo.validated=1"; //Gets the done tasks
 
-        selectAllTasksNotFinishedQuery = "SELECT DISTINCT Task.taskId, Task.description FROM Task" +
-                "INNER JOIN TaskSet ON Task.taskSetId=TaskSet.taskSetId" +
-                "INNER JOIN Tasks ON TaskSet.tasksId=Tasks.tasksId" +
-                "INNER JOIN Course ON Tasks.courseCode=Course.courseCode AND Tasks.year=Course.year AND Tasks.term=Course.term" +
+        selectAllTasksNotFinishedQuery = "SELECT DISTINCT Task.taskId, Task.description FROM Task " +
+                "INNER JOIN TaskSet ON Task.taskSetId=TaskSet.taskSetId " +
+                "INNER JOIN Tasks ON TaskSet.tasksId=Tasks.tasksId " +
+                "INNER JOIN Course ON Tasks.courseCode=Course.courseCode AND Tasks.year=Course.year AND Tasks.term=Course.term " +
                 "INNER JOIN StudentCourse ON Course.courseCode=StudentCourse.courseCode AND StudentCourse.year=Course.year AND StudentCourse.term=Course.term" +
-                "INNER JOIN Queue ON Course.courseCode=Queue.courseCode AND Course.year=Queue.year AND Course.term=Queue.term" +
-                "INNER JOIN QueueInfo ON Queue.queueId=QueueInfo.queueId" +
+                " INNER JOIN Queue ON Course.courseCode=Queue.courseCode AND Course.year=Queue.year AND Course.term=Queue.term " +
+                "INNER JOIN QueueInfo ON Queue.queueId=QueueInfo.queueId " +
                 "INNER JOIN TaskQueueInfo ON TaskQueueInfo.queueInfoId=QueueInfo.queueInfoId" +
-                "WHERE StudentCourse.studentId=? AND Course.hashId=? AND validated=0 AND Task.taskId NOT IN (" +
+                " WHERE StudentCourse.studentId=? AND Course.hashId=? AND validated=0 AND Task.taskId NOT IN (" +
                 "    SELECT DISTINCT Task.taskId FROM Task" +
                 "    INNER JOIN TaskSet ON Task.taskSetId=TaskSet.taskSetId" +
                 "    INNER JOIN Tasks ON TaskSet.tasksId=Tasks.tasksId" +
@@ -99,7 +100,7 @@ public class JdbcTaskRepository {
     }
 
     @Transactional
-    public int validateStudentTasks(int queueInfoId, ValidatedTasks tasks) {
+    public int validateStudentTasks(int queueInfoId, List<Task> tasks) {
         String selectAllTasksFromGivenQueueInfoIdQuery = "SELECT Task.taskId, Task.description FROM Task " +
                 "INNER JOIN TaskQueueInfo ON Task.taskId=TaskQueueInfo.taskId " +
                 "WHERE TaskQueueInfo.queueInfoId=?";
@@ -115,9 +116,9 @@ public class JdbcTaskRepository {
                 BeanPropertyRowMapper.newInstance(TaskWithId.class), queueInfoId);
 
         //Checking if the tasks in the ValidatedTasks are the same as the ones gotten from DB, if so mark as validated
-        for(int i = 0; i < tasks.getTasks().size(); i++){
+        for(int i = 0; i < tasks.size(); i++){
             for(TaskWithId t : tasksFromDb){
-                if(tasks.getTasks().get(i).getDescription().equals(t.getDescription())) {
+                if(tasks.get(i).getDescription().equals(t.getDescription())) {
                     rowsAffected += jdbcTemplate.update(updateToValidatedQuery, t.getTaskId(), queueInfoId);
                 }
             }

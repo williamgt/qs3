@@ -266,7 +266,7 @@ public class UserService {
         if(userRepository.getID(userRole.getEmail()) != -1){
             throw new IllegalArgumentException("Email already registered");
         }
-        //sendMail(new Mail(userRole.getEmail(), userRole.getPassword())); //TODO ENABLE
+        sendMail(new Mail(userRole.getEmail(), userRole.getPassword())); //TODO ENABLE
         User user = new User(userRole.getEmail(), passwordEncoder.encode(userRole.getPassword()), userRole.getFirstname(), userRole.getLastname());
         userRole.setPassword(passwordEncoder.encode(userRole.getPassword()));
         int id = userRepository.registerUser(user);

@@ -1,5 +1,6 @@
 package no.ntnu.idatt2105.gr13.qs3backend.controller.task;
 
+import no.ntnu.idatt2105.gr13.qs3backend.model.task.Task;
 import no.ntnu.idatt2105.gr13.qs3backend.model.task.TaskWithId;
 import no.ntnu.idatt2105.gr13.qs3backend.model.task.ValidatedTasks;
 import no.ntnu.idatt2105.gr13.qs3backend.service.task.TaskService;
@@ -28,7 +29,7 @@ public class TaskController {
     }
 
     @PutMapping("/validate/{queue-info-id}")
-    public ResponseEntity<String> validateStudentTasks(@PathVariable("queue-info-id") int queueInfoId, @RequestBody ValidatedTasks tasks) {
+    public ResponseEntity<String> validateStudentTasks(@PathVariable("queue-info-id") int queueInfoId, @RequestBody List<Task> tasks) {
         logger.info("TA validates student wit queueInfoId " + queueInfoId);
         int rowsAffected = taskService.validateStudentTasks(queueInfoId, tasks);
         if(rowsAffected == 1) {
