@@ -60,7 +60,7 @@
         <fieldset>
           <legend>File uploader</legend>
           <div class="file-uploader">
-            <p>Format of file should be 'firstname, lastname, email\n'</p>
+            <p>Format of file should be 'lastname,firstname,email\n'</p>
             <label for="file"
               >Choose a .csv file of students to register.</label
             >
