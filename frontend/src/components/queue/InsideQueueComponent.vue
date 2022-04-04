@@ -21,7 +21,7 @@ import { getQueueInfoFromHashId } from "@/services/queueServices";
 import QueueHeader from "@/components/queue/QueueHeader";
 import QueueElement from "@/components/queue/QueueElement";
 import { hasTAAccess } from "@/api/AuthAPI";
-import {useStore} from "vuex";
+import { useStore } from "vuex";
 
 export default {
   name: "InsideQueueComponent",
