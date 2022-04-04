@@ -2,9 +2,9 @@
   <div class="course-container">
     <h3>{{ active ? "Active" : "Inactive" }}</h3>
     <ul class="course-list">
-      <li v-for="course in courses" :key="course.code" class="element">
+      <li v-for="course in c_courses" :key="course.hashId" class="element">
         <div class="course-item">
-          <h4>{{ course.title }} - {{ course.code }}</h4>
+          <h4>{{ course.courseName }} - {{ course.courseCode }}</h4>
         </div>
         <div class="course-item">
           <div class="course-item-center">
@@ -19,6 +19,13 @@
 </template>
 
 <script>
+import {
+  taGetActiveQueues,
+  taGetInactiveQueues,
+} from "@/services/queueServices";
+import { ref } from "vue";
+import { useStore } from "vuex";
+
 export default {
   name: "TACourses",
   props: {
@@ -39,6 +46,33 @@ export default {
         active: active,
       });
     },
+  },
+  async setup(props) {
+    console.log(props.active);
+    const store = useStore();
+    let c_courses;
+    if (props.active) {
+      await taGetActiveQueues(store.state.personLoggedIn.id)
+        .then((response) => {
+          c_courses = ref(response.data);
+          console.log(c_courses);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    } else if (!props.active) {
+      await taGetInactiveQueues(store.state.personLoggedIn.id)
+        .then((response) => {
+          c_courses = ref(response.data);
+          console.log(c_courses);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+    return {
+      c_courses,
+    };
   },
 };
 </script>

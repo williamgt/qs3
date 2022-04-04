@@ -1,24 +1,35 @@
 <template>
   <div class="validate-list-container">
-    <div class="active-container">
-      <TACourses
-        :courses="activeCourses"
-        :active="true"
-        @changed-active-status="moveToInactive"
-      ></TACourses>
-    </div>
-    <div class="inactive-container">
-      <TACourses
-        :courses="inactiveCourses"
-        :active="false"
-        @changed-active-status="moveToActive"
-      ></TACourses>
-    </div>
+    <Suspense>
+      <template #default>
+        <div class="active-container">
+          <TACourses
+            :courses="activeCourses"
+            :active="true"
+            @changed-active-status="moveToInactive"
+          ></TACourses>
+        </div>
+      </template>
+      <template #fallback><p>Loading active courses...</p></template>
+    </Suspense>
+    <Suspense>
+      <template #default>
+        <div class="inactive-container">
+          <TACourses
+            :courses="inactiveCourses"
+            :active="false"
+            @changed-active-status="moveToActive"
+          ></TACourses>
+        </div>
+      </template>
+      <template #fallback><p>Loading inactive courses...</p></template>
+    </Suspense>
   </div>
 </template>
 
 <script>
 import TACourses from "../teaching-assistant/TACourses";
+import {taActivateOrDeactivateQueue} from "@/services/queueServices";
 
 export default {
   name: "TACoursesView",
@@ -61,6 +72,15 @@ export default {
     },
     moveToInactive(payload) {
       if (payload.active) {
+        let hashId = payload.course.hashId;
+        taActivateOrDeactivateQueue(hashId)
+        .then(payload => {
+
+        })
+        .catch(e => {
+
+        }
+        ])
         let index = this.activeCourses.indexOf(payload.course);
         if (index > -1) {
           this.activeCourses.splice(index, 1);
