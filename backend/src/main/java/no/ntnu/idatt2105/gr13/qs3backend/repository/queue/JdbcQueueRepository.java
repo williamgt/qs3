@@ -349,12 +349,22 @@ public class JdbcQueueRepository implements QueueRepository{
      * @return list of simple queues that are either active or inactive with related course info
      */
     @Override
-    public List<SimpleQueueWithCourseInfo> taGetCourses(String tAId, boolean active) {
-        String selectCourseQuery = "SELECT Queue.queueId, Queue.description, Queue.courseCode, Queue.year, Queue.term, Queue.active, Course.hashId, Course.courseName " +
-                "FROM Queue " +
-                "INNER JOIN Course ON Queue.courseCode=Course.courseCode AND Queue.year=Course.year AND Queue.term=Course.term " +
-                "INNER JOIN TACourse ON TACourse.courseCode=Course.courseCode AND TACourse.year=Course.year AND TACourse.term=Course.term " +
-                "WHERE TACourse.tAId=? AND Queue.active=?";
+    public List<SimpleQueueWithCourseInfo> taGetCourses(String auth, String tAId, boolean active) {
+        String selectCourseQuery;
+
+        if(auth.equals("TEACHER")){
+            selectCourseQuery = "SELECT Queue.queueId, Queue.description, Queue.courseCode, Queue.year, Queue.term, Queue.active, Course.hashId, Course.courseName " +
+                    "FROM Queue " +
+                    "INNER JOIN Course ON Queue.courseCode=Course.courseCode AND Queue.year=Course.year AND Queue.term=Course.term " +
+                    "INNER JOIN TeacherCourse ON TeacherCourse.courseCode=Course.courseCode AND TeacherCourse.year=Course.year AND TeacherCourse.term=Course.term " +
+                    "WHERE TeacherCourse.teacherId=? AND Queue.active=?";
+        }else {
+            selectCourseQuery = "SELECT Queue.queueId, Queue.description, Queue.courseCode, Queue.year, Queue.term, Queue.active, Course.hashId, Course.courseName " +
+                    "FROM Queue " +
+                    "INNER JOIN Course ON Queue.courseCode=Course.courseCode AND Queue.year=Course.year AND Queue.term=Course.term " +
+                    "INNER JOIN TACourse ON TACourse.courseCode=Course.courseCode AND TACourse.year=Course.year AND TACourse.term=Course.term " +
+                    "WHERE TACourse.tAId=? AND Queue.active=?";
+        }
 
         List<SimpleQueueWithCourseInfo> qs = jdbcTemplate.query(selectCourseQuery,
                 BeanPropertyRowMapper.newInstance(SimpleQueueWithCourseInfo.class), new Object[] {tAId, active == true ? 1 : 0});

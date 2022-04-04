@@ -30,7 +30,10 @@ export function taGetActiveQueues(taId) {
     headers: { Authorization: `Bearer ${store.state.auth.token}` },
   };
   return axios.get(
-    "http://localhost:8085/queue/ta-active-queue/" + taId,
+    "http://localhost:8085/queue/ta-active-queue/" +
+      store.state.auth.role +
+      "/" +
+      taId,
     config
   );
 }
@@ -40,7 +43,10 @@ export function taGetInactiveQueues(taId) {
     headers: { Authorization: `Bearer ${store.state.auth.token}` },
   };
   return axios.get(
-    "http://localhost:8085/queue/ta-inactive-queue/" + taId,
+    "http://localhost:8085/queue/ta-inactive-queue/" +
+      store.state.auth.role +
+      "/" +
+      taId,
     config
   );
 }

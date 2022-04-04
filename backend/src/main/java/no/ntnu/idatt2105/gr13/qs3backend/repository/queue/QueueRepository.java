@@ -44,7 +44,7 @@ public interface QueueRepository {
      * @param active the active
      * @return the list
      */
-    List<SimpleQueueWithCourseInfo> taGetCourses(String tAId, boolean active);
+    List<SimpleQueueWithCourseInfo> taGetCourses(String auth, String tAId, boolean active);
 
     /**
      * Checks if a student is in a course queue.

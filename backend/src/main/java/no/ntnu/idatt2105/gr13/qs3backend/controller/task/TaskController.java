@@ -21,12 +21,25 @@ public class TaskController {
     @Autowired
     TaskService taskService;
 
+    /**
+     * Unfinished method for getting all tasks that are not done by a given user for a given course.
+     * @param hashId
+     * @param userId
+     * @return
+     */
     @GetMapping("/{hashId}/{userId}")
     public List<TaskWithId> getTaskFromCourseHashId(@PathVariable String hashId, @PathVariable int userId) {
         logger.info("User with ID " + userId + " requested unvalidated tasks from course with hash " + hashId + ".");
         return taskService.getTaskFromCourseHashId(hashId, userId);
     }
 
+    /**
+     * Method used by teaching assistant to validate some tasks that a student has queued up for validation.
+     * Is transactional such that if something goes wrong when inserting, every change is rolled back.
+     * @param queueInfoId the id of the queue instance related to student needing validation
+     * @param tasks       the tasks that are validated
+     * @return amount of rows affected.
+     */
     @PutMapping("/validate/{queue-info-id}")
     public ResponseEntity<String> validateStudentTasks(@PathVariable("queue-info-id") int queueInfoId, @RequestBody List<Task> tasks) {
         logger.info("TA validates student wit queueInfoId " + queueInfoId);

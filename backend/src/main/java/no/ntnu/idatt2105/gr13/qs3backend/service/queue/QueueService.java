@@ -70,8 +70,8 @@ public class QueueService {
      * @param tAId the teaching assistant id
      * @return the active queues
      */
-    public List<SimpleQueueWithCourseInfo> taGetActiveQueue(String tAId) {
-        return qRepo.taGetCourses(tAId, true);
+    public List<SimpleQueueWithCourseInfo> taGetActiveQueue(String auth, String tAId) {
+        return qRepo.taGetCourses(auth, tAId, true);
     }
 
     /**
@@ -80,8 +80,8 @@ public class QueueService {
      * @param tAId the teaching assistant id
      * @return the inactive queues
      */
-    public List<SimpleQueueWithCourseInfo> taGetInactiveQueue(String tAId) {
-        return qRepo.taGetCourses(tAId, false);
+    public List<SimpleQueueWithCourseInfo> taGetInactiveQueue(String auth, String tAId) {
+        return qRepo.taGetCourses(auth, tAId, false);
     }
 
     /**
@@ -92,7 +92,7 @@ public class QueueService {
      * @return true if already in queue, false if not
      */
     public boolean studentIsInQueue(String hashId, int studentId) {
-        if( qRepo.checkIfInQueue(hashId, studentId) > 1) {
+        if( qRepo.checkIfInQueue(hashId, studentId) >= 1) {
             //Already in queue, can't queue up again
             return true;
         }

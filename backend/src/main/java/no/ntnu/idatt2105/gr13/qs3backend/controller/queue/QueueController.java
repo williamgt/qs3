@@ -68,10 +68,10 @@ public class QueueController {
      * @return
      */
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/ta-active-queue/{ta-id}")
-    public List<SimpleQueueWithCourseInfo> taGetActiveQueues(@PathVariable("ta-id") String tAId) {
+    @GetMapping("/ta-active-queue/{auth}/{ta-id}")
+    public List<SimpleQueueWithCourseInfo> taGetActiveQueues(@PathVariable("auth") String auth, @PathVariable("ta-id") String tAId) {
         logger.info("TA with user id " + tAId + " requested active queues.");
-        List<SimpleQueueWithCourseInfo> qs = queueService.taGetActiveQueue(tAId);
+        List<SimpleQueueWithCourseInfo> qs = queueService.taGetActiveQueue(auth, tAId);
         if(qs == null) {
             logger.info("No active queues for TA with id "+ tAId);
         } else{
@@ -87,10 +87,10 @@ public class QueueController {
      * @return
      */
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/ta-inactive-queue/{ta-id}")
-    public List<SimpleQueueWithCourseInfo> taGetInactiveQueues(@PathVariable("ta-id") String tAId) {
+    @GetMapping("/ta-inactive-queue/{auth}/{ta-id}")
+    public List<SimpleQueueWithCourseInfo> taGetInactiveQueues(@PathVariable("auth") String auth, @PathVariable("ta-id") String tAId) {
         logger.info("TA with user id " + tAId + " requested inactive queues.");
-        List<SimpleQueueWithCourseInfo> qs = queueService.taGetInactiveQueue(tAId);
+        List<SimpleQueueWithCourseInfo> qs = queueService.taGetInactiveQueue(auth, tAId);
         if(qs == null) {
             logger.info("No inactive queues for TA with id "+ tAId);
         } else{
