@@ -40,7 +40,6 @@ export default {
   async created() {
     await getBuilding(this.$route.params.id)
       .then((response) => {
-        console.log(response.data);
         this.campus = response.data;
         this.name = this.campus.building.name;
       })
@@ -66,7 +65,6 @@ export default {
     },
     submit() {
       if (this.validateInput()) {
-        console.log(this.campus);
         const building = {
           buildingId: this.campus.building.id,
           buildingName: this.campus.building.name,

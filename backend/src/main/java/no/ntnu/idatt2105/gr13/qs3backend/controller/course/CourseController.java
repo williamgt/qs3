@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -67,6 +68,7 @@ public class CourseController {
     }
 
     @PostMapping("/register")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> registerCourse(@RequestBody CourseForm course) {
         logger.info("Registering course with code " + course.getCourseCode() + ".");
         try {
@@ -80,6 +82,7 @@ public class CourseController {
     }
 
     @PutMapping("/{course-code}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
     public ResponseEntity<String> updateCourse(@PathVariable("course-code") String courseCode, @RequestBody Course course) {
         logger.info("Updating course with code " + courseCode);
         int updated = courseService.updateCourse(courseCode, course);

@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,6 +42,7 @@ public class TaskController {
      * @return amount of rows affected.
      */
     @PutMapping("/validate/{queue-info-id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER') or hasRole('TA')")
     public ResponseEntity<String> validateStudentTasks(@PathVariable("queue-info-id") int queueInfoId, @RequestBody List<Task> tasks) {
         logger.info("TA validates student wit queueInfoId " + queueInfoId);
         int rowsAffected = taskService.validateStudentTasks(queueInfoId, tasks);

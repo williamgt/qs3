@@ -9,13 +9,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "/queue")
-//@CrossOrigin(origins = "http://localhost:8080")
 @CrossOrigin("*")
 public class QueueController {
     Logger logger = LoggerFactory.getLogger(QueueController.class);
@@ -49,6 +49,7 @@ public class QueueController {
      * @return
      */
     @PutMapping("/activate-or-deactivate/{course-hash}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER') or hasRole('TA')")
     public ResponseEntity<String> activateOrDeactivateQueue(@PathVariable("course-hash") String courseHash) {
         logger.info("TA wants to activate or deactivate a queue.");
         int rowsAffected = queueService.activateOrDeactivateQueue(courseHash);
@@ -67,6 +68,7 @@ public class QueueController {
      * @param tAId
      * @return
      */
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER') or hasRole('TA')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/ta-active-queue/{auth}/{ta-id}")
     public List<SimpleQueueWithCourseInfo> taGetActiveQueues(@PathVariable("auth") String auth, @PathVariable("ta-id") String tAId) {
@@ -86,6 +88,7 @@ public class QueueController {
      * @param tAId
      * @return
      */
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER') or hasRole('TA')")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/ta-inactive-queue/{auth}/{ta-id}")
     public List<SimpleQueueWithCourseInfo> taGetInactiveQueues(@PathVariable("auth") String auth, @PathVariable("ta-id") String tAId) {
@@ -98,12 +101,6 @@ public class QueueController {
         }
         return qs;
     }
-
-    //Method that was supposed to let the teaching assistant update the message related to a course's queue
-    /*@PutMapping("/temp1")
-    public int putTAMessage(TAMessageCourse courseAndMsg) {
-        return 0;
-    }*/
 
 
     /**

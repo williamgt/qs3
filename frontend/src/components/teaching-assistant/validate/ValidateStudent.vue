@@ -82,9 +82,6 @@ export default {
       return array;
     },
     submit() {
-      console.log(this.tasks[0]);
-      console.log(this.tasks[1]);
-      console.log(this.student.queueInfoId);
       validateTasksForQueueInfoId(this.student.queueInfoId, this.getDoneTasks())
         .then(() => {
           this.GStore.flashMessage = "Student validated!";
@@ -106,23 +103,19 @@ export default {
     },
   },
   async created() {
-    console.log(this.$store.state.validateStud);
     this.location = this.$store.state.validateStud.location;
     this.student = this.$store.state.validateStud.user;
     this.info.comment = this.$store.state.validateStud.comment;
     this.info.helpOrValidate = this.$store.state.validateStud.helpOrValidate;
     this.info.date = this.$store.state.validateStud.date;
     this.tasks = Array(this.$store.state.validateStud.tasks.length);
-    console.log(this.$store.state.validateStud.tasks);
-    console.log(this.tasks);
     for (let i = 0; i < this.$store.state.validateStud.tasks.length; i++) {
       this.tasks[i] = { name: undefined, done: false };
       this.tasks[i].name = this.$store.state.validateStud.tasks[i].description;
     }
   },
-  setup(params) {
+  setup() {
     function onSubmit() {}
-    console.log(params);
     const validations = {
       tasks: () => {
         return true;

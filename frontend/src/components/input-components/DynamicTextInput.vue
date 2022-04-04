@@ -34,7 +34,6 @@ export default {
   },
   methods: {
     add() {
-      console.log("added");
       this.inputs.push({ name: "" });
     },
     remove(index) {

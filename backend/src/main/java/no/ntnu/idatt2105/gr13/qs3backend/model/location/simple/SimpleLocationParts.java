@@ -52,7 +52,7 @@ public class SimpleLocationParts extends BareBoneLocation {
             throw new IllegalArgumentException("Campus id can't be less than 0");
         }
         if(table < 0){
-            throw new IllegalArgumentException("Table can't be less than 0");
+            throw new IllegalArgumentException("Table can't be less than 1");
         }
         if(roomName.isEmpty()){
             throw new IllegalArgumentException("RoomName can't be empty");

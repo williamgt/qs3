@@ -49,6 +49,7 @@ export default {
 
 <style scoped>
 input[type="radio"] {
-  transform: scale(2);
+  transform: scale(1.5);
+  font-size: 20px;
 }
 </style>

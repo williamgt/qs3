@@ -42,11 +42,8 @@ export default {
         return "INVALID";
       }
     },
-    routeToRegister() {
-      console.log("ROUTING");
-    },
+    routeToRegister() {},
     async routeToStudent() {
-      console.log("RouteTOStud");
       await this.$store.dispatch("setValidateStud", this.stud);
       await this.$router.push({
         path:
@@ -64,12 +61,10 @@ export default {
     const store = useStore();
     let isStudent = !hasTAAccess(store.state.auth.role);
     //const store = useStore();
-    console.log(route.params); //Course hash
 
     await getQueueInfoFromHashId(route.params.id)
       .then((response) => {
         c_queue = ref(response.data);
-        console.log(c_queue);
       })
       .catch((e) => {
         console.log(e);

@@ -23,7 +23,6 @@ export default {
     NProgress.start();
     await getBuilding(this.$route.params.id)
       .then((response) => {
-        console.log(response.data);
         this.campus = response.data;
         NProgress.done();
       })

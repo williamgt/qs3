@@ -155,10 +155,6 @@ export default {
     };
   },
   setup() {
-    function onSubmit() {
-      //console.log(home.value);
-    }
-
     const validations = {
       home: (value) => {
         if (value === undefined) return "It is required to tell your location";
@@ -191,15 +187,9 @@ export default {
       handleChange,
     } = useField("message");
     const { value: home, errorMessage: homeError } = useField("home");
-    //const { value: campus, errorMessage: campusError } = useField("campus");
-    //const { value: building, errorMessage: buildingError } =
-    //  useField("building");
-    //const { value: room, errorMessage: roomError } = useField("room");
-    //const { value: table, errorMessage: tableError } = useField("table");
     const { value: vali, errorMessage: valiError } = useField("validation");
     const { value: group, errorMessage: groupError } = useField("group");
     return {
-      onSubmit,
       home,
       homeError,
       vali,
@@ -214,15 +204,6 @@ export default {
   },
   methods: {
     async submit() {
-      /*      console.log(this.message);
-      console.log(this.home);
-      console.log(this.campus);
-      console.log(this.table);
-      console.log(this.room);
-      console.log(this.vali);
-      console.log(this.group);
-      console.log(this.task);*/
-
       let queueInfo = {
         hashId: this.$route.params.id,
         user: this.$store.state.personLoggedIn,

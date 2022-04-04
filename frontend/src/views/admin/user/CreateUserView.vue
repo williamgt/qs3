@@ -66,7 +66,6 @@ export default {
       );
     },
     validateRole() {
-      console.log(this.user.role === "");
       if (this.user.role === "") {
         this.error = "Please select a role";
         return false;
@@ -112,7 +111,6 @@ export default {
     async submit() {
       this.error = "";
       if (this.validate()) {
-        console.log(this.user);
         await registerUser(this.user)
           .then(() => {
             this.GStore.flashMessage = "User registered";

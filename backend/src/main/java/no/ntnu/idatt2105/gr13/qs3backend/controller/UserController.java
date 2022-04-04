@@ -96,27 +96,6 @@ public class UserController {
         return null;
     }
 
-//    /**
-//     * Takes a list of UserBasic and registers them in User table if they are not already registered.
-//     * A UserBasic has firstname, lastname and email.
-//     * A password is generated for each user as they are added to the table.
-//     * @param users
-//     * @return amount of rows affected
-//     */
-//    @PostMapping("/insert-users")
-//    @PreAuthorize("hasRole('ADMIN')")
-//    public ResponseEntity<String> registerUsers(@RequestBody List<UserBasic> users) {
-//        logger.info("User tries to register new users.");
-//        int rowsAffected = service.registerUsers(users);
-//        if(rowsAffected == 0) {
-//            logger.info("No rows were affected.");
-//            return new ResponseEntity<>("No rows were added.", HttpStatus.OK);
-//        } else {
-//            logger.info(rowsAffected+" rows were affected.");
-//            return new ResponseEntity<>("A total of "+rowsAffected+" users were created successfully.", HttpStatus.CREATED);
-//        }
-//    }
-
     /**
      * Creates a user with assigned role. Only accessible by admin. Returns bad request wiht message if exception is thrown
      * Could be user already created etc...

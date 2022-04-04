@@ -33,7 +33,6 @@ export function registerRoom(room) {
   const config = {
     headers: { Authorization: `Bearer ${store.state.auth.token}` },
   };
-  console.log(room);
   return axios.post("http://localhost:8085/locations/room", room, config);
 }
 
@@ -41,7 +40,6 @@ export function registerBuilding(building) {
   const config = {
     headers: { Authorization: `Bearer ${store.state.auth.token}` },
   };
-  console.log(building);
   return axios.post(
     "http://localhost:8085/locations/building",
     building,
@@ -53,7 +51,6 @@ export function updateCampus(campus) {
   const config = {
     headers: { Authorization: `Bearer ${store.state.auth.token}` },
   };
-  console.log(campus);
   return axios.put("http://localhost:8085/locations/campus", campus, config);
 }
 
@@ -61,7 +58,6 @@ export function updateBuilding(building) {
   const config = {
     headers: { Authorization: `Bearer ${store.state.auth.token}` },
   };
-  console.log(building);
   return axios.put(
     "http://localhost:8085/locations/building",
     building,
@@ -73,7 +69,6 @@ export function getRoom(id) {
   const config = {
     headers: { Authorization: `Bearer ${store.state.auth.token}` },
   };
-  console.log(id);
   return axios.get("http://localhost:8085/locations/room/" + id, config);
 }
 
@@ -81,6 +76,5 @@ export function updateRoom(room) {
   const config = {
     headers: { Authorization: `Bearer ${store.state.auth.token}` },
   };
-  console.log(room);
   return axios.put("http://localhost:8085/locations/room", room, config);
 }

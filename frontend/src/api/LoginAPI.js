@@ -11,7 +11,6 @@ export default async function doLogin(userLogin) {
       store.dispatch("setToken", token).then(
         login(userLogin).then(async (resolvedResult) => {
           if (resolvedResult.data) {
-            console.log(resolvedResult.data);
             await store.dispatch("setLogin", resolvedResult.data).then(() => {
               setRole().then(() => {
                 router.push("/");
@@ -38,11 +37,9 @@ export async function setRole() {
   await getRole(store.state.personLoggedIn)
     .then(async (response) => {
       await store.dispatch("setRole", response.data);
-      console.log(store.state.auth.role);
       //Sets navbar for logged in
       if (hasAdminAccess(response.data)) {
         await store.dispatch("setNavbar", store.state.navbar.admin);
-        console.log(store.state.navbar.current);
       } else if (hasTeacherAccess(response.data)) {
         await store.dispatch("setNavbar", store.state.navbar.teacher);
       } else if (hasTAAccess(response.data)) {
@@ -53,9 +50,6 @@ export async function setRole() {
           store.state.navbar.student.navbarElements
         );
       }
-      console.log(store.state.navbar.current);
     })
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch(() => {});
 }

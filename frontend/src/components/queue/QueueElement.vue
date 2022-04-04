@@ -54,8 +54,6 @@ export default {
   beforeRouteLeave(to, from) {
     alert("h");
     this.$store.dispatch("setValidateStud", this.studInfo);
-    console.log(this.$store.state.validateStud);
-    console.log(this.studInfo);
   },
 };
 </script>

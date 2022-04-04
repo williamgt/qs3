@@ -36,7 +36,6 @@ export default {
     },
   },
   async created() {
-    console.log(this.$route.params);
     this.user = getUser(this.$route.params.id).then((response) => {
       this.user = response.data;
     });
