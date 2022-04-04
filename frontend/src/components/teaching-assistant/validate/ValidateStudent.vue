@@ -15,8 +15,10 @@
     <student-tasks header="Tasks" :tasks="tasks"></student-tasks>
   </div>
   <div>
-    <base-button @click="test" class="btn-outline-success">Confirm</base-button>
-    <base-button class="btn-close">Postpone</base-button>
+    <base-button @click="submit" class="btn-outline-success"
+      >Confirm</base-button
+    >
+    <base-button class="btn-close" @click="cancel">Postpone</base-button>
   </div>
 </template>
 
@@ -28,6 +30,7 @@ import BaseButton from "@/input-components/BaseButton";
 import StudentTasks from "@/components/teaching-assistant/validate/StudentTasks";
 import TaskBarHeader from "@/components/teaching-assistant/validate/BarHeader";
 import StudentQueueInfo from "@/components/teaching-assistant/validate/StudentQueueInfo";
+import { validateTasksForQueueInfoId } from "@/services/taskService";
 
 export default {
   name: "ValidateStudent",
@@ -44,6 +47,7 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
     BaseDisplay,
   },
+  inject: ["GStore"],
   data() {
     return {
       location: {
@@ -70,9 +74,35 @@ export default {
     getHeader(student) {
       return "Student: " + student.lastname + ", " + student.firstname;
     },
-    test() {
+    getDoneTasks() {
+      let array = [];
+      for (let i = 0; i < this.tasks.length; i++) {
+        if (this.tasks[i].done) array.push({ description: this.tasks[i].name });
+      }
+      return array;
+    },
+    submit() {
       console.log(this.tasks[0]);
       console.log(this.tasks[1]);
+      console.log(this.student.queueInfoId);
+      validateTasksForQueueInfoId(this.student.queueInfoId, this.getDoneTasks())
+        .then(() => {
+          this.GStore.flashMessage = "Student validated!";
+          setTimeout(() => {
+            this.GStore.flashMessage = "";
+          }, 3000);
+        })
+        .catch((err) => {
+          console.log(err.response);
+          this.GStore.flashMessage = "Error validating student!";
+          setTimeout(() => {
+            this.GStore.flashMessage = "";
+          }, 3000);
+        });
+      this.$router.push("/courses/" + this.$route.params.id + "/queue");
+    },
+    cancel() {
+      this.$router.push("/courses/" + this.$route.params.id + "/queue");
     },
   },
   async created() {
@@ -91,9 +121,7 @@ export default {
     }
   },
   setup(params) {
-    function onSubmit() {
-      //console.log(home.value);
-    }
+    function onSubmit() {}
     console.log(params);
     const validations = {
       tasks: () => {
