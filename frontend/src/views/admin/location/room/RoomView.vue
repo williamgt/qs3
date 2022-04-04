@@ -39,7 +39,6 @@ export default {
   async created() {
     await getRoom(this.$route.params.id)
       .then((response) => {
-        console.log(response.data);
         this.room = response.data;
       })
       .catch((err) => {

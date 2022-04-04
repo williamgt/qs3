@@ -37,7 +37,6 @@ export default {
     };
   },
   created() {
-    console.log(this.$store.state.personLoggedIn);
     this.user = this.$store.state.personLoggedIn;
     this.rePassword = this.user.password;
   },
@@ -48,8 +47,7 @@ export default {
     submit() {
       if (this.validateForm()) {
         updateUser(this.user)
-          .then((response) => {
-            console.log(response.data);
+          .then(() => {
             this.$router.push({ name: "User", params: this.user.id });
           })
           .catch((err) => {

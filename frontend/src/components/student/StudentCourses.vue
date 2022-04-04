@@ -58,7 +58,6 @@ export default {
       await getActiveCourses(store.getters.getPersonLoggedIn.id)
         .then((response) => {
           c_courses = ref(response.data);
-          console.log(c_courses);
         })
         .catch((e) => {
           console.log(e);
@@ -67,7 +66,6 @@ export default {
       await getInactiveCourses(store.getters.getPersonLoggedIn.id)
         .then((response) => {
           c_courses = ref(response.data);
-          console.log(c_courses);
         })
         .catch((e) => {
           console.log(e);

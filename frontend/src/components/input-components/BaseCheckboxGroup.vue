@@ -43,15 +43,12 @@ export default {
   },
   setup(props, context) {
     const check = (optionId, checked) => {
-      console.log(this.modelValue);
       let updatedValue = [...props.modelValue];
-      console.log(updatedValue);
       if (checked) {
         updatedValue.push(optionId);
       } else {
         updatedValue.splice(updatedValue.indexOf(optionId), 1);
       }
-      console.log(updatedValue);
       context.emit("update:value", updatedValue);
     };
 

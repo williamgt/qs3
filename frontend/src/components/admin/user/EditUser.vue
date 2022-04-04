@@ -46,9 +46,7 @@ export default {
     };
   },
   async created() {
-    console.log(this.$route.params);
     this.user = getUser(this.$route.params.id).then((response) => {
-      console.log(response.data);
       this.user = response.data;
       this.rePassword = response.data.password;
     });
@@ -60,15 +58,13 @@ export default {
     submit() {
       if (this.validateForm()) {
         updateUser(this.user)
-          .then((response) => {
-            console.log(response.data);
+          .then(() => {
             this.$router.push({ name: "User", params: this.user.id });
           })
           .catch((err) => {
             console.log(err);
           });
       }
-      console.log("Form not valid");
     },
     validatePassword() {
       if (this.user.password.length < 7) {

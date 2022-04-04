@@ -53,14 +53,12 @@ export default {
     },
   },
   async setup(props) {
-    console.log(props.active);
     const store = useStore();
     let c_courses;
     if (props.active) {
       await taGetActiveQueues(store.state.personLoggedIn.id)
         .then((response) => {
           c_courses = ref(response.data);
-          console.log(c_courses);
         })
         .catch((e) => {
           console.log(e);
@@ -69,7 +67,6 @@ export default {
       await taGetInactiveQueues(store.state.personLoggedIn.id)
         .then((response) => {
           c_courses = ref(response.data);
-          console.log(c_courses);
         })
         .catch((e) => {
           console.log(e);

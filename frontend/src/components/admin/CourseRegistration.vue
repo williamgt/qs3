@@ -450,17 +450,12 @@ export default {
     async registerCourse() {
       if (this.validateEverything()) {
         this.insertChosenTasksInArray();
-        console.log(this.csvFile);
         let students;
         await getStudentsFromFile(this.csvFile)
           .then((response) => {
             students = response.data;
-            console.log(students);
           })
-          .catch((e) => {
-            console.log(e.response);
-          });
-        console.log(students);
+          .catch(() => {});
         if (!this.studentCheck(students)) return;
 
         let course = {

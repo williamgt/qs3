@@ -69,20 +69,6 @@ export default {
           return;
         }
         router.push("/");
-        /*let index = this.inactiveCourses.indexOf(payload.course);
-        if (index > -1) {
-          this.inactiveCourses.splice(index, 1);
-          this.activeCourses.push(payload.course);
-          this.activeCourses.sort((a, b) => a.code.localeCompare(b.code));
-          console.log("TA activating course queue..."); //TODO remove
-        } else {
-          alert("No such course in the inactive courses");
-        }*/
-        /*else {
-        alert(
-          "Something wrong happened during initialization of inactive course " +
-            payload.course
-        );*/
       }
     },
     moveToInactive(payload) {
@@ -102,20 +88,6 @@ export default {
           return;
         }
         router.push("/");
-        /*let index = this.activeCourses.indexOf(payload.course);
-        if (index > -1) {
-          this.activeCourses.splice(index, 1);
-          this.inactiveCourses.push(payload.course);
-          this.inactiveCourses.sort((a, b) => a.code.localeCompare(b.code));
-          console.log("TA disabling course queue..."); //TODO remove
-        } else {
-          alert("No such course in the active courses");
-        }
-      } else {
-        alert(
-          "Something wrong happened during initialization of active course: " +
-            payload.course
-        );*/
       }
     },
   },

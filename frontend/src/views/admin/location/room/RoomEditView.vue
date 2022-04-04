@@ -55,7 +55,6 @@ export default {
     };
   },
   async created() {
-    console.log(this.$route.params.id);
     await getRoom(this.$route.params.id)
       .then((response) => {
         this.room = response.data;

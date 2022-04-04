@@ -318,9 +318,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   NProgress.start();
-  console.log(store.state.personLoggedIn);
   if (to.matched.some((record) => record.meta.requiresLogin)) {
-    console.log(store.state.personLoggedIn);
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     if (store.state.personLoggedIn === undefined) {
@@ -328,9 +326,7 @@ router.beforeEach((to, from, next) => {
     }
   }
   if (to.matched.some((record) => record.meta.requiresAdmin)) {
-    console.log("here");
     if (!hasAdminAccess(store.state.auth.role)) {
-      console.log("Here");
       return next({ path: "/401" });
     }
   }

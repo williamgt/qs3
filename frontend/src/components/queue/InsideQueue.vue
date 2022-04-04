@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import { useRoute } from "vue-router";
 import InsideQueueComponent from "@/components/queue/InsideQueueComponent";
 
 export default {
@@ -28,10 +27,6 @@ export default {
       type: Array,
       required: true,
     },
-  },
-  setup() {
-    const route = useRoute();
-    console.log(route.params); //Course hash
   },
 };
 </script>

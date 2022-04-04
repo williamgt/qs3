@@ -25,7 +25,6 @@ export default {
   methods: {},
   setup() {
     const store = useStore();
-    console.log(store.state.auth.role);
     const admin = hasAdminAccess(store.state.auth.role);
     const teacher =
       !hasAdminAccess(store.state.auth.role) &&

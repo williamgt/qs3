@@ -33,19 +33,13 @@ export default {
   },
   methods: {
     courseClicked(payload) {
-      console.log("Course clicked: " + payload.course.courseCode);
       this.$router.push({ path: `/courses/${payload.course.hashId}` });
     },
     courseTasksClicked(payload) {
-      console.log("Course tasks clicked: " + payload.course.courseCode);
       this.$router.push({ path: `/courses/${payload.course.hashId}` });
     },
     async courseQueueClicked(payload) {
       if (payload.active) {
-        console.log(
-          "Clicked on active course, you can queue up " +
-            payload.course.courseCode
-        );
         let inQueue;
         await checkIfInQueue(
           payload.course.hashId,
@@ -59,22 +53,17 @@ export default {
           });
 
         if (inQueue) {
-          console.log("Redirect directly to queue view.");
           await this.$router.push({
             path: `/courses/${payload.course.hashId}/queue`,
           });
         } else {
-          console.log("Redirect to registering queue view.");
           await this.$router.push({
             path: `/courses/${payload.course.hashId}/register`, //TODO CHANGE BACK
           });
         }
       }
+      // eslint-disable-next-line no-empty
       if (!payload.active) {
-        console.log(
-          "Clicked on inactive course, you can't queue up " +
-            payload.course.courseCode
-        );
       }
     },
   },
