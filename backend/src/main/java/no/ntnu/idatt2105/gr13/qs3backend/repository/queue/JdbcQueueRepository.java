@@ -10,6 +10,7 @@ import no.ntnu.idatt2105.gr13.qs3backend.model.task.Task;
 import no.ntnu.idatt2105.gr13.qs3backend.model.task.TaskWithId;
 import no.ntnu.idatt2105.gr13.qs3backend.model.task.TaskWithNums;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.StudentUser;
+import no.ntnu.idatt2105.gr13.qs3backend.model.user.UserDB;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -287,5 +288,49 @@ public class JdbcQueueRepository {
         return totalRowsAffected;
     }
 
+    public int activateOrDeactivate(String courseHash) {
+        String selectCourseQuery = "SELECT courseCode, year, term FROM Course WHERE hashId=?";
+        String getStateOfQueueQuery = "SELECT active FROM Queue WHERE Queue.courseCode=? AND Queue.year=? AND Queue.term=?";
+        String updateQueueQuery = "UPDATE Queue SET active=? WHERE Queue.courseCode=? AND Queue.year=? AND Queue.term=?";
 
+        SimpleCourse course;
+        try{
+            course = jdbcTemplate.queryForObject(selectCourseQuery,
+                    BeanPropertyRowMapper.newInstance(SimpleCourse.class), courseHash);
+        } catch (IncorrectResultSizeDataAccessException e) {
+            logger.info("Something went wrong when getting course with hash " + courseHash + ": " + e.getMessage());
+            return -1;
+        }
+
+        Integer activeInt;
+        try{
+            activeInt = jdbcTemplate.queryForObject(getStateOfQueueQuery,
+                    Integer.class, new Object[] {course.getCourseCode(), course.getYear(), course.getTerm()});
+        }catch (IncorrectResultSizeDataAccessException e) {
+            logger.info("Something went wrong when getting state of queue related to course with hash " + courseHash + ": " + e.getMessage());
+            return -1;
+        }
+        int rowsAffected = 0;
+        if(activeInt.intValue() == 1){ //Queue is active, need to deactivate
+            rowsAffected += jdbcTemplate.update(updateQueueQuery,
+                    new Object[]{0, course.getCourseCode(), course.getYear(), course.getTerm()});
+        } else {//Queue is inactive, need to activate
+            rowsAffected += jdbcTemplate.update(updateQueueQuery,
+                    new Object[]{1, course.getCourseCode(), course.getYear(), course.getTerm()});
+        }
+        return rowsAffected;
+    }
+
+    public List<SimpleQueueWithCourseInfo> taGetCourses(String tAId, boolean active) {
+        String selectCourseQuery = "SELECT Queue.queueId, Queue.description, Queue.courseCode, Queue.year, Queue.term, Queue.active, Course.hashId, Course.courseName " +
+                "FROM Queue " +
+                "INNER JOIN Course ON Queue.courseCode=Course.courseCode AND Queue.year=Course.year AND Queue.term=Course.term " +
+                "INNER JOIN TACourse ON TACourse.courseCode=Course.courseCode AND TACourse.year=Course.year AND TACourse.term=Course.term " +
+                "WHERE TACourse.tAId=? AND Queue.active=?";
+
+        List<SimpleQueueWithCourseInfo> qs = jdbcTemplate.query(selectCourseQuery,
+                BeanPropertyRowMapper.newInstance(SimpleQueueWithCourseInfo.class), new Object[] {tAId, active == true ? 1 : 0});
+
+        return qs;
+    }
 }
