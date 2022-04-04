@@ -2,7 +2,6 @@
   <task-bar-header :header="getHeader(student)"></task-bar-header>
   <form @submit.prevent="onSubmit"></form>
   <student-queue-info
-    :group="info.group.toString()"
     :message="info.comment"
     :validate="info.helpOrValidate"
   ></student-queue-info>
@@ -45,22 +44,24 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
     BaseDisplay,
   },
-  props: {
-    location: {
-      type: Object,
-      required: true,
-    },
-    student: {
-      type: Object,
-      required: true,
-    },
-    tasks: {
-      type: Array,
-    },
-    info: {
-      type: Object,
-      required: true,
-    },
+  data() {
+    return {
+      location: {
+        type: Object,
+        required: true,
+      },
+      student: {
+        type: Object,
+        required: true,
+      },
+      tasks: {
+        type: Array,
+      },
+      info: {
+        type: Object,
+        required: true,
+      },
+    };
   },
   methods: {
     getName(student) {
@@ -74,11 +75,20 @@ export default {
       console.log(this.tasks[1]);
     },
   },
-  setup() {
+  async created() {
+    console.log(this.$store.state.validateStud);
+    this.location = this.$store.state.validateStud.location;
+    this.student = this.$store.state.validateStud.user;
+    this.info.comment = this.$store.state.validateStud.comment;
+    this.info.helpOrValidate = this.$store.state.validateStud.helpOrValidate;
+    this.info.date = this.$store.state.validateStud.date;
+    this.tasks = this.$store.state.validateStud.tasks;
+  },
+  setup(params) {
     function onSubmit() {
       //console.log(home.value);
     }
-
+    console.log(params);
     const validations = {
       tasks: () => {
         return true;

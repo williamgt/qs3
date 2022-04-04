@@ -3,9 +3,14 @@
     <h3>{{ active ? "Active" : "Inactive" }}</h3>
     <ul class="course-list">
       <li v-for="course in c_courses" :key="course.hashId" class="element">
-        <div class="course-item">
-          <h4>{{ course.courseName }} - {{ course.courseCode }}</h4>
-        </div>
+        <router-link
+          :to="'/courses/' + course.hashId + '/queue'"
+          :is="!active ? 'span' : 'router-link'"
+        >
+          <div class="course-item">
+            <h4>{{ course.courseName }} - {{ course.courseCode }}</h4>
+          </div>
+        </router-link>
         <div class="course-item">
           <div class="course-item-center">
             <button @click="activateOrDeactivate(course, active)">

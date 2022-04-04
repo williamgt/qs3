@@ -4,6 +4,8 @@
   </div>
   <queue-header></queue-header>
   <queue-element
+    @click="routeToStudent"
+    v-model="stud"
     v-for="(studInfo, index) in queueInfo"
     :key="studInfo.user.email"
     :stud-info="studInfo"
@@ -34,6 +36,7 @@ export default {
   data() {
     return {
       queueInfo: this.c_queue.studsInQueue,
+      stud: undefined,
     };
   },
   methods: {
@@ -48,6 +51,18 @@ export default {
     },
     routeToRegister() {
       console.log("ROUTING");
+    },
+    async routeToStudent() {
+      console.log("RouteTOStud");
+      await this.$store.dispatch("setValidateStud", this.stud);
+      await this.$router.push({
+        path:
+          "/courses/" +
+          this.$route.params.id +
+          "/" +
+          this.stud.user.queueInfoId +
+          "/validate",
+      });
     },
   },
   async setup() {

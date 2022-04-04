@@ -1,9 +1,5 @@
 <template>
   <h2>Info</h2>
-  <base-display-no-border
-    label="Group"
-    :message="JSON.stringify(group)"
-  ></base-display-no-border>
   <base-display-text-area
     label="Message"
     :message="message"

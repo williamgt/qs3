@@ -29,7 +29,7 @@
 
 <script>
 import TACourses from "../teaching-assistant/TACourses";
-import {taActivateOrDeactivateQueue} from "@/services/queueServices";
+import { taActivateOrDeactivateQueue } from "@/services/queueServices";
 
 export default {
   name: "TACoursesView",
@@ -74,13 +74,8 @@ export default {
       if (payload.active) {
         let hashId = payload.course.hashId;
         taActivateOrDeactivateQueue(hashId)
-        .then(payload => {
-
-        })
-        .catch(e => {
-
-        }
-        ])
+          .then(() => {})
+          .catch(() => {});
         let index = this.activeCourses.indexOf(payload.course);
         if (index > -1) {
           this.activeCourses.splice(index, 1);

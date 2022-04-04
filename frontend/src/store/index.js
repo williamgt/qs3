@@ -2,6 +2,7 @@ import { createStore } from "vuex";
 
 export default createStore({
   state: {
+    validateStud: Object,
     navbar: {
       student: {
         navbarElements: [
@@ -58,6 +59,9 @@ export default createStore({
     SET_ROLE(state, role) {
       state.auth.role = role;
     },
+    SET_VALIDATE_STUD(state, stud) {
+      state.validateStud = stud;
+    },
   },
   actions: {
     setToken({ commit }, token) {
@@ -74,6 +78,9 @@ export default createStore({
     },
     setRole({ commit }, role) {
       return commit("SET_ROLE", role);
+    },
+    setValidateStud({ commit }, stud) {
+      return commit("SET_VALIDATE_STUD", stud);
     },
   },
   modules: {},

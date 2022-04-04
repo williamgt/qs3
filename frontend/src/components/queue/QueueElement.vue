@@ -1,41 +1,21 @@
 <template>
-  <router-link
-    :is="canValidate ? 'router-link' : 'span'"
-    :to="{
-      path:
-        '/courses/' +
-        currentHash +
-        '/' +
-        studInfo.user.queueInfoId +
-        '/validate',
-      params: {
-        student: studInfo.user,
-        location: studInfo.location,
-        tasks: studInfo.tasks,
-        info: {
-          comment: studInfo.comment,
-          helpOrValidate: studInfo.helpOrValidate,
-          timeRegisteredInQueue: studInfo.timeRegisteredInQueue,
-        },
-      },
-    }"
-    class="link"
+  <div
+    class="grid-container"
+    @click="$emit('update:modelValue', this.studInfo)"
   >
-    <div class="grid-container">
-      <div class="grid-item">{{ index }}</div>
-      <div class="grid-item">{{ studInfo.user.lastname }}</div>
-      <div class="grid-item">
-        {{ studInfo.location.home ? "Home" : studInfo.location.room.roomName }}
-      </div>
-      <div class="grid-item">{{ hOrV(studInfo.helpOrValidate) }}</div>
-      <div class="grid-item">
-        <span v-for="(task, index) in studInfo.tasks" :key="index">
-          {{ task.description }} -
-        </span>
-      </div>
-      <div class="grid-item">{{ studInfo.comment }}</div>
+    <div class="grid-item">{{ index }}</div>
+    <div class="grid-item">{{ studInfo.user.lastname }}</div>
+    <div class="grid-item">
+      {{ studInfo.location.home ? "Home" : studInfo.location.room.roomName }}
     </div>
-  </router-link>
+    <div class="grid-item">{{ hOrV(studInfo.helpOrValidate) }}</div>
+    <div class="grid-item">
+      <span v-for="(task, index) in studInfo.tasks" :key="index">
+        {{ task.description }} -
+      </span>
+    </div>
+    <div class="grid-item">{{ studInfo.comment }}</div>
+  </div>
 </template>
 
 <script>
@@ -49,6 +29,9 @@ export default {
       required: true,
     },
     index: Number,
+    modelValue: {
+      type: Object,
+    },
   },
   methods: {
     hOrV(arg) {
@@ -68,6 +51,13 @@ export default {
     currentHash() {
       return this.$route.params.id;
     },
+  },
+  // eslint-disable-next-line no-unused-vars
+  beforeRouteLeave(to, from) {
+    alert("h");
+    this.$store.dispatch("setValidateStud", this.studInfo);
+    console.log(this.$store.state.validateStud);
+    console.log(this.studInfo);
   },
 };
 </script>

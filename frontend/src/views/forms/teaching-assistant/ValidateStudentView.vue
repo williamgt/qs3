@@ -12,43 +12,30 @@ import ValidateStudent from "@/components/teaching-assistant/validate/ValidateSt
 export default {
   name: "ValidateStudentView",
   components: { ValidateStudent },
-  props: {
-    student: {
-      type: Object,
-    },
-    location: {
-      type: Object,
-    },
-    tasks: {
-      type: Array,
-    },
-    info: {
-      type: Object,
-    },
-  },
-  /*data() {
+  data() {
     return {
-      location: {
-        campus: "Gløs",
-        building: "Realfagsbygget",
-        room: "A4",
-        table: 1,
-        home: false,
-      },
       student: {
-        firstName: "Olav",
-        lastName: "Larsen",
+        type: Object,
       },
-      tasks: [
-        { name: "Task 1", id: 1, done: false },
-        { name: "Task 2", id: 2, done: true },
-      ],
+      location: {
+        type: Object,
+      },
+      tasks: {
+        type: Array,
+      },
       info: {
-        message: "This is the message",
-        validate: true,
+        type: Object,
       },
     };
-  },*/
+  },
+  created() {
+    this.student = this.$store.state.validateStud.user;
+    this.location = this.$store.state.validateStud.location;
+    this.tasks = this.$store.state.validateStud.tasks;
+    this.info.comment = this.$store.state.validateStud.comment;
+    this.info.helpOrValidate = this.$store.state.validateStud.helpOrValidate;
+    this.info.date = this.$store.state.validateStud.date;
+  },
 };
 </script>
 
