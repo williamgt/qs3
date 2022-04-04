@@ -24,8 +24,8 @@
 
 <script>
 import { getRoom } from "@/services/locationSerivce";
-import BaseButton from "@/input-components/BaseButton";
-import BaseDisplay from "@/input-components/BaseDisplay";
+import BaseButton from "@/components/input-components/BaseButton";
+import BaseDisplay from "@/components/input-components/BaseDisplay";
 import router from "@/router";
 
 export default {

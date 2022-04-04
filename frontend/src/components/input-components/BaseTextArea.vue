@@ -17,7 +17,7 @@
 <script>
 import SetupFormComponent from "@/features/SetupFormComponent";
 import UniqueID from "@/features/UniqueID";
-import BaseErrorMessage from "@/input-components/BaseErrorMessage";
+import BaseErrorMessage from "@/components/input-components/BaseErrorMessage";
 export default {
   name: "BaseTextArea",
   components: { BaseErrorMessage },

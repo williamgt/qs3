@@ -24,9 +24,9 @@
 
 <script>
 import { useField, useForm } from "vee-validate";
-import BaseDisplay from "@/input-components/BaseDisplay";
+import BaseDisplay from "@/components/input-components/BaseDisplay";
 import StudentLocation from "@/components/teaching-assistant/validate/StudentLocation";
-import BaseButton from "@/input-components/BaseButton";
+import BaseButton from "@/components/input-components/BaseButton";
 import StudentTasks from "@/components/teaching-assistant/validate/StudentTasks";
 import TaskBarHeader from "@/components/teaching-assistant/validate/BarHeader";
 import StudentQueueInfo from "@/components/teaching-assistant/validate/StudentQueueInfo";

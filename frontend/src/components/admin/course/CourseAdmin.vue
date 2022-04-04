@@ -5,8 +5,8 @@
 </template>
 
 <script>
-import BaseDisplay from "@/input-components/BaseDisplay";
-import BaseButton from "@/input-components/BaseButton";
+import BaseDisplay from "@/components/input-components/BaseDisplay";
+import BaseButton from "@/components/input-components/BaseButton";
 import StudentList from "@/components/admin/course/StudentsList";
 export default {
   name: "CourseAdmin",

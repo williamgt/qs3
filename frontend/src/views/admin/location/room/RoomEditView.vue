@@ -37,9 +37,9 @@
 
 <script>
 import { getRoom, updateRoom } from "@/services/locationSerivce";
-import BaseButton from "@/input-components/BaseButton";
-import BaseEditDisplay from "@/input-components/BaseEditDisplay";
-import BaseDisplay from "@/input-components/BaseDisplay";
+import BaseButton from "@/components/input-components/BaseButton";
+import BaseEditDisplay from "@/components/input-components/BaseEditDisplay";
+import BaseDisplay from "@/components/input-components/BaseDisplay";
 
 export default {
   inject: ["GStore"],

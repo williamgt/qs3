@@ -32,8 +32,8 @@
 
 <script>
 import { getUser, updateUser } from "@/services/userService";
-import BaseEditDisplay from "@/input-components/BaseEditDisplay";
-import BaseDisplay from "@/input-components/BaseDisplay";
+import BaseEditDisplay from "@/components/input-components/BaseEditDisplay";
+import BaseDisplay from "@/components/input-components/BaseDisplay";
 
 export default {
   name: "EditUser",

@@ -13,7 +13,7 @@
 
 <script>
 import TaskBarHeader from "@/components/teaching-assistant/validate/BarHeader";
-import BaseDisplay from "@/input-components/BaseDisplay";
+import BaseDisplay from "@/components/input-components/BaseDisplay";
 import StudentTasks from "@/components/teaching-assistant/validate/StudentTasks";
 export default {
   name: "StudentProgressAdmin",

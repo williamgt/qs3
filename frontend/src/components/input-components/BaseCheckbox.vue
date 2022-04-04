@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import BaseErrorMessage from "@/input-components/BaseErrorMessage";
+import BaseErrorMessage from "@/components/input-components/BaseErrorMessage";
 import SetupFormComponent from "@/features/SetupFormComponent";
 import UniqueID from "@/features/UniqueID";
 export default {

@@ -34,9 +34,9 @@
 </template>
 
 <script>
-import BaseInput from "../input-components/BaseInput";
+import BaseInput from "./input-components/BaseInput";
 import doLogin from "../api/LoginAPI";
-import BaseButton from "@/input-components/BaseButton";
+import BaseButton from "@/components/input-components/BaseButton";
 
 export default {
   name: "LoginPage",

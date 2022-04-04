@@ -132,10 +132,10 @@
 </template>
 
 <script>
-import BaseTextArea from "@/input-components/BaseTextArea";
-import BaseInput from "@/input-components/BaseInput";
-import BaseSelect from "@/input-components/BaseSelect";
-import BaseCheckbox from "@/input-components/BaseCheckbox";
+import BaseTextArea from "@/components/input-components/BaseTextArea";
+import BaseInput from "@/components/input-components/BaseInput";
+import BaseSelect from "@/components/input-components/BaseSelect";
+import BaseCheckbox from "@/components/input-components/BaseCheckbox";
 import {
   registerCourseService,
   getStudentsFromFile,

@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import BaseCheckbox from "@/input-components/BaseCheckbox";
+import BaseCheckbox from "@/components/input-components/BaseCheckbox";
 export default {
   name: "BaseCheckboxGroup",
   emits: ["update:value"],

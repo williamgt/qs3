@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import BaseErrorMessage from "@/input-components/BaseErrorMessage";
+import BaseErrorMessage from "@/components/input-components/BaseErrorMessage";
 export default {
   name: "BaseSelect",
   components: { BaseErrorMessage },

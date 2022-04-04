@@ -29,9 +29,9 @@
 </template>
 
 <script>
-import BaseInput from "@/input-components/BaseInput";
-import BaseButton from "@/input-components/BaseButton";
-import BaseSelect from "@/input-components/BaseSelect";
+import BaseInput from "@/components/input-components/BaseInput";
+import BaseButton from "@/components/input-components/BaseButton";
+import BaseSelect from "@/components/input-components/BaseSelect";
 import { registerUser } from "@/services/userService";
 export default {
   inject: ["GStore"],

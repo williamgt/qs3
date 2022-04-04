@@ -77,15 +77,15 @@
 </template>
 
 <script>
-import BaseSelect from "@/input-components/BaseSelect";
-import BaseCheckbox from "@/input-components/BaseCheckbox";
+import BaseSelect from "@/components/input-components/BaseSelect";
+import BaseCheckbox from "@/components/input-components/BaseCheckbox";
 import { useField, useForm } from "vee-validate";
-import BaseButton from "@/input-components/BaseButton";
-import BaseCheckboxGroup from "@/input-components/BaseCheckboxGroup";
-import BaseRadioGroup from "@/input-components/BaseRadioGroup";
-import BaseTextArea from "@/input-components/BaseTextArea";
+import BaseButton from "@/components/input-components/BaseButton";
+import BaseCheckboxGroup from "@/components/input-components/BaseCheckboxGroup";
+import BaseRadioGroup from "@/components/input-components/BaseRadioGroup";
+import BaseTextArea from "@/components/input-components/BaseTextArea";
 import { ref } from "vue";
-import MultCheck from "@/input-components/mult-check";
+import MultCheck from "@/components/input-components/mult-check";
 import { queueUp } from "@/services/queueServices";
 import {
   getBuilding,

@@ -15,7 +15,7 @@
 <script>
 import UniqueID from "@/features/UniqueID";
 import SetupFormComponent from "@/features/SetupFormComponent";
-import BaseErrorMessage from "@/input-components/BaseErrorMessage";
+import BaseErrorMessage from "@/components/input-components/BaseErrorMessage";
 export default {
   name: "BaseRadio",
   components: { BaseErrorMessage },

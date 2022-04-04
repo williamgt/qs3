@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import BaseRadio from "@/input-components/BaseRadio";
+import BaseRadio from "@/components/input-components/BaseRadio";
 export default {
   name: "BaseRadioGroup",
   components: { BaseRadio },

@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import BaseDisplayNoBorder from "@/input-components/BaseDisplayNoBorder";
-import BaseDisplayTextArea from "@/input-components/BaseDisplayTextArea";
+import BaseDisplayNoBorder from "@/components/input-components/BaseDisplayNoBorder";
+import BaseDisplayTextArea from "@/components/input-components/BaseDisplayTextArea";
 export default {
   name: "StudentQueueInfo",
   components: { BaseDisplayTextArea, BaseDisplayNoBorder },

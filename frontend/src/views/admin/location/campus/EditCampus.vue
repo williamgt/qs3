@@ -16,10 +16,10 @@
 </template>
 
 <script>
-import BaseDisplay from "@/input-components/BaseDisplay";
+import BaseDisplay from "@/components/input-components/BaseDisplay";
 import { getCampus, updateCampus } from "@/services/locationSerivce";
-import BaseButton from "@/input-components/BaseButton";
-import BaseEditDisplay from "@/input-components/BaseEditDisplay";
+import BaseButton from "@/components/input-components/BaseButton";
+import BaseEditDisplay from "@/components/input-components/BaseEditDisplay";
 
 export default {
   name: "EditCampus",

@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import BaseInput from "@/input-components/BaseInput";
+import BaseInput from "@/components/input-components/BaseInput";
 export default {
   name: "BaseEditDisplay",
   components: { BaseInput },

@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import BaseDisplay from "@/input-components/BaseDisplay";
+import BaseDisplay from "@/components/input-components/BaseDisplay";
 export default {
   name: "StudentLocation",
   components: { BaseDisplay },

@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import BaseInput from "@/input-components/BaseInput";
-import BaseButton from "@/input-components/BaseButton";
+import BaseInput from "@/components/input-components/BaseInput";
+import BaseButton from "@/components/input-components/BaseButton";
 import { registerRoom } from "@/services/locationSerivce";
 export default {
   inject: ["GStore"],

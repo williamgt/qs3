@@ -17,7 +17,7 @@
 <script>
 import UserElement from "@/components/user/UserElement";
 import UserElementHeader from "@/components/user/UserElementHeader";
-import BaseButton from "@/input-components/BaseButton";
+import BaseButton from "@/components/input-components/BaseButton";
 export default {
   name: "AllUsers",
   // eslint-disable-next-line vue/no-unused-components
