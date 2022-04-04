@@ -16,6 +16,18 @@ public class SimpleLocationParts extends BareBoneLocation {
     public SimpleLocationParts() {
     }
 
+    public SimpleLocationParts(int locationId, String roomName, int roomId, int table, int floor, String buildingName, int buildingId, String campusName, int campusId) {
+        this.locationId = locationId;
+        this.roomName = roomName;
+        this.roomId = roomId;
+        this.table = table;
+        this.floor = floor;
+        this.buildingName = buildingName;
+        this.buildingId = buildingId;
+        this.campusName = campusName;
+        this.campusId = campusId;
+    }
+
     public int getLocationId() {
         return locationId;
     }
@@ -86,5 +98,20 @@ public class SimpleLocationParts extends BareBoneLocation {
 
     public void setCampusId(int campusId) {
         this.campusId = campusId;
+    }
+
+    @Override
+    public String toString() {
+        return "SimpleLocationParts{" +
+                "locationId=" + locationId +
+                ", roomName='" + roomName + '\'' +
+                ", roomId=" + roomId +
+                ", table=" + table +
+                ", floor=" + floor +
+                ", buildingName='" + buildingName + '\'' +
+                ", buildingId=" + buildingId +
+                ", campusName='" + campusName + '\'' +
+                ", campusId=" + campusId +
+                '}';
     }
 }

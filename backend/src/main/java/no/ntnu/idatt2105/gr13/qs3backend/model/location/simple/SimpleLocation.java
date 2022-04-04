@@ -19,4 +19,46 @@ public class SimpleLocation {
         this.room = room;
         this.home = home;
     }
+
+    public SimpleCampus getCampus() {
+        return campus;
+    }
+
+    public void setCampus(SimpleCampus campus) {
+        this.campus = campus;
+    }
+
+    public SimpleBuilding getBuilding() {
+        return building;
+    }
+
+    public void setBuilding(SimpleBuilding building) {
+        this.building = building;
+    }
+
+    public SimpleRoom getRoom() {
+        return room;
+    }
+
+    public void setRoom(SimpleRoom room) {
+        this.room = room;
+    }
+
+    public boolean isHome() {
+        return home;
+    }
+
+    public void setHome(boolean home) {
+        this.home = home;
+    }
+
+    @Override
+    public String toString() {
+        return "SimpleLocation{" +
+                "campus=" + campus +
+                ", building=" + building +
+                ", room=" + room +
+                ", home=" + home +
+                '}';
+    }
 }

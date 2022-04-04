@@ -1,6 +1,6 @@
 <template>
   <div class="button-container">
-    <button>Register in queue</button>
+    <button @click="routeToRegister">Register in queue</button>
   </div>
   <queue-header></queue-header>
   <queue-element
@@ -17,6 +17,7 @@
   <!--    </div>-->
   <!--    <div v-if="studInfo.comment">{{ studInfo.comment }}</div>-->
   <!--  </div>-->
+  {{ c_queue }}
 </template>
 
 <script>
@@ -44,6 +45,9 @@ export default {
       } else {
         return "INVALID";
       }
+    },
+    routeToRegister() {
+      console.log("ROUTING");
     },
   },
   async setup() {

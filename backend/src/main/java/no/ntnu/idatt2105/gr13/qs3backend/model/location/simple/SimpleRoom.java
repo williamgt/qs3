@@ -28,4 +28,14 @@ public class SimpleRoom {
     public int getFloors() {
         return floors;
     }
+
+    @Override
+    public String toString() {
+        return "SimpleRoom{" +
+                "id=" + id +
+                ", tables=" + tables +
+                ", roomName='" + roomName + '\'' +
+                ", floors=" + floors +
+                '}';
+    }
 }

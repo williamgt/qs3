@@ -1,5 +1,8 @@
 package no.ntnu.idatt2105.gr13.qs3backend.model.queue;
 
+import no.ntnu.idatt2105.gr13.qs3backend.model.location.simple.SimpleBuilding;
+import no.ntnu.idatt2105.gr13.qs3backend.model.location.simple.SimpleCampus;
+import no.ntnu.idatt2105.gr13.qs3backend.model.location.simple.SimpleRoom;
 import no.ntnu.idatt2105.gr13.qs3backend.model.task.TaskWithNums;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.User;
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.basics.UserBasicWithId;
@@ -11,12 +14,9 @@ public class QueueRequest {
     private UserBasicWithId user;
     private String message;
     private boolean home;
-    private String campus;
     private int campusId;
-    private String building;
     private int buildingId;
     private int table;
-    private String room;
     private int roomId;
     private boolean vali;
     private List<User> group;
@@ -47,14 +47,6 @@ public class QueueRequest {
 
     public void setRoomId(int roomId) {
         this.roomId = roomId;
-    }
-
-    public String getBuilding() {
-        return building;
-    }
-
-    public void setBuilding(String building) {
-        this.building = building;
     }
 
     public String getHashId() {
@@ -89,13 +81,7 @@ public class QueueRequest {
         this.home = home;
     }
 
-    public String getCampus() {
-        return campus;
-    }
 
-    public void setCampus(String campus) {
-        this.campus = campus;
-    }
 
     public int getTable() {
         return table;
@@ -105,13 +91,7 @@ public class QueueRequest {
         this.table = table;
     }
 
-    public String getRoom() {
-        return room;
-    }
 
-    public void setRoom(String room) {
-        this.room = room;
-    }
 
     public boolean isVali() {
         return vali;
@@ -144,9 +124,9 @@ public class QueueRequest {
                 "user="+user.getFirstname()+user.getLastname()+user.getEmail()+user.getId()+ '\'' +
                 "message='" + message + '\'' +
                 ", home=" + home +
-                ", campus='" + campus + '\'' +
+                ", campus='" + campusId + '\'' +
                 ", table=" + table +
-                ", room='" + room + '\'' +
+                ", room='" + roomId + '\'' +
                 ", vali=" + vali +
                 ", group=" + group +
                 ", task=" + task +

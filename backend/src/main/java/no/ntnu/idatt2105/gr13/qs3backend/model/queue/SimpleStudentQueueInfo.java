@@ -43,4 +43,14 @@ public class SimpleStudentQueueInfo {
     public void setQueueInfoId(int queueInfoId) {
         this.queueInfoId = queueInfoId;
     }
+
+    @Override
+    public String toString() {
+        return "SimpleStudentQueueInfo{" +
+                "firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", email='" + email + '\'' +
+                ", queueInfoId=" + queueInfoId +
+                '}';
+    }
 }

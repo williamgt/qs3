@@ -105,7 +105,18 @@ public class JdbcQueueRepository {
                     bareBoneLocationList.add(new SimpleLocationHome(home));
                 }else{ //Student is not home
                     SimpleLocationParts locationInfoParts =
-                    jdbcTemplate.queryForObject(studentLocationIfNotHomeQuery, SimpleLocationParts.class, s.getQueueInfoId());
+                    jdbcTemplate.queryForObject(studentLocationIfNotHomeQuery, (rs, rowNum) ->
+                        new SimpleLocationParts(
+                                rs.getInt("Location.locationId"),
+                                rs.getString("Room.roomName"),
+                                rs.getInt("Room.roomId"),
+                                rs.getInt("QueueInfo.table"),
+                                rs.getInt("Room.floor"),
+                                rs.getString("Building.buildingName"),
+                                rs.getInt("Building.buildingId"),
+                                rs.getString("Campus.campusName"),
+                                rs.getInt("Campus.campusId")
+                    ), s.getQueueInfoId());
                     bareBoneLocationList.add(locationInfoParts);
                 }
             } catch (IncorrectResultSizeDataAccessException e) {
@@ -114,24 +125,30 @@ public class JdbcQueueRepository {
         }
 
         //Putting all info found up to this point into a list of StudentQueueInfo that is later put in a Queue
-        List<StudentQueueInfo> studentQueueInfoList = new ArrayList<>();
+        List<StudentQueueInfo> studentQueueInfoList = new ArrayList<StudentQueueInfo>();
+        SimpleCampus c;
+        SimpleBuilding b;
+        SimpleRoom r;
+        SimpleLocation s;
         for(int i = 0; i < simpleQueueInfoList.size(); i++){
             //Setting student
             studentQueueInfoList.add(new StudentQueueInfo());
             studentQueueInfoList.get(i).setUser(new StudentUser(
                     simpleStudentQueueInfoList.get(i).getEmail(),
                     simpleStudentQueueInfoList.get(i).getFirstname(),
-                    simpleStudentQueueInfoList.get(i).getFirstname()
+                    simpleStudentQueueInfoList.get(i).getLastname(),
+                    simpleStudentQueueInfoList.get(i).getQueueInfoId()
             ));
             //Setting location
             if(bareBoneLocationList.get(i).getHome() == 1){
                 studentQueueInfoList.get(i).setLocation(new SimpleLocation(true));
             }else{
                 SimpleLocationParts loc = (SimpleLocationParts) bareBoneLocationList.get(i);
-                SimpleCampus c = new SimpleCampus(loc.getCampusName(), loc.getCampusId());
-                SimpleBuilding b = new SimpleBuilding(loc.getBuildingName(), loc.getBuildingId());
-                SimpleRoom r = new SimpleRoom(loc.getRoomId(), loc.getTable(), loc.getRoomName(), loc.getFloor());
-                studentQueueInfoList.get(i).setLocation(new SimpleLocation(c, b, r, false));
+                c = new SimpleCampus(loc.getCampusName(), loc.getCampusId());
+                b = new SimpleBuilding(loc.getBuildingName(), loc.getBuildingId());
+                r = new SimpleRoom(loc.getRoomId(), loc.getTable(), loc.getRoomName(), loc.getFloor());
+                s = new SimpleLocation(c, b, r, false);
+                studentQueueInfoList.get(i).setLocation(s);
             }
             //Setting tasks
             studentQueueInfoList.get(i).setTasks(
@@ -148,7 +165,10 @@ public class JdbcQueueRepository {
 
         //Creating and returning Queue
         Queue returnQ = new Queue(simpleQueue.getQueueId(), simpleQueue.isActive(), simpleQueue.getDescription());
-        returnQ.setStudsInQueue(studentQueueInfoList);
+        if(!returnQ.setStudsInQueue(studentQueueInfoList)){
+            logger.info("Something went wrong when adding student queue info to queue.");
+        }
+
         return returnQ;
     }
 

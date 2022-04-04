@@ -3,8 +3,8 @@
   <form @submit.prevent="onSubmit"></form>
   <student-queue-info
     :group="info.group.toString()"
-    :message="info.message"
-    :validate="info.validate"
+    :message="info.comment"
+    :validate="info.helpOrValidate"
   ></student-queue-info>
   <div class="student-location-container">
     <student-location
@@ -64,10 +64,10 @@ export default {
   },
   methods: {
     getName(student) {
-      return student.lastName + ", " + student.firstName;
+      return student.lastname + ", " + student.firstname;
     },
     getHeader(student) {
-      return "Student: " + student.lastName + ", " + student.firstName;
+      return "Student: " + student.lastname + ", " + student.firstname;
     },
     test() {
       console.log(this.tasks[0]);

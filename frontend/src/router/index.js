@@ -17,7 +17,7 @@ import AllUsersDetailsView from "@/views/admin/user/AllUsersDetailsView";
 import EditUserAdminView from "@/views/admin/user/EditUserAdminView";
 import UserInfoView from "@/views/admin/user/UserInfoView";
 import SettingsView from "@/views/user/SettingsView";
-import hasAdminAccess from "@/api/AuthAPI";
+import { hasAdminAccess, hasTAAccess } from "@/api/AuthAPI";
 import AllLocationView from "@/views/admin/location/AllLocationView";
 import LocationView from "@/views/admin/location/LocationView";
 import AddCampus from "@/views/admin/location/campus/RegisterCampus";
@@ -29,6 +29,7 @@ import RoomView from "@/views/admin/location/room/RoomView";
 import RoomEditView from "@/views/admin/location/room/RoomEditView";
 import CourseInfo from "@/components/admin/course/info/CourseInfo";
 import InsideQueue from "@/components/queue/InsideQueue";
+import ValidateStudentView from "@/views/forms/teaching-assistant/ValidateStudentView";
 
 const routes = [
   {
@@ -47,6 +48,15 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+  },
+  {
+    path: "/courses/:id/:studQueueId/validate",
+    name: "ValidateStudentView",
+    component: ValidateStudentView,
+    meta: {
+      requiresLogin: true,
+      requiresTa: true,
+    },
   },
   {
     path: "/courses/:id/info",
@@ -339,6 +349,11 @@ router.beforeEach((to, from, next) => {
     console.log("here");
     if (!hasAdminAccess(store.state.auth.role)) {
       console.log("Here");
+      return next({ path: "/401" });
+    }
+  }
+  if (to.matched.some((record) => record.meta.requiresTa)) {
+    if (!hasTAAccess(store.state.auth.role)) {
       return next({ path: "/401" });
     }
   }

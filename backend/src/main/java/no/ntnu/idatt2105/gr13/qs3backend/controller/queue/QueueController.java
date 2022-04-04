@@ -39,8 +39,10 @@ public class QueueController {
         return q;
     }
 
-    @PutMapping("/temp2")
+    @PutMapping("/activate-or-deactivate")
     public int activateOrDeactivateQueue(SimpleCourse course) {
+        logger.info("TA wants to activate or deactivate a queue.");
+
         return 0;
     }
 

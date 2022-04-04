@@ -9,11 +9,20 @@ public class SimpleBuilding {
         this.buildingId = buildingId;
     }
 
+
     public int getId() {
         return buildingId;
     }
 
     public String getName() {
         return buildingName;
+    }
+
+    @Override
+    public String toString() {
+        return "SimpleBuilding{" +
+                "buildingName='" + buildingName + '\'' +
+                ", buildingId=" + buildingId +
+                '}';
     }
 }

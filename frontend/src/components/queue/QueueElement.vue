@@ -1,9 +1,32 @@
 <template>
-  <router-link :to="'/'" class="link">
+  <router-link
+    :is="canValidate ? 'router-link' : 'span'"
+    :to="{
+      path:
+        '/courses/' +
+        currentHash +
+        '/' +
+        studInfo.user.queueInfoId +
+        '/validate',
+      params: {
+        student: studInfo.user,
+        location: studInfo.location,
+        tasks: studInfo.tasks,
+        info: {
+          comment: studInfo.comment,
+          helpOrValidate: studInfo.helpOrValidate,
+          timeRegisteredInQueue: studInfo.timeRegisteredInQueue,
+        },
+      },
+    }"
+    class="link"
+  >
     <div class="grid-container">
       <div class="grid-item">{{ index }}</div>
       <div class="grid-item">{{ studInfo.user.lastname }}</div>
-      <div class="grid-item">{{ studInfo.room }}</div>
+      <div class="grid-item">
+        {{ studInfo.location.home ? "Home" : studInfo.location.room.roomName }}
+      </div>
       <div class="grid-item">{{ hOrV(studInfo.helpOrValidate) }}</div>
       <div class="grid-item">
         <span v-for="(task, index) in studInfo.tasks" :key="index">
@@ -16,6 +39,8 @@
 </template>
 
 <script>
+import { hasTAAccess } from "@/api/AuthAPI";
+
 export default {
   name: "QueueElement",
   props: {
@@ -34,6 +59,14 @@ export default {
       } else {
         return "INVALID";
       }
+    },
+  },
+  computed: {
+    canValidate() {
+      return hasTAAccess(this.$store.state.auth.role);
+    },
+    currentHash() {
+      return this.$route.params.id;
     },
   },
 };

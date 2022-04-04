@@ -12,7 +12,21 @@ import ValidateStudent from "@/components/teaching-assistant/validate/ValidateSt
 export default {
   name: "ValidateStudentView",
   components: { ValidateStudent },
-  data() {
+  props: {
+    student: {
+      type: Object,
+    },
+    location: {
+      type: Object,
+    },
+    tasks: {
+      type: Array,
+    },
+    info: {
+      type: Object,
+    },
+  },
+  /*data() {
     return {
       location: {
         campus: "Gløs",
@@ -30,12 +44,11 @@ export default {
         { name: "Task 2", id: 2, done: true },
       ],
       info: {
-        group: ["William Tresselt"],
         message: "This is the message",
         validate: true,
       },
     };
-  },
+  },*/
 };
 </script>
 

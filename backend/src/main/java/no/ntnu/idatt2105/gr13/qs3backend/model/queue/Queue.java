@@ -1,5 +1,6 @@
 package no.ntnu.idatt2105.gr13.qs3backend.model.queue;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -7,7 +8,7 @@ public class Queue {
     private int queueId;
     private boolean active;
     private String description; //Message from TA
-    private List<StudentQueueInfo> studsInQueue;
+    private List<StudentQueueInfo> studsInQueue = new ArrayList<>();
 
     public Queue() {
     }
@@ -46,7 +47,8 @@ public class Queue {
         return studsInQueue;
     }
 
-    public void setStudsInQueue(List<StudentQueueInfo> studsInQueue) {
-        this.studsInQueue = studsInQueue;
+    public boolean setStudsInQueue(List<StudentQueueInfo> studsInQueue) {
+        this.studsInQueue = new ArrayList<>();
+        return this.studsInQueue.addAll(studsInQueue);
     }
 }
