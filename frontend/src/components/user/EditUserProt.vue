@@ -58,6 +58,9 @@ export default {
       }
     },
     validatePassword() {
+      if (this.user.password === this.rePassword) {
+        return true;
+      }
       if (this.user.password === undefined) {
         this.error = "Please insert a new password";
         return false;
