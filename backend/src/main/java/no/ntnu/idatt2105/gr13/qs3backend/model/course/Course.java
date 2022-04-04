@@ -20,6 +20,13 @@ public class Course {
     private List<StudentUser> students; //
     //boolean active; //This is not the queue
 
+    public Course(int year) {
+        if(year < 0){
+            throw new IllegalArgumentException("Year can't be negative");
+        }
+        this.year = year;
+    }
+
     private Queue queue;
 
     private int obligatoryTaskAmount; //
@@ -32,14 +39,31 @@ public class Course {
     }
 
     public Course(int year, int term, String courseCode, String courseName, List<TeacherUser> teachers, List<TAUser> tas, List<StudentUser> students, Queue queue, int obligatoryTaskAmount, int setOfTasks, List<List<Task>> tasksInEachSet, int[] obligatoryPerSet) {
+        if(year < 0){
+            throw new IllegalArgumentException("Year can't be negative");
+        }
         this.year = year;
+
+        if(2 < term || term < 1){
+            throw new IllegalArgumentException("Term must be one or two");
+        }
         this.term = term;
-        this.courseCode = courseCode;
+
+
+        this.courseCode = courseCode.trim().toUpperCase();
+
+        if(courseName.isEmpty()){
+            throw new IllegalArgumentException("Course name can't be empty");
+        }
         this.courseName = courseName;
+
         this.teachers = teachers;
         this.tas = tas;
         this.students = students;
         this.queue = queue;
+        if(obligatoryTaskAmount < 0){
+            throw new IllegalArgumentException("Obligatory task amount can't be less than 0");
+        }
         this.obligatoryTaskAmount = obligatoryTaskAmount;
         this.setOfTasks = setOfTasks;
         this.tasksInEachSet = tasksInEachSet;
@@ -95,15 +119,21 @@ public class Course {
     }
 
     public void setYear(int year) {
+        if(year < 0){
+            throw new IllegalArgumentException("Year can't be negative");
+        }
         this.year = year;
     }
 
     public void setTerm(int term) {
+        if(2 < term || term < 1){
+            throw new IllegalArgumentException("Term must be one or two");
+        }
         this.term = term;
     }
 
     public void setCourseCode(String courseCode) {
-        this.courseCode = courseCode;
+        this.courseCode = courseCode.toUpperCase();
     }
 
     public void setTeachers(List<TeacherUser> teachers) {
@@ -119,6 +149,9 @@ public class Course {
     }
 
     public void setCourseName(String courseName) {
+        if(courseName.isEmpty()){
+            throw new IllegalArgumentException("Course name can't be empty");
+        }
         this.courseName = courseName;
     }
 
@@ -127,6 +160,9 @@ public class Course {
     }
 
     public void setObligatoryTaskAmount(int obligatoryTaskAmount) {
+        if(obligatoryTaskAmount < 0){
+            throw new IllegalArgumentException("Obligatory task amount can't be less than 0");
+        }
         this.obligatoryTaskAmount = obligatoryTaskAmount;
     }
 

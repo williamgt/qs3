@@ -24,7 +24,7 @@ public class Building {
             throw new IllegalArgumentException("Name can't be empty");
         }
         this.id = id;
-        this.name = name;
+        this.name = name.trim();
         this.rooms = new ArrayList<>();
     }
 

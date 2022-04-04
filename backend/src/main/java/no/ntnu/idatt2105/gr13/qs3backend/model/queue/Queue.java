@@ -14,9 +14,12 @@ public class Queue {
     }
 
     public Queue(int queueId, boolean active, String description) {
+        if(queueId < 0){
+            throw new IllegalArgumentException("QueueId can't be less than 0");
+        }
         this.queueId = queueId;
         this.active = active;
-        this.description = description;
+        this.description = description.trim();
     }
 
     public int getQueueId() {
@@ -24,6 +27,9 @@ public class Queue {
     }
 
     public void setQueueId(int queueId) {
+        if(queueId < 0){
+            throw new IllegalArgumentException("QueueId can't be less than 0");
+        }
         this.queueId = queueId;
     }
 
