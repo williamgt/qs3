@@ -17,7 +17,6 @@ import AllUsersDetailsView from "@/views/admin/user/AllUsersDetailsView";
 import EditUserAdminView from "@/views/admin/user/EditUserAdminView";
 import UserInfoView from "@/views/admin/user/UserInfoView";
 import SettingsView from "@/views/user/SettingsView";
-import hasAdminAccess from "@/api/AuthAPI";
 import AddCampus from "@/views/admin/location/campus/RegisterCampus";
 import RegisterRoom from "@/views/admin/location/room/RegisterRoom";
 import RegisterBuilding from "@/views/admin/location/building/RegisterBuilding";
