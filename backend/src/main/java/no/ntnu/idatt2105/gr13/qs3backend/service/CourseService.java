@@ -23,6 +23,9 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Service for CourseController
+ */
 @Service
 public class CourseService {
     Logger logger = LoggerFactory.getLogger(CourseService.class);
@@ -82,6 +85,11 @@ public class CourseService {
         return courseRepo.getCourseByCode(courseCode);
     }
 
+    /**
+     * Private method for registering teachers. Similar to the one in UserService
+     * @param teachers
+     * @return
+     */
     private int registerTeachers(ArrayList<TeacherUserBasic> teachers){
         int rows = 0;
         boolean sendMail = false;
@@ -109,6 +117,11 @@ public class CourseService {
         }
     }
 
+    /**
+     * Private method for registering ta. Similar to the one in UserService
+     * @param tas
+     * @return
+     */
     private int registerTAs(ArrayList<TAUserBasic> tas){
         int rows = 0;
         boolean sendMail = false;
@@ -136,6 +149,11 @@ public class CourseService {
         }
     }
 
+    /**
+     * Private method for registering students. Similar to the one in UserService
+     * @param studentUsers
+     * @return
+     */
     private int registerStudents(List<StudentUserBasic> studentUsers) {
         int rows = 0;
         boolean sendMail = false;
@@ -163,10 +181,20 @@ public class CourseService {
         }
     }
 
+    /**
+     * Method for retrieving active courses
+     * @param id
+     * @return
+     */
     public List<SimpleCourseWithName> getActiveCourses(int id) {
         return courseRepo.getActiveOrInactiveCoursesByUserId(id, true);
     }
 
+    /**
+     * Method for retrieving inactive courses
+     * @param id
+     * @return
+     */
     public List<SimpleCourseWithName> getInactiveCourses(int id) {
         return courseRepo.getActiveOrInactiveCoursesByUserId(id, false);
     }

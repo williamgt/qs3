@@ -16,12 +16,19 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service for sending mails to user email
+ */
 @Service("mailService")
 public class MailServiceImpl implements MailService {
 
     @Autowired
     private JavaMailSender mailSender;
 
+    /**
+     * Sends standard email from qs3Real@outlook.com
+     * @param mail
+     */
     public void sendEmail(Mail mail) {
 
         SimpleMailMessage message = new SimpleMailMessage();
@@ -34,6 +41,10 @@ public class MailServiceImpl implements MailService {
 
     }
 
+    /**
+     * Method for retrieving metadata for sending mail such as port, host protocols etc
+     * @return
+     */
     @Override
     @Bean
     public JavaMailSender getJavaMailSender() {

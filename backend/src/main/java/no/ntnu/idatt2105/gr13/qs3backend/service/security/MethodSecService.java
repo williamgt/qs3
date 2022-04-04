@@ -11,18 +11,30 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Service for getting currently logged in user for method isTargetUser
+ */
 @Service
 public class MethodSecService {
 
     @Autowired
     UserService userService;
 
+    /**
+     * Checks if userId matches the logged in users ID
+     * @param id
+     * @return True/false
+     */
     public boolean isTargetUser(long id) {
         String emailAuth = getCurrentAuthEmail();
         UserPerson user = userService.findById(id);
         return(emailAuth != null && !emailAuth.isEmpty() && (Objects.equals(user.getEmail(), emailAuth)));
     }
 
+    /**
+     * Returns current logged-in users email
+     * @return
+     */
     private String getCurrentAuthEmail(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if(Optional.ofNullable(auth).isPresent())

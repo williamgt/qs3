@@ -32,6 +32,10 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/token")
 @EnableAutoConfiguration
 @CrossOrigin
+/**
+ * Controller for Tokens
+ * Taken from lecture example
+ */
 public class TokenController {
 
     @Autowired
@@ -43,6 +47,14 @@ public class TokenController {
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+    /**
+     * Method for generating token based on role of user
+     * Authorizes user twice before returning token
+     * @param username
+     * @param password
+     * @return
+     * @throws Exception
+     */
     @PostMapping(value = "")
     @ResponseStatus(value = HttpStatus.CREATED)
     public String generateToken(@RequestParam("username") final String username, @RequestParam("password") final String password) throws Exception {
@@ -60,6 +72,13 @@ public class TokenController {
         }
     }
 
+    /**
+     * Method for generating token based on user role
+     * @param userId
+     * @param role
+     * @return
+     * @throws Exception
+     */
     public String generateToken1(String userId, String role) throws Exception {
         Key key = Keys.hmacShaKeyFor(keyStr.getBytes("UTF-8"));
         List<GrantedAuthority> grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList(role);

@@ -19,6 +19,9 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class for authenticating a user with login credentials
+ */
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
     @Autowired
@@ -28,6 +31,13 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         super();
     }
 
+    /**
+     * Gets the authed users role. Get Role also ensures that the given password is the same as the one in database
+     * Password in db is hashed, it checks if password is the same with .matches method from hashing class
+     * @param authentication
+     * @return
+     * @throws AuthenticationException
+     */
     @Override
     public Authentication authenticate(final Authentication authentication) throws AuthenticationException {
         // get user and password info from the request

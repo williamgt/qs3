@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @EnableAutoConfiguration
 @CrossOrigin
+/**
+ * AuthController
+ */
 public class AuthController {
 
     @Autowired
@@ -24,6 +27,11 @@ public class AuthController {
 
     Logger logger = LoggerFactory.getLogger(AuthController.class);
 
+    /**
+     * Method for a user to log in. Accepted if user credentials are correct, UNAUTHORIZED if not
+     * @param user
+     * @return
+     */
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody UserLogin user){
         try{
@@ -36,6 +44,11 @@ public class AuthController {
         }
     }
 
+    /**
+     * Method for getting role of User. If UNDEFINED return error
+     * @param user
+     * @return
+     */
     @PostMapping("/getRole")
     public ResponseEntity<Role> getRole(@RequestBody User user){
         Role role = service.getRoleNotProt(user);

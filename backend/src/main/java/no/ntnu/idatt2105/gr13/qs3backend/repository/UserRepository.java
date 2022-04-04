@@ -41,7 +41,6 @@ public interface UserRepository {
     @Transactional
     int makeAdmin(int adminID);
 
-
     Boolean updateUser(User user);
     Boolean deleteUser(int id);
 }

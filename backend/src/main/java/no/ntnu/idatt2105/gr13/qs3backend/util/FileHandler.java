@@ -13,21 +13,27 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-
+/**
+ * Static class for making csv-file into array-list of students
+ */
 public class FileHandler { //TODO csv file of new students to be registered
     public static String TYPE = "text/csv";
+
+    /**
+     * Generates a random password for new students
+     * @return
+     */
     public static String getRandomPassword(){
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~`!@#$%^&*()-_=+[{]}\\|;:\'\",<.>/?";
         return RandomStringUtils.random( 15, characters );
     }
 
-    private static boolean hasCSVFormat(MultipartFile file) {
-        if (!TYPE.equals(file.getContentType())) {
-            return false;
-        }
-        return true;
-    }
-
+    /**
+     * Reads file and creates Student for each line
+     * @param file
+     * @return
+     * @throws IOException
+     */
     public static ArrayList<RegisterStudent> getArrayList(MultipartFile file) throws IOException {
         if(file.isEmpty()){
             throw new IllegalArgumentException("File can't be empty");
