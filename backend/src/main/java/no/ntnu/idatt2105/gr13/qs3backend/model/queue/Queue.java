@@ -32,7 +32,7 @@ public class Queue {
         }
         this.queueId = queueId;
         this.active = active;
-        this.description = description.trim();
+        this.description = description;
     }
 
     /**
