@@ -60,11 +60,17 @@ export default {
         registerRoom(this.room)
           .then(() => {
             this.GStore.flashMessage = "Room registered!";
+            setTimeout(() => {
+              this.GStore.flashMessage = "";
+            }, 3000);
             this.$router.push("/locations/building/" + this.room.buildingId);
           })
           .catch((err) => {
             console.log(err.response);
             this.GStore.flashMessage = "Problems registering Room";
+            setTimeout(() => {
+              this.GStore.flashMessage = "";
+            }, 3000);
             this.$router.push("/locations/building/" + this.room.buildingId);
           });
       }

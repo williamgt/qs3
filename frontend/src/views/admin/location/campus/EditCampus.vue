@@ -66,12 +66,18 @@ export default {
         updateCampus(camp)
           .then(() => {
             this.GStore.flashMessage = "Campus Edited!";
+            setTimeout(() => {
+              this.GStore.flashMessage = "";
+            }, 3000);
             this.$router.push("/locations/campus/" + this.campus.id);
           })
           .catch((err) => {
             console.log(err.response);
             this.error = err;
             this.GStore.flashMessage = "Problems Editing campus";
+            setTimeout(() => {
+              this.GStore.flashMessage = "";
+            }, 3000);
             this.$router.push("/locations/campus/" + this.campus.id);
           });
       }

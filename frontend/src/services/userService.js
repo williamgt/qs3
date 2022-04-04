@@ -32,3 +32,10 @@ export function deleteUser(user) {
   };
   return axios.delete("http://localhost:8085/users/user/" + user.id, config);
 }
+
+export function registerUser(user) {
+  const config = {
+    headers: { Authorization: `Bearer ${store.state.auth.token}` },
+  };
+  return axios.post("http://localhost:8085/users/user/register", user, config);
+}
