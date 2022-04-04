@@ -39,8 +39,10 @@ export function taActivateOrDeactivateQueue(hashId) {
   const config = {
     headers: { Authorization: `Bearer ${store.state.auth.token}` },
   };
+  let body = {};
   return axios.put(
     "http://localhost:8085/queue/activate-or-deactivate/" + hashId,
+    body,
     config
   );
 }

@@ -29,7 +29,8 @@
 
 <script>
 import TACourses from "../teaching-assistant/TACourses";
-import {taActivateOrDeactivateQueue} from "@/services/queueServices";
+import { taActivateOrDeactivateQueue } from "@/services/queueServices";
+import router from "@/router";
 
 export default {
   name: "TACoursesView",
@@ -54,7 +55,21 @@ export default {
   methods: {
     moveToActive(payload) {
       if (!payload.active) {
-        let index = this.inactiveCourses.indexOf(payload.course);
+        let hashId = payload.course.hashId;
+        let statusCode;
+        taActivateOrDeactivateQueue(hashId)
+          .then((payload) => {
+            statusCode = payload.status;
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+        if (statusCode != 200) {
+          alert("Seomthing went wrong, got statuscode " + statusCode);
+          return;
+        }
+        router.push("/");
+        /*let index = this.inactiveCourses.indexOf(payload.course);
         if (index > -1) {
           this.inactiveCourses.splice(index, 1);
           this.activeCourses.push(payload.course);
@@ -62,26 +77,32 @@ export default {
           console.log("TA activating course queue..."); //TODO remove
         } else {
           alert("No such course in the inactive courses");
-        }
-      } else {
+        }*/
+        /*else {
         alert(
           "Something wrong happened during initialization of inactive course " +
             payload.course
-        );
+        );*/
       }
     },
     moveToInactive(payload) {
       if (payload.active) {
         let hashId = payload.course.hashId;
+        let statusCode;
+
         taActivateOrDeactivateQueue(hashId)
-        .then(payload => {
-
-        })
-        .catch(e => {
-
+          .then((payload) => {
+            statusCode = payload.status;
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+        if (statusCode != 200) {
+          alert("Seomthing went wrong, got statuscode " + statusCode);
+          return;
         }
-        ])
-        let index = this.activeCourses.indexOf(payload.course);
+        router.push("/");
+        /*let index = this.activeCourses.indexOf(payload.course);
         if (index > -1) {
           this.activeCourses.splice(index, 1);
           this.inactiveCourses.push(payload.course);
@@ -94,7 +115,7 @@ export default {
         alert(
           "Something wrong happened during initialization of active course: " +
             payload.course
-        );
+        );*/
       }
     },
   },
