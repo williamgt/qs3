@@ -28,6 +28,7 @@ public class User {
 //        if(!mat.matches() || !(email.contains(".no") || email.contains(".com"))){
 //            throw new IllegalArgumentException("This is not a valid email");
 //        }
+        //TODO uncomment
         return true;
     }
 

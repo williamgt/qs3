@@ -1,5 +1,6 @@
 package no.ntnu.idatt2105.gr13.qs3backend.service.task;
 
+import no.ntnu.idatt2105.gr13.qs3backend.model.task.Task;
 import no.ntnu.idatt2105.gr13.qs3backend.model.task.TaskWithId;
 import no.ntnu.idatt2105.gr13.qs3backend.model.task.ValidatedTasks;
 import no.ntnu.idatt2105.gr13.qs3backend.repository.task.JdbcTaskRepository;
@@ -18,7 +19,7 @@ public class TaskService {
         return taskRepo.getTaskFromCourseHashId(courseHashId, userId);
     }
 
-    public int validateStudentTasks(int queueInfoId, ValidatedTasks tasks) {
+    public int validateStudentTasks(int queueInfoId, List<Task> tasks) {
         return taskRepo.validateStudentTasks(queueInfoId, tasks);
     }
 }
