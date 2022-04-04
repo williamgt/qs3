@@ -46,7 +46,6 @@ public class FileHandler { //TODO csv file of new students to be registered
                      CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());) {
             Iterable<CSVRecord> csvRecords = csvParser.getRecords();
             for (CSVRecord csvRecord : csvRecords) {
-                System.out.println(1);
                 RegisterStudent student = new RegisterStudent(
                         csvRecord.get("lastname"),
                         csvRecord.get("firstname"),

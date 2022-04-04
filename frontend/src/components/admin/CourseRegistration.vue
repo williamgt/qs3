@@ -149,6 +149,7 @@ export default {
     BaseSelect,
     BaseCheckbox,
   },
+  inject: ["GStore"],
   data() {
     return {
       courseName: "",

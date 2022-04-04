@@ -49,8 +49,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         if(role == Role.UNDEFINED)
             throw new BadCredentialsException("Not auth");
 
-        System.out.println(role.name());
-        System.out.println(role.role);
         return authPerson(email, password, role.name());
     }
 
