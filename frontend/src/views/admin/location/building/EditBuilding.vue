@@ -74,12 +74,18 @@ export default {
         updateBuilding(building)
           .then(() => {
             this.GStore.flashMessage = "building Edited!";
+            setTimeout(() => {
+              this.GStore.flashMessage = "";
+            }, 3000);
             this.$router.push("/locations/building/" + building.buildingId);
           })
           .catch((err) => {
             console.log(err.response);
             this.error = err;
             this.GStore.flashMessage = "Problems Editing building";
+            setTimeout(() => {
+              this.GStore.flashMessage = "";
+            }, 3000);
             this.$router.push("/locations/building/" + building.buildingId);
           });
       }

@@ -16,8 +16,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/course")
-//@CrossOrigin(origins = "http://localhost:8080")
 @CrossOrigin("*")
+/**
+ * Course Controller
+ */
 public class CourseController {
     Logger logger = LoggerFactory.getLogger(CourseController.class);
 

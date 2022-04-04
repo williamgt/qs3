@@ -20,6 +20,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Config for security
+ * Our system supports token based authentication and different Roles (ADMIN/TEACHER/TA/STUDENT) with different permissions
+ *
+ */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled=true,securedEnabled = true)
@@ -28,20 +33,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomAuthenticationProvider authProvider;
 
-    /*
-    @Override
-    protected void configure(HttpSecurity http) throws Exception
-    {
-        http
-                .csrf().disable()
-                .cors().and()
-                .authorizeRequests().anyRequest().authenticated()
-                .and()
-                .httpBasic();
-    }
-
-    */
-
+    /**
+     * Standard configs for cors and headers as well as allowed requests
+     * @return
+     */
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
@@ -65,6 +60,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return source;
     }
 
+    /**
+     * Configs for requests. This allows any user to check swagger page and to post a request to /token
+     * After receiving token, the user can access more requests, based on role (permissions)
+     * @param http
+     * @throws Exception
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception
     {
@@ -84,7 +85,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/token").permitAll() //TODO NB THIS!!!!
+                .antMatchers(HttpMethod.POST, "/token").permitAll()
+                //For swagger to work with auth enabled
+                .antMatchers("/v2/api-docs").permitAll()
+                .antMatchers("/configuration/ui").permitAll()
+                .antMatchers("/swagger-resources/**").permitAll()
+                .antMatchers("/configuration/security").permitAll()
+                .antMatchers("/swagger-ui.html").permitAll()
+                .antMatchers("/swagger-ui/*").permitAll()
+                .antMatchers("/webjars/**").permitAll()
+                .antMatchers("/v2/**").permitAll()
                 .anyRequest().authenticated();
     }
 
@@ -92,12 +102,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth)
             throws Exception
     {
-        /*
-        auth.inMemoryAuthentication()
-                .withUser("admin")
-                .password("{noop}password")
-                .roles("USER");
-        */
         auth.authenticationProvider(authProvider);
     }
 

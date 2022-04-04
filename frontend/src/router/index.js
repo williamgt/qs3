@@ -17,9 +17,7 @@ import AllUsersDetailsView from "@/views/admin/user/AllUsersDetailsView";
 import EditUserAdminView from "@/views/admin/user/EditUserAdminView";
 import UserInfoView from "@/views/admin/user/UserInfoView";
 import SettingsView from "@/views/user/SettingsView";
-import { hasAdminAccess, hasTAAccess } from "@/api/AuthAPI";
-import AllLocationView from "@/views/admin/location/AllLocationView";
-import LocationView from "@/views/admin/location/LocationView";
+import hasAdminAccess from "@/api/AuthAPI";
 import AddCampus from "@/views/admin/location/campus/RegisterCampus";
 import RegisterRoom from "@/views/admin/location/room/RegisterRoom";
 import RegisterBuilding from "@/views/admin/location/building/RegisterBuilding";
@@ -30,6 +28,8 @@ import RoomEditView from "@/views/admin/location/room/RoomEditView";
 import CourseInfo from "@/components/admin/course/info/CourseInfo";
 import InsideQueue from "@/components/queue/InsideQueue";
 import ValidateStudentView from "@/views/forms/teaching-assistant/ValidateStudentView";
+import CreateUserView from "@/views/admin/user/CreateUserView";
+import { hasAdminAccess, hasTAAccess } from "@/api/AuthAPI";
 
 const routes = [
   {
@@ -220,24 +220,6 @@ const routes = [
     },
   },
   {
-    path: "/locations/all",
-    name: "Locations",
-    component: AllLocationView,
-    meta: {
-      requiresLogin: true,
-      requiresAdmin: true,
-    },
-  },
-  {
-    path: "/locations/location/:id",
-    name: "Location",
-    component: LocationView,
-    meta: {
-      requiresLogin: true,
-      requiresAdmin: true,
-    },
-  },
-  {
     path: "/locations/campus",
     name: "Campuses",
     meta: {
@@ -322,6 +304,15 @@ const routes = [
     path: "/locations/room/:id/edit",
     name: "RoomEdit",
     component: RoomEditView,
+    meta: {
+      requiresLogin: true,
+      requiresAdmin: true,
+    },
+  },
+  {
+    path: "/users/user/register",
+    name: "CreateUserView",
+    component: CreateUserView,
     meta: {
       requiresLogin: true,
       requiresAdmin: true,

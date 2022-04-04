@@ -1,5 +1,7 @@
 <template>
-  <label v-if="label">{{ label }}</label>
+  <div class="label-container">
+    <label v-if="label">{{ label }}</label>
+  </div>
   <select
     class="field"
     :value="modelValue"
@@ -56,23 +58,34 @@ export default {
 </script>
 
 <style scoped>
-select {
-  width: 100%;
-  height: 40px;
-  padding: 0 24px 0 10px;
-  vertical-align: middle;
-  background: #fff;
-  background-size: 8px 10px;
-  border: solid 1px rgba(0, 0, 0, 0.4);
-  border-radius: 0;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  font-size: 15px;
+@media (max-width: 960px) {
+  select {
+    width: 60%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
 }
-select:focus {
-  border-color: #39b982;
-  outline: 0;
+@media (min-width: 960px) {
+  select {
+    width: 60%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 24px;
+  }
+}
+label {
+  font-size: 24px;
+}
+.label-container {
+  text-align: center;
 }
 .error {
   color: red;

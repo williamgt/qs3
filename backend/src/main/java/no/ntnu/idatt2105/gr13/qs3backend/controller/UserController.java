@@ -32,6 +32,10 @@ public class UserController {
     @Autowired
     private MethodSecService methodSecService;
 
+    /**
+     * Method for admin to get all details about every user
+     * @return
+     */
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<List<User>> getAllUsersDetails(){
@@ -40,6 +44,11 @@ public class UserController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
+    /**
+     * Method for Target user or admin to see indo about user with given ID.
+     * @param id
+     * @return
+     */
     @GetMapping("/user/{id}")
     @PreAuthorize("hasRole('ADMIN') or @methodSecService.isTargetUser(#id)")
     public ResponseEntity<UserPerson> getUserById(@PathVariable("id") long id) {
@@ -51,6 +60,11 @@ public class UserController {
         }
     }
 
+    /**
+     * Method for admin to receive all details about a user with given ID
+     * @param id
+     * @return
+     */
     @GetMapping("/user/{id}/all")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> getAllUserDetailsById(@PathVariable("id") long id) {
@@ -61,8 +75,15 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Takes a file which is made into arraylist of students, then registered to db
+     * @param file
+     * @return
+     * @throws Exception
+     */
     @PostMapping(value = "/upload-students-file")
     @ResponseStatus(value = HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
     public ArrayList<RegisterStudent> uploadStudents(@RequestParam("file")MultipartFile file) throws Exception {
         logger.info("Received file with students.");
         try{
@@ -75,25 +96,38 @@ public class UserController {
         return null;
     }
 
-    /**
-     * Takes a list of UserBasic and registers them in User table if they are not already registered.
-     * A UserBasic has firstname, lastname and email.
-     * A password is generated for each user as they are added to the table.
-     * @param users
-     * @return amount of rows affected
-     */
-    @PostMapping("/insert-users")
+//    /**
+//     * Takes a list of UserBasic and registers them in User table if they are not already registered.
+//     * A UserBasic has firstname, lastname and email.
+//     * A password is generated for each user as they are added to the table.
+//     * @param users
+//     * @return amount of rows affected
+//     */
+//    @PostMapping("/insert-users")
+//    @PreAuthorize("hasRole('ADMIN')")
+//    public ResponseEntity<String> registerUsers(@RequestBody List<UserBasic> users) {
+//        logger.info("User tries to register new users.");
+//        int rowsAffected = service.registerUsers(users);
+//        if(rowsAffected == 0) {
+//            logger.info("No rows were affected.");
+//            return new ResponseEntity<>("No rows were added.", HttpStatus.OK);
+//        } else {
+//            logger.info(rowsAffected+" rows were affected.");
+//            return new ResponseEntity<>("A total of "+rowsAffected+" users were created successfully.", HttpStatus.CREATED);
+//        }
+//    }
+
+    @PostMapping("/user/register")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<String> registerUsers(@RequestBody List<UserBasic> users) {
-        logger.info("User tries to register new users.");
-        int rowsAffected = service.registerUsers(users);
-        if(rowsAffected == 0) {
-            logger.info("No rows were affected.");
-            return new ResponseEntity<>("No rows were added.", HttpStatus.OK);
-        } else {
-            logger.info(rowsAffected+" rows were affected.");
-            return new ResponseEntity<>("A total of "+rowsAffected+" users were created successfully.", HttpStatus.CREATED);
+    public ResponseEntity<String> createUser(@RequestBody UserRoleString userRole) {
+        logger.info(userRole.toString());
+        logger.info(userRole.getRole());
+        try {
+            service.createUser(userRole);
+        }catch (Exception e){
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
+        return new ResponseEntity("User created!",HttpStatus.CREATED);
     }
 
     /**
@@ -181,19 +215,18 @@ public class UserController {
     }
 
     @PutMapping("/user/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or @methodSecService.isTargetUser(#id)")
     public ResponseEntity<Boolean> updateUser(@PathVariable("id") long id, @RequestBody User user){
-        logger.info("Hit here");
         logger.info(user.getFirstname());
         logger.info(user.getLastname());
         logger.info(user.getPassword());
         logger.info(user.getEmail());
         logger.info(String.valueOf(user.getId()));
         if(service.updateUser(user)){
-            logger.info("True");
+            logger.info("User: " + user.toString() + " updated!");
             return new ResponseEntity<>(true, HttpStatus.OK);
         }
-        logger.info("False");
+        logger.warn("Error updating user: " + user.toString());
         return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
     }
 
@@ -208,4 +241,5 @@ public class UserController {
         logger.info("Error deleting user: " + user.toString());
         return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
     }
+
 }

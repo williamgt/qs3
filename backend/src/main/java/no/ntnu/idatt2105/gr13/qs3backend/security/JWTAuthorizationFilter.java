@@ -17,9 +17,20 @@ import java.security.Key;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Class for filtering the bearer token and validating it
+ */
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
     private final String HEADER = "Authorization";
 
+    /**
+     * Checks if the token with the request has the right permissions. If not return 403 Forbidden
+     * @param request
+     * @param response
+     * @param filterChain
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 

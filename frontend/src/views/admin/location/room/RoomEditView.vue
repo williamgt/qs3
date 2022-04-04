@@ -95,12 +95,18 @@ export default {
         updateRoom(this.room)
           .then(() => {
             this.GStore.flashMessage = "Room Edited!";
+            setTimeout(() => {
+              this.GStore.flashMessage = "";
+            }, 3000);
             this.$router.push("/locations/room/" + this.room.id);
           })
           .catch((err) => {
             console.log(err.response);
             this.error = err;
             this.GStore.flashMessage = "Problems Editing Room";
+            setTimeout(() => {
+              this.GStore.flashMessage = "";
+            }, 3000);
             this.$router.push("/locations/room/" + this.room.id);
           });
       }

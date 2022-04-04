@@ -11,7 +11,9 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-
+/**
+ * Config file for Swagger
+ */
 @Configuration
 @EnableSwagger2
 public class SpringFoxConfig{
@@ -26,12 +28,11 @@ public class SpringFoxConfig{
 
     private ApiInfo metaData() {
         return new ApiInfoBuilder()
-                .title("Tech Interface - Spring Boot Swagger Configuration")
+                .title("QS3 - Spring Boot Swagger Configuration")
                 .description("\"Swagger configuration for application \"")
                 .version("1.1.0")
                 .license("Apache 2.0")
                 .licenseUrl("https://www.apache.org/licenses/LICENSE-2.0\"")
-                .contact(new Contact("Tech Interface", "https://www.youtube.com/channel/UCMpJ8m1w9t7EFcF9x8rs02A", "info@techinterface.com"))
                 .build();
     }
 

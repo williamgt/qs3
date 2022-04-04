@@ -9,6 +9,9 @@ import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
+/**
+ * Config file for mail service
+ */
 @Configuration
 public class MailConfiguration {
 

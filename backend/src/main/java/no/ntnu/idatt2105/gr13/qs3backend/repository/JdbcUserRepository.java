@@ -1,8 +1,6 @@
 package no.ntnu.idatt2105.gr13.qs3backend.repository;
 
 import no.ntnu.idatt2105.gr13.qs3backend.model.user.*;
-import no.ntnu.idatt2105.gr13.qs3backend.model.user.basics.*;
-import no.ntnu.idatt2105.gr13.qs3backend.util.FileHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +32,8 @@ public class JdbcUserRepository implements UserRepository {
                             rs.getInt("id")
                     ), email);
             return user.getId();
-        }catch (IncorrectResultSetColumnCountException e){
+        }catch (IncorrectResultSetColumnCountException | EmptyResultDataAccessException e){
+            logger.warn("Couldn't find user with email: " + email);
             return -1;
         }
     }
@@ -148,6 +147,7 @@ public class JdbcUserRepository implements UserRepository {
         if(id == null){
             return -1;
         }
+        logger.info("Created user: " + user.toString());
         return id;
     }
 

@@ -41,11 +41,17 @@ export default {
         registerCampus(this.name)
           .then(() => {
             this.GStore.flashMessage = "Campus Registered!";
+            setTimeout(() => {
+              this.GStore.flashMessage = "";
+            }, 3000);
             this.$router.push("/locations/campus");
           })
           .catch((err) => {
             console.log(err.response);
             this.GStore.flashMessage = "Problems registering campus";
+            setTimeout(() => {
+              this.GStore.flashMessage = "";
+            }, 3000);
             this.$router.push("/locations/campus");
           });
       }

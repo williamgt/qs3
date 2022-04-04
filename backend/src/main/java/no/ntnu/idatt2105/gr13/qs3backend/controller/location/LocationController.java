@@ -74,7 +74,7 @@ public class LocationController {
             logger.info("Registered room: " + room);
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
-        logger.error("Failed to register room: " + room);
+        logger.warn("Failed to register room: " + room);
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
@@ -85,7 +85,7 @@ public class LocationController {
             logger.info("Registered building: " + building);
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
-        logger.error("Failed to register building: " + building);
+        logger.warn("Failed to register building: " + building);
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
@@ -96,7 +96,7 @@ public class LocationController {
             logger.info("Updating Successful: " + campus);
             return new ResponseEntity<>(HttpStatus.OK);
         }
-        logger.info("Updating Failed: " + campus);
+        logger.warn("Updating Failed: " + campus);
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
@@ -107,7 +107,7 @@ public class LocationController {
             logger.info("Updating Successful: " + building);
             return new ResponseEntity<>(HttpStatus.OK);
         }
-        logger.info("Updating Failed: " + building);
+        logger.warn("Updating Failed: " + building);
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
@@ -118,7 +118,7 @@ public class LocationController {
             logger.info("Updating Successful: " + room);
             return new ResponseEntity<>(HttpStatus.OK);
         }
-        logger.info("Updating Failed: " + room);
+        logger.warn("Updating Failed: " + room);
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 }

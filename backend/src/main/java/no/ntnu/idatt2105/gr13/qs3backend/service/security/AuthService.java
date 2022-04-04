@@ -12,6 +12,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service for AuthController
+ */
 @Service
 public class AuthService {
     @Autowired
@@ -22,20 +25,42 @@ public class AuthService {
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+    /**
+     * Method for logging in user. Returns true/false based on correct info
+     * Sets password of user to an encoded password to match the one in the database
+     * @param user
+     * @return
+     */
     public User login(UserLogin user){
-        System.out.println(user.getEmail());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.getUserDetails(user);
     }
 
+    /**
+     * Returns role of user. Also makes sure password is correct before returning role
+     * Used for auth
+     * @param user
+     * @return
+     */
     public Role getRole(User user){
         return repository.getRoleOfUser(user);
     };
 
+    /**
+     * Returns role of user. Does not make sure password is correct before returning role
+     * @param user
+     * @return
+     */
     public Role getRoleNotProt(User user){
         return repository.getRoleOfUser(user);
     }
 
+    /**
+     * Used for authenticating user. Uses repo.authUser which returns encoded password
+     * If passwords match return encoded password, if not throw exception
+     * @param user
+     * @return
+     */
     public String authUser(UserLogin user){
         UserLogin psw = repository.authUser(user);
         if(!passwordEncoder.matches(user.getPassword(), psw.getPassword()))

@@ -2,6 +2,8 @@ package no.ntnu.idatt2105.gr13.qs3backend.model.mail;
 
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Mail {
     private String mailFrom;
@@ -28,6 +30,13 @@ public class Mail {
                 "Use the mail this is sent to as email to log in.\n" +
                 "Your password is: " + password +
                 "\nMake sure to change this after first log in";
+
+        Pattern pattern = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}");
+        Matcher mat = pattern.matcher(mailTo);
+        if(!mat.matches() || !(mailTo.contains(".no") || mailTo.contains(".com"))){
+            throw new IllegalArgumentException("This is not a valid email");
+        }
+
         this.mailTo = mailTo;
     }
 

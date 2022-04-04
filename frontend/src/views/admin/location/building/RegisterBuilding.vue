@@ -44,11 +44,17 @@ export default {
         registerBuilding(this.building)
           .then(() => {
             this.GStore.flashMessage = "Building registered!";
+            setTimeout(() => {
+              this.GStore.flashMessage = "";
+            }, 3000);
             this.$router.push("/locations/campus/" + this.building.id);
           })
           .catch((err) => {
             console.log(err.response);
             this.GStore.flashMessage = "Problems registering Building";
+            setTimeout(() => {
+              this.GStore.flashMessage = "";
+            }, 3000);
             this.$router.push("/locations/campus/" + this.building.id);
           });
       }
