@@ -1,6 +1,6 @@
 import { getRole, getToken, login } from "@/services/authService";
 import store from "../store";
-import hasAdminAccess, { hasTAAccess, hasTeacherAccess } from "@/api/AuthAPI";
+import { hasAdminAccess, hasTAAccess, hasTeacherAccess } from "@/api/AuthAPI";
 import router from "@/router";
 export default async function doLogin(userLogin) {
   let token;

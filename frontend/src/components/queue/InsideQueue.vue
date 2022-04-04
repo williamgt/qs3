@@ -37,8 +37,14 @@ export default {
 </script>
 
 <style scoped>
-.queue-container {
-  margin-right: 5%;
-  margin-left: 5%;
+@media (max-width: 960px) {
+  .queue-container {
+  }
+}
+@media (min-width: 960px) {
+  .queue-container {
+    margin-right: 5%;
+    margin-left: 5%;
+  }
 }
 </style>

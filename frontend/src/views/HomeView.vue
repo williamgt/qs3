@@ -6,7 +6,7 @@
 
 <script>
 // @ is an alias to /src
-import hasAdminAccess, { hasTAAccess, hasTeacherAccess } from "@/api/AuthAPI";
+import { hasAdminAccess, hasTAAccess, hasTeacherAccess } from "@/api/AuthAPI";
 import HomeAdminView from "@/views/admin/HomeAdminView";
 import StudentCoursesView from "@/components/student/StudentCoursesView";
 import TACoursesView from "@/components/teaching-assistant/TACoursesView";
